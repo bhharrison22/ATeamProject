@@ -1,10 +1,36 @@
 package ATeamProject;
 
-public class Quiz implements QuizADT {
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public class Quiz extends Application implements QuizADT, QuizGUI {
 
+	@Override
+	public void mainScreen(Stage primaryStage) {
+		// TODO ALEX DO DO THIS ONE
+		
+	}
+
+	@Override
+	public void topicChoosingPage(Stage primaryStage) {
+		// TODO ALEX MOON DO THIS ONE
+		
+	}
+
+	@Override
+	public void takingQuizPage(Stage primaryStage) {
+		// TODO DANIEL PORTNOV DO THIS ONE
+		
+	}
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		try {
+			mainScreen(primaryStage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	@Override
@@ -41,6 +67,15 @@ public class Quiz implements QuizADT {
 	public String grade(Question[] quizQuestions, String[] answers) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Simply launches the program, see {@link Quiz#start(Stage)}
+	 * for more interesting main-method type shenanigans
+	 * @param args The command line args
+	 */
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 }
