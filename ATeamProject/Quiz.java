@@ -1,10 +1,26 @@
 package ATeamProject;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Quiz extends Application implements QuizADT, QuizGUI {
 
+	// The dimensions of the window, useful for standardizing size
+	private final int xDim = 400;
+	private final int yDim = 500;
+	
+	private ArrayList<Topic> currentTopics; //The list of current available topics
+	
 	@Override
 	public void mainScreen(Stage primaryStage) {
 		// TODO ALEX DO DO THIS ONE
@@ -13,8 +29,35 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 
 	@Override
 	public void topicChoosingPage(Stage primaryStage) {
-		// TODO ALEX MOON DO THIS ONE
+		VBox mainBox = new VBox(); //This layout will be vertical, so VBox
+		mainBox.setPadding(new Insets(50, 20, 50, 20));
+		mainBox.setSpacing(20);
+		mainBox.setPrefSize(xDim, yDim);
 		
+		//The stuff at the top, a drop down menu w a list of topics and a label
+		HBox topBox = new HBox();
+		topBox.setSpacing(10);
+		topBox.setPadding(new Insets(10, 20, 10, 20));
+		Label lbl1 = new Label("Choose topic: ");
+		ObservableList<Topic> topic = FXCollections.observableArrayList();
+		if (currentTopics.isEmpty()) {
+			topic.add(new Topic("No topics selected"));
+		} else {
+			topic.addAll(currentTopics);
+		}
+		ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
+		topBox.getChildren().addAll(lbl1, dropDown);
+		mainBox.getChildren().add(topBox);
+		
+		//The stuff in the middle, right now a text field that says PLACEHOLDER
+		//but in the future it will be a list of topics that you've selected
+		HBox midBox = new HBox();
+		midBox.setSpacing(10);
+		
+		
+		Scene scene = new Scene(mainBox);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 	}
 
 	@Override
@@ -25,8 +68,10 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		currentTopics = new ArrayList<Topic>();
 		try {
-			mainScreen(primaryStage);
+			primaryStage.setTitle("ATeam 79 Group Quiz Project");
+			topicChoosingPage(primaryStage);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
