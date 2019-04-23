@@ -1,5 +1,4 @@
 package ATeamProject;
-
 /**
  * A basic quiz ADT that uses all of the methods from the design doc
  * @author amoon
