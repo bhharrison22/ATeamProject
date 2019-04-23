@@ -90,7 +90,6 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	@Override
 	public void takingQuizPage(Stage primaryStage) {
 		// TODO DANIEL PORTNOV DO THIS ONE
-		System.out.println("AAAAASSSSSS");
 	}
 	
 	@Override
@@ -98,7 +97,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		currentTopics = new ArrayList<Topic>();
 		try {
 			primaryStage.setTitle("ATeam 79 Group Quiz Project");
-			topicChoosingPage(primaryStage);
+			mainScreen(primaryStage);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
