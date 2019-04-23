@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -17,7 +18,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 
 	// The dimensions of the window, useful for standardizing size
 	private final int xDim = 400;
-	private final int yDim = 500;
+	private final int yDim = 300;
 	
 	private ArrayList<Topic> currentTopics; //The list of current available topics
 	
@@ -31,7 +32,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	public void topicChoosingPage(Stage primaryStage) {
 		VBox mainBox = new VBox(); //This layout will be vertical, so VBox
 		mainBox.setPadding(new Insets(50, 20, 50, 20));
-		mainBox.setSpacing(20);
+		mainBox.setSpacing(50);
 		mainBox.setPrefSize(xDim, yDim);
 		
 		//The stuff at the top, a drop down menu w a list of topics and a label
@@ -41,7 +42,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		Label lbl1 = new Label("Choose topic: ");
 		ObservableList<Topic> topic = FXCollections.observableArrayList();
 		if (currentTopics.isEmpty()) {
-			topic.add(new Topic("No topics selected"));
+			topic.add(new Topic("No topics loaded"));
 		} else {
 			topic.addAll(currentTopics);
 		}
@@ -49,11 +50,37 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		topBox.getChildren().addAll(lbl1, dropDown);
 		mainBox.getChildren().add(topBox);
 		
-		//The stuff in the middle, right now a text field that says PLACEHOLDER
-		//but in the future it will be a list of topics that you've selected
+		//The stuff in the middle, a list of selected topics
 		HBox midBox = new HBox();
 		midBox.setSpacing(10);
+		midBox.setPadding(new Insets(10, xDim / 8, 10, xDim / 8));
+		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
+		if (selectedTopics.isEmpty()) {
+			selectedTopics.add(new Topic("No topics selected"));
+		} else {
+			//TODO add a way to select topics
+		}
+		Label lbl2 = new Label("Selected topics: ");
+		String tops = "";
+		for (Topic t: selectedTopics) {
+			tops += t.toString() + "\n";
+		}
+		Label selTops = new Label(tops);
+		midBox.getChildren().addAll(lbl2, selTops);
+		mainBox.getChildren().add(midBox);
 		
+		//The stuff at the bottom, a forward and back button
+		HBox bottomBox = new HBox();
+		bottomBox.setPadding(new Insets(10, xDim / 4, 10, xDim / 4));
+		bottomBox.setSpacing(20);
+		Button back = new Button("Back");
+		//Runs mainScreen method when user wants to go back
+		back.setOnAction(e -> mainScreen(primaryStage)); 
+		Button forward = new Button("Ready");
+		//Runs takingQuizPage when user is ready to take quiz
+		forward.setOnAction(e -> takingQuizPage(primaryStage));
+		bottomBox.getChildren().addAll(back, forward);
+		mainBox.getChildren().add(bottomBox);
 		
 		Scene scene = new Scene(mainBox);
 		primaryStage.setScene(scene);
@@ -63,7 +90,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	@Override
 	public void takingQuizPage(Stage primaryStage) {
 		// TODO DANIEL PORTNOV DO THIS ONE
-		
+		System.out.println("AAAAASSSSSS");
 	}
 	
 	@Override
