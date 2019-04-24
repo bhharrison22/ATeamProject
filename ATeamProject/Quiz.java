@@ -17,10 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Quiz extends Application implements QuizADT, QuizGUI {
-
-	// The dimensions of the window, useful for standardizing size
-	private final int xDim = 400;
-	private final int yDim = 300;
 	
 	private ArrayList<Topic> currentTopics; //The list of current available topics
 	
@@ -55,7 +51,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	  VBox root = new VBox();
 	  root.setPadding(new Insets(50, 20, 50, 20));
 	  root.setSpacing(50);
-	  root.setPrefSize(xDim, yDim);
+	  root.setPrefSize(900, 300);
 	  
 	  // enter question
 	  HBox enterQuestion = new HBox();
@@ -93,7 +89,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		VBox mainBox = new VBox(); //This layout will be vertical, so VBox
 		mainBox.setPadding(new Insets(50, 20, 50, 20));
 		mainBox.setSpacing(50);
-		mainBox.setPrefSize(xDim, yDim);
+		mainBox.setPrefSize(400, 300);
 		
 		//The stuff at the top, a drop down menu w a list of topics and a label
 		HBox topBox = new HBox();
@@ -113,7 +109,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		//The stuff in the middle, a list of selected topics
 		HBox midBox = new HBox();
 		midBox.setSpacing(10);
-		midBox.setPadding(new Insets(10, xDim / 8, 10, xDim / 8));
+		midBox.setPadding(new Insets(10, mainBox.getWidth() / 8, 10, mainBox.getWidth() / 8));
 		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
 		if (selectedTopics.isEmpty()) {
 			selectedTopics.add(new Topic("No topics selected"));
@@ -131,7 +127,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		
 		//The stuff at the bottom, a forward and back button
 		HBox bottomBox = new HBox();
-		bottomBox.setPadding(new Insets(10, xDim / 4, 10, xDim / 4));
+		bottomBox.setPadding(new Insets(10, mainBox.getWidth() / 4, 10, mainBox.getWidth() / 4));
 		bottomBox.setSpacing(20);
 		Button back = new Button("Back");
 		//Runs mainScreen method when user wants to go back
