@@ -22,8 +22,6 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	@Override
 	public void mainScreen(Stage primaryStage) {
-	  // TODO ALEX DO DO THIS ONE
-	  
 	  // labels for respective sections of main page
 	  Label enter = new Label("Enter Question");
 	  Label load = new Label("Load Question");
