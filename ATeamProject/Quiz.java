@@ -95,6 +95,8 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		topBox.setPadding(new Insets(10, 20, 10, 20));
 		Label lbl1 = new Label("Choose topic: ");
 		ObservableList<Topic> topic = FXCollections.observableArrayList();
+		currentTopics.add(new Topic("Hash Table")); //Hard coded topic list, remove later
+		currentTopics.add(new Topic("Linux"));
 		if (currentTopics.isEmpty()) {
 			topic.add(new Topic("No topics loaded"));
 		} else {
@@ -111,8 +113,6 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
 		if (selectedTopics.isEmpty()) {
 			selectedTopics.add(new Topic("No topics selected"));
-		} else {
-			//TODO add a way to select topics
 		}
 		Label lbl2 = new Label("Selected topics: ");
 		String tops = "";
@@ -127,13 +127,29 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		HBox bottomBox = new HBox();
 		bottomBox.setPadding(new Insets(10, mainBox.getWidth() / 4, 10, mainBox.getWidth() / 4));
 		bottomBox.setSpacing(20);
+		
 		Button back = new Button("Back");
 		//Runs mainScreen method when user wants to go back
 		back.setOnAction(e -> mainScreen(primaryStage)); 
+		
 		Button forward = new Button("Ready");
 		//Runs takingQuizPage when user is ready to take quiz
 		forward.setOnAction(e -> takingQuizPage(primaryStage));
-		bottomBox.getChildren().addAll(back, forward);
+		
+		//Adds functionality to remove the latest topic selected
+		Button removeLatest = new Button("Remove last topic");
+		removeLatest.setOnAction(e -> {
+		  if (!selTops.toString().contains("No topics selected")) {
+		    selectedTopics.remove(selectedTopics.size() - 1);
+		    String tops1 = "";
+		    for (Topic t: selectedTopics) {
+		      tops1 += t.toString() + "\n";
+		    }
+		    selTops.setText(tops1);
+		  }
+		  });
+		
+		bottomBox.getChildren().addAll(back, forward, removeLatest);
 		mainBox.getChildren().add(bottomBox);
 		
 		Scene scene = new Scene(mainBox);
