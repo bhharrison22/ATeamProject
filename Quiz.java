@@ -27,6 +27,10 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	private ArrayList<Topic> currentTopics; //The list of current available topics
 	
+	public Quiz() {
+      currentTopics = new ArrayList<>();
+    }
+	
 	@Override
 	public void mainScreen(Stage primaryStage) {
 	  // labels for respective sections of main page
