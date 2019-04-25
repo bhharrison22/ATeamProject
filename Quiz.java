@@ -216,7 +216,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 
   /**
    * Adds a question to the Quiz. If a given topic already exists in currentTopics, the new question
-   * is added to that topic. Otherwise,a ew TOpic object is created and added to the Quiz.
+   * is added to that topic. Otherwise, a new TOpic object is created and added to the Quiz.
    */
   @Override
   public void addQuestion(String questionText, String answer, String[] options, String topic,
@@ -225,7 +225,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     for (Topic t : currentTopics) {
       if (t.toString().equals(newQuestion.getTopic())) { // Topic exists
         t.addQuestion(newQuestion);
-        return;
+        return; // exits method
       }
     }
     // If topic doesn't exist:
