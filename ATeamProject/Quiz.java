@@ -87,12 +87,13 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		VBox mainBox = new VBox(); //This layout will be vertical, so VBox
 		mainBox.setPadding(new Insets(50, 20, 50, 20));
 		mainBox.setSpacing(50);
-		mainBox.setPrefSize(400, 300);
+		mainBox.setPrefSize(400, 400);
+		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
 		
 		//The stuff at the top, a drop down menu w a list of topics and a label
 		HBox topBox = new HBox();
 		topBox.setSpacing(10);
-		topBox.setPadding(new Insets(10, 20, 10, 20));
+		topBox.setPadding(new Insets(10, 40, 10, 20));
 		Label lbl1 = new Label("Choose topic: ");
 		ObservableList<Topic> topic = FXCollections.observableArrayList();
 		currentTopics.add(new Topic("Hash Table")); //Hard coded topic list, remove later
@@ -103,14 +104,16 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 			topic.addAll(currentTopics);
 		}
 		ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
-		topBox.getChildren().addAll(lbl1, dropDown);
+		Button selectCurrentTopic = new Button("Select");
+		//See end of midbox for action listener
+		topBox.getChildren().addAll(lbl1, dropDown, selectCurrentTopic);
 		mainBox.getChildren().add(topBox);
 		
 		//The stuff in the middle, a list of selected topics
 		HBox midBox = new HBox();
 		midBox.setSpacing(10);
-		midBox.setPadding(new Insets(10, mainBox.getWidth() / 8, 10, mainBox.getWidth() / 8));
-		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
+		midBox.setPadding(new Insets(10, 40, 10, 20));
+		
 		if (selectedTopics.isEmpty()) {
 			selectedTopics.add(new Topic("No topics selected"));
 		}
@@ -122,10 +125,31 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		Label selTops = new Label(tops);
 		midBox.getChildren().addAll(lbl2, selTops);
 		mainBox.getChildren().add(midBox);
+		//Allows user to add topics to their selected list
+		selectCurrentTopic.setOnAction(e -> {
+          Topic selected = dropDown.getValue();
+          //If some topic is selected...
+          if (!selected.toString().equals("No topics selected")) {
+            //Removes default text
+            if (selectedTopics.toString().contains("No topics selected")) {
+              selectedTopics.remove(0);
+            }
+            //Avoids duplicates
+            if (!selectedTopics.contains(selected)) {
+              selectedTopics.add(selected);
+            }
+            String tops1 = "";
+            for (Topic t: selectedTopics) {
+              tops1 += t.toString() + "\n";
+            }
+            //Updates the list of selected topics
+            selTops.setText(tops1);
+          }
+        });
 		
 		//The stuff at the bottom, a forward and back button
 		HBox bottomBox = new HBox();
-		bottomBox.setPadding(new Insets(10, mainBox.getWidth() / 4, 10, mainBox.getWidth() / 4));
+		bottomBox.setPadding(new Insets(10, 20, 10, 20));
 		bottomBox.setSpacing(20);
 		
 		Button back = new Button("Back");
@@ -139,13 +163,22 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		//Adds functionality to remove the latest topic selected
 		Button removeLatest = new Button("Remove last topic");
 		removeLatest.setOnAction(e -> {
+		  //If a topic has been selected...
 		  if (!selTops.toString().contains("No topics selected")) {
+		    //Remove latest selection
 		    selectedTopics.remove(selectedTopics.size() - 1);
+		    //Rebuild selected topics list
 		    String tops1 = "";
 		    for (Topic t: selectedTopics) {
 		      tops1 += t.toString() + "\n";
 		    }
-		    selTops.setText(tops1);
+		    //Avoids having an empty selection list by adding placeholder text
+		    if (!tops1.equals("")) {
+		      selTops.setText(tops1);
+		    } else {
+		      selTops.setText("No topics selected");
+		    }
+		    
 		  }
 		  });
 		
