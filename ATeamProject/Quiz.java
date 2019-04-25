@@ -4,23 +4,31 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class Quiz extends Application implements QuizADT, QuizGUI {
@@ -203,7 +211,48 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 
 	@Override
 	public void takingQuizPage(Stage primaryStage) {
-		// TODO DANIEL PORTNOV DO THIS ONE
+		VBox root = new VBox();
+		root.setPadding(new Insets(50, 20, 50, 20));
+		root.setSpacing(50);
+		root.setPrefSize(700, 700);
+		root.setAlignment(Pos.TOP_CENTER);
+		
+		Label lbl = new Label("Quiz");
+	    lbl.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
+	    
+	    Label lbl1 = new Label("Who is this?");
+	    
+	    Image img = new Image("ATeamProject/bucky.png");
+	    
+	    ImageView imageview = new ImageView();
+        imageview.setImage(img);
+        imageview.setFitWidth(100);
+        imageview.setPreserveRatio(true);
+        imageview.setSmooth(true);
+        imageview.setCache(true);
+	    
+	    Label lbl2 = new Label("a) Bucky\nb) Deb\nc) Jerry Seinfeld\nd) IDK");
+	    TextField txt = new TextField();
+	    Label lbl3 = new Label("Correct!");
+	    
+	    txt.setOnAction(e -> {
+	    	ObservableList<Node> children = root.getChildren();
+			children.remove(lbl3);
+	    	if (txt.getText() != null && txt.getText().equalsIgnoreCase("a")) {
+	    		   children.add(lbl3);
+	    	}
+	    });
+	    
+	    root.getChildren().add(lbl);
+	    root.getChildren().add(lbl1);
+	    root.getChildren().add(imageview);
+	    root.getChildren().add(lbl2);
+	    root.getChildren().add(txt);
+		
+		
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 	}
 	
 	@Override
