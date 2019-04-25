@@ -275,10 +275,26 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     // TODO Auto-generated method stub
 
   }
-
+/**
+ * Randomly generates questions from selected topics.
+ *  
+ * @return array of randomly Questions 
+ */
   @Override
   public Question[] generateQuizQuestions(Topic[] topics, int numQuestions) {
-    // TODO Auto-generated method stub
+    // TODO: see if there's a more efficient way to do this
+    Question[] quizQuestions = new Question[numQuestions];
+    ArrayList<Question> allQuestions = new ArrayList<>();
+    for(Topic t : topics) {
+      for(Question q : t.getQuestions()) {
+        allQuestions.add(q);
+      }
+    }
+    for(int i=0;i<numQuestions;i++) {
+      int randIndex = (int) Math.random() * allQuestions.size();
+      quizQuestions[i] = allQuestions.get(randIndex);
+      allQuestions.remove(randIndex);
+    }
     return null;
   }
 
