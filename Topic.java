@@ -17,6 +17,10 @@ public class Topic {
 	  questionArray.add(newQuestion); 
 	}
 	
+	public List<Question> getQuestions() {
+	  return questionArray;
+	}
+	
 	@Override
 	public String toString() {
 		return name;
