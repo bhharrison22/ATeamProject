@@ -1,6 +1,13 @@
 package ATeamProject;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -214,8 +221,11 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
   }
 
   @Override
-  public void loadQuestions(String JSONfilePath) {
-    // TODO Auto-generated method stu
+  public void loadQuestions(String JSONfilePath) throws FileNotFoundException, IOException, ParseException {
+    JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(JSONfilePath));
+    JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSON array of questions in file
+    
+    
   }
 
   @Override

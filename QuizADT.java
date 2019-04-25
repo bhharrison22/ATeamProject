@@ -1,4 +1,9 @@
 package ATeamProject;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import org.json.simple.parser.ParseException;
+
 /**
  * A basic quiz ADT that uses all of the methods from the design doc
  * @author amoon
@@ -18,7 +23,7 @@ public interface QuizADT {
 	 * Loads questions into the program from a JSON file
 	 * @param JSONfilePath The file path of the questions
 	 */
-	public void loadQuestions(String JSONfilePath);
+	public void loadQuestions(String JSONfilePath) throws FileNotFoundException, IOException, ParseException;
 	
 	/**
 	 * Saves all added questions into a JSON file
