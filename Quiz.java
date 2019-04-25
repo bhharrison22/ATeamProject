@@ -224,7 +224,12 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
   public void loadQuestions(String JSONfilePath) throws FileNotFoundException, IOException, ParseException {
     JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(JSONfilePath));
     JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSON array of questions in file
-    
+    for(int i=0; i<questionArray.size();i++) {
+      JSONObject questionOBJ = (JSONObject) questionArray.get(i);
+      String text = (String) questionOBJ.get("questionText");
+      // TODO: do above to the rest of the fields
+      //TODO: remove metadata from Qustion class
+    }
     
   }
 
