@@ -17,7 +17,7 @@ public interface QuizADT {
 	 * @param options Question options
 	 * @param topic The topic of the question
 	 */
-	public void addQuestion(String questionText, String answer, String[] options, String topic);
+	public void addQuestion(String questionText, String answer, String[] options, String topic, String image);
 	
 	/**
 	 * Loads questions into the program from a JSON file

@@ -204,33 +204,58 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		currentTopics = new ArrayList<Topic>();
-		try {
-			primaryStage.setTitle("ATeam 79 Group Quiz Project");
-			mainScreen(primaryStage);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-  @Override
-  public void addQuestion(String questionText, String answer, String[] options, String topic) {
-    // TODO Auto-generated method stub
-
+    currentTopics = new ArrayList<Topic>();
+    try {
+      primaryStage.setTitle("ATeam 79 Group Quiz Project");
+      mainScreen(primaryStage);
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
   }
 
   @Override
-  public void loadQuestions(String JSONfilePath) throws FileNotFoundException, IOException, ParseException {
+  public void addQuestion(String questionText, String answer, String[] options, String topic,
+      String image) {
+    Question newQuestion = new Question(questionText, answer, image, options, topic);
+    boolean topicExists = false;
+    for(Topic t : currentTopics) {
+      if(t.toString().equals(topic)) {
+        topicExists = true;
+      }
+    }
+  }
+
+  /**
+   * Parses a given JSON file and adds the questions from it to the quiz
+   * 
+   * @param JSONfilePath is the file path to the JSON file being parsed
+   */
+  @Override
+  public void loadQuestions(String JSONfilePath)
+      throws FileNotFoundException, IOException, ParseException {
     JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(JSONfilePath));
     JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSON array of questions in file
-    for(int i=0; i<questionArray.size();i++) {
-      JSONObject questionOBJ = (JSONObject) questionArray.get(i);
-      String text = (String) questionOBJ.get("questionText");
-      // TODO: do above to the rest of the fields
-      //TODO: remove metadata from Qustion class
+    for (int i = 0; i < questionArray.size(); i++) {
+      JSONObject questionObj = (JSONObject) questionArray.get(i);
+      String questionText = (String) questionObj.get("questionText"); // Question Text
+      String topic = (String) questionObj.get("topic"); // Question Topic
+      String image = (String) questionObj.get("image"); // Image path
+      // Get options:
+      JSONArray choiceArray = (JSONArray) questionObj.get("choiceArray");
+      String answer = null; // Question Answer
+      String[] options = new String[choiceArray.size()]; // Question choices
+      for (int j = 0; j < choiceArray.size(); j++) {
+        JSONObject choiceObj = (JSONObject) choiceArray.get(i);
+        options[i] = (String) choiceObj.get("choice");
+        if (choiceObj.get("isCorrect") == "T") {
+          answer = (String) choiceObj.get("choice");
+        }
+      }
+      // Adds question to current Quiz with info obtained from JSON object:
+      this.addQuestion(questionText, answer, options, topic, image);
     }
-    
+
   }
 
   @Override
