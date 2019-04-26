@@ -1,4 +1,4 @@
-package ATeamProject;
+package application;
 
 import javafx.stage.Stage;
 
