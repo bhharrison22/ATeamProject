@@ -222,7 +222,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	    
 	    Label lbl1 = new Label("Who is this?");
 	    
-	    Image img = new Image("ATeamProject/bucky.png");
+	    Image img = new Image("application/bucky.png");
 	    
 	    ImageView imageview = new ImageView();
         imageview.setImage(img);
