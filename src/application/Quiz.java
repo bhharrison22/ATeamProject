@@ -34,9 +34,11 @@ import javafx.stage.Stage;
 public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	private ArrayList<Topic> currentTopics; //The list of current available topics
+	int numQuestions;
 	
 	public Quiz() {
       currentTopics = new ArrayList<>();
+      numQuestions = 0;
     }
 	
 	@Override
@@ -285,6 +287,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     Topic newTopic = new Topic(topic);
     newTopic.addQuestion(newQuestion);
     currentTopics.add(newTopic);
+    numQuestions++;
   }
 
   /**
@@ -368,6 +371,10 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     }
     return ("You Answered " + correct + " out of " + quizQuestions.length
         + " Questions, giving you a percentage of " + Math.round(correct / quizQuestions.length));
+  }
+  
+  public int numQuestions() {
+    return numQuestions;
   }
 
   /**
