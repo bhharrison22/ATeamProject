@@ -372,7 +372,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 
   /**
    * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
-   * type shenanigans
+   * type shenanigans.
    * 
    * @param args The command line args
    */
