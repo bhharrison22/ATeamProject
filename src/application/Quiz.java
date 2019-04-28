@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -319,24 +319,22 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
       // Adds question to current Quiz with info obtained from JSON object:
       this.addQuestion(questionText, answer, options, topic, image);
     }
-
   }
 
   @Override
   public void save() {
     // TODO Auto-generated method stub
-
   }
 
   /**
-   * Randomly generates questions from selected topics.
+   * Randomly generates questions from selected topics. If numQuestions > the number of Questions
+   * available, the rest of the Array will be filled with null.
    * 
    * @return array of randomly Questions
    */
   @Override
-  public Question[] generateQuizQuestions(Topic[] topics, int numQuestions) {
+  public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions) {
     // TODO: see if there's a more efficient way to do this
-    // TODO: test method
     Question[] quizQuestions = new Question[numQuestions];
     ArrayList<Question> allQuestions = new ArrayList<>();
     for (Topic t : topics) {
@@ -345,9 +343,13 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
       }
     }
     for (int i = 0; i < numQuestions; i++) {
-      int randIndex = (int) Math.random() * allQuestions.size();
-      quizQuestions[i] = allQuestions.get(randIndex);
-      allQuestions.remove(randIndex);
+      if (!allQuestions.isEmpty()) {
+        int randIndex = (int) Math.random() * allQuestions.size();
+        quizQuestions[i] = allQuestions.get(randIndex);
+        allQuestions.remove(randIndex);
+      } else {
+        quizQuestions[i] = null;
+      }
     }
     return quizQuestions;
   }
@@ -385,6 +387,18 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
    */
   public static void main(String[] args) {
     launch(args);
+    // Testing: 
+    Quiz q1 = new Quiz();
+    String[] options = {"answer", "test"};
+    q1.addQuestion("Test", "answer", options, "tests", "");
+    q1.addQuestion("Test", "test", options, "tests", "");
+    Question[] qs = q1.generateQuizQuestions(q1.currentTopics, 3);
+    for (Question q : qs) {
+      if (q != null)
+        System.out.println(q.getText());
+      else
+        System.out.println(q);
+    }
   }
 
 }

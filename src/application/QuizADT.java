@@ -2,6 +2,7 @@ package application;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -36,7 +37,7 @@ public interface QuizADT {
 	 * @param numQuestions The number of questions to be generated
 	 * @return The list of questions that have been randomly generated
 	 */
-	public Question[] generateQuizQuestions(Topic[] topics, int numQuestions);
+	public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions);
 	
 	/**
 	 * Generates a quiz from a set of questions
