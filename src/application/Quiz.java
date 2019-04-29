@@ -324,18 +324,22 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     }
   }
 
+  /**
+   * Writes all Questions currently stored into JSON file.
+   */
   @SuppressWarnings("unchecked")
   @Override
   public void save() {
-    JSONArray employeeList = new JSONArray();
+    JSONArray employeeList = new JSONArray(); // List of Questions stored as JSONObject
+    // Loops through all Questions being storage: 
     for(Topic t : currentTopics) {
       for(Question q : t.getQuestions()) {
-        JSONObject newQuestion = new JSONObject();
+        JSONObject newQuestion = new JSONObject(); // JSON Object that stores all Question Fields
         newQuestion.put("questionText", q.getText());
         newQuestion.put("topic", q.getTopic());
         newQuestion.put("image", q.getImagePath());
         JSONArray choices = new JSONArray();
-        for(String choice : q.getChoiceArray()) {
+        for(String choice : q.getChoiceArray()) { // adds all choices to JSONArray
           if(q.getAnswer().equals(choice)) {
             JSONObject correct =new JSONObject();
             correct.put("isCorrect", "T");
@@ -350,7 +354,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
           }
         }
         newQuestion.put("choiceArray", choices);
-        employeeList.add(newQuestion);
+        employeeList.add(newQuestion); //adds Question to overall Array of Question
       }
     }
     writeToFile(employeeList);
@@ -438,9 +442,9 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     // TODO: remove testing before submitting.
     // Testing: 
     Quiz q1 = new Quiz();
-    String[] options = {"answer", "test"};
-    q1.addQuestion("Test", "answer", options, "tests", "");
-    q1.addQuestion("Test", "test", options, "tests", "");
+    String[] options = {"answer", "Wrong1", "Wrong2", "Wrong3"};
+    q1.addQuestion("Q1", "answer", options, "Test Questions", "");
+    q1.addQuestion("Q2", "Wrong1", options, "Test Questions", "");
     Question[] qs = q1.generateQuizQuestions(q1.currentTopics, 3);
     for (Question q : qs) {
       if (q != null)
