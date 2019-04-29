@@ -189,7 +189,13 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		
 		Button forward = new Button("Ready");
 		//Runs takingQuizPage when user is ready to take quiz
-		forward.setOnAction(e -> takingQuizPage(primaryStage));
+		forward.setOnAction(e -> {
+		  ArrayList<Question> qs = new ArrayList<Question>();
+		  for (Topic t: currentTopics) {
+		    qs.addAll(t.getQuestions());
+		  }
+		  takingQuizPage(primaryStage, qs.toArray(new Question[0]));
+		});
 		
 		//Adds functionality to remove the latest topic selected
 		Button removeLatest = new Button("Remove last topic");
