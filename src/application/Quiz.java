@@ -122,6 +122,10 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		ObservableList<Topic> topic = FXCollections.observableArrayList();
 		currentTopics.add(new Topic("Hash Table")); //Hard coded topic list, remove later
 		currentTopics.add(new Topic("Linux"));
+		//Sorts topics in alphabetical order
+		currentTopics.sort((a, b) -> {
+		  return a.toString().compareTo(b.toString());
+		});
 		if (currentTopics.isEmpty()) {
 			topic.add(new Topic("No topics loaded"));
 		} else {
@@ -163,9 +167,12 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
               selectedTopics.add(selected);
             }
             String tops1 = "";
+            int numQuestions = 0;
             for (Topic t: selectedTopics) {
-              tops1 += t.toString() + "\n";
+              tops1 += "" + t.getQuestions().size() + " " + t.toString() + "\n";
+              numQuestions += t.getQuestions().size();
             }
+            tops1 += "" + numQuestions + " total questions selected";
             //Updates the list of selected topics
             selTops.setText(tops1);
           }
