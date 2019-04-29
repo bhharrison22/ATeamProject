@@ -1,7 +1,9 @@
 package application;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	private ArrayList<Topic> currentTopics; //The list of current available topics
 	int numQuestions;
+	final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 	
 	public Quiz() {
       currentTopics = new ArrayList<>();
@@ -321,9 +324,54 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void save() {
-    // TODO Auto-generated method stub
+    JSONArray employeeList = new JSONArray();
+    for(Topic t : currentTopics) {
+      for(Question q : t.getQuestions()) {
+        JSONObject newQuestion = new JSONObject();
+        newQuestion.put("questionText", q.getText());
+        newQuestion.put("topic", q.getTopic());
+        newQuestion.put("image", q.getImagePath());
+        JSONArray choices = new JSONArray();
+        for(String choice : q.getChoiceArray()) {
+          if(q.getAnswer().equals(choice)) {
+            JSONObject correct =new JSONObject();
+            correct.put("isCorrect", "T");
+            correct.put("choice", choice);
+            choices.add(correct);
+          }
+          else {
+            JSONObject inncorrect =new JSONObject();
+            inncorrect.put("isCorrect", "F");
+            inncorrect.put("choice", choice);
+            choices.add(inncorrect);
+          }
+        }
+        newQuestion.put("choiceArray", choices);
+        employeeList.add(newQuestion);
+      }
+    }
+    writeToFile(employeeList);
+  }
+
+  /**
+   * Writes information from a given JSONArray to a JSON file.
+   * 
+   * @param questions is a JSONArray which will be written to the file
+   */
+  private void writeToFile(JSONArray questions) {
+    try {
+      JSONObject masterObj = new JSONObject();
+      masterObj.put("questionArray", questions);
+      FileWriter file = new FileWriter(SAVED_QUESTION_FILE_PATH, false);
+      file.write(masterObj.toJSONString());
+      file.flush();
+      file.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -387,6 +435,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
    */
   public static void main(String[] args) {
     launch(args);
+    // TODO: remove testing before submitting.
     // Testing: 
     Quiz q1 = new Quiz();
     String[] options = {"answer", "test"};
@@ -399,6 +448,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
       else
         System.out.println(q);
     }
+    q1.save();
   }
 
 }
