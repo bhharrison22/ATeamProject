@@ -330,7 +330,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
   @SuppressWarnings("unchecked")
   @Override
   public void save() {
-    JSONArray employeeList = new JSONArray(); // List of Questions stored as JSONObject
+    JSONArray questionList = new JSONArray(); // List of Questions stored as JSONObject
     // Loops through all Questions being storage: 
     for(Topic t : currentTopics) {
       for(Question q : t.getQuestions()) {
