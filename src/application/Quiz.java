@@ -120,8 +120,8 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		topBox.setPadding(new Insets(10, 40, 10, 20));
 		Label lbl1 = new Label("Choose topic: ");
 		ObservableList<Topic> topic = FXCollections.observableArrayList();
-		currentTopics.add(new Topic("Hash Table")); //Hard coded topic list, remove later
-		currentTopics.add(new Topic("Linux"));
+		currentTopics.add(new Topic("Linux")); //Hard coded topic list, remove later
+		currentTopics.add(new Topic("Hash Table"));
 		//Sorts topics in alphabetical order
 		currentTopics.sort((a, b) -> {
 		  return a.toString().compareTo(b.toString());
@@ -222,7 +222,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	}
 
 	@Override
-	public void takingQuizPage(Stage primaryStage) {
+	public void takingQuizPage(Stage primaryStage, Question[] questions) {
 		VBox root = new VBox();
 		root.setPadding(new Insets(50, 20, 50, 20));
 		root.setSpacing(50);

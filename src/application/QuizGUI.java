@@ -22,6 +22,6 @@ public interface QuizGUI {
 	 * The page where the quiz is actually taken.
 	 * @param primaryStage The primary stage
 	 */
-	public void takingQuizPage(Stage primaryStage);
+	public void takingQuizPage(Stage primaryStage, Question[] questions);
 	
 }
