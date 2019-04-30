@@ -348,36 +348,35 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
   }
 
   /**
-   * Writes all Questions currently stored into JSON file.
+   * Writes all Questions currently stored into a JSON file.
    */
   @SuppressWarnings("unchecked")
   @Override
   public void save() {
-    JSONArray questionList = new JSONArray(); // List of Questions stored as JSONObject
-    // Loops through all Questions being storage: 
-    for(Topic t : currentTopics) {
-      for(Question q : t.getQuestions()) {
+    JSONArray questionList = new JSONArray(); // List of Questions stored as a JSONObject
+    // Loops through all Questions being storage:
+    for (Topic t : currentTopics) {
+      for (Question q : t.getQuestions()) {
         JSONObject newQuestion = new JSONObject(); // JSON Object that stores all Question Fields
         newQuestion.put("questionText", q.getText());
         newQuestion.put("topic", q.getTopic());
         newQuestion.put("image", q.getImagePath());
         JSONArray choices = new JSONArray();
-        for(String choice : q.getChoiceArray()) { // adds all choices to JSONArray
-          if(q.getAnswer().equals(choice)) {
+        for (String choice : q.getChoiceArray()) { // adds all choices to a JSONArray
+          if (q.getAnswer().equals(choice)) {
             JSONObject correct = new JSONObject();
             correct.put("isCorrect", "T");
             correct.put("choice", choice);
             choices.add(correct);
-          }
-          else {
-            JSONObject inncorrect =new JSONObject();
+          } else {
+            JSONObject inncorrect = new JSONObject();
             inncorrect.put("isCorrect", "F");
             inncorrect.put("choice", choice);
             choices.add(inncorrect);
           }
         }
         newQuestion.put("choiceArray", choices);
-        questionList.add(newQuestion); //adds Question to overall Array of Question
+        questionList.add(newQuestion); // adds this Question to overall Array of Questions
       }
     }
     writeToFile(questionList);
@@ -397,7 +396,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
       file.flush();
       file.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      e.printStackTrace(); // TODO: make some kind of dialog box that tells the user of error?
     }
   }
 
@@ -441,15 +440,15 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
   @Override
   public String grade(Question[] quizQuestions, String[] answers) {
     int correct = 0;
-    for(int i=0;i<quizQuestions.length;i++) {
-      if(quizQuestions[i].getAnswer().equals(answers[i])) {
+    for (int i = 0; i < quizQuestions.length; i++) {
+      if (quizQuestions[i].getAnswer().equals(answers[i])) {
         correct++;
       }
     }
     return ("You Answered " + correct + " out of " + quizQuestions.length
         + " Questions, giving you a percentage of " + Math.round(correct / quizQuestions.length));
   }
-  
+
   public int numQuestions() {
     return numQuestions;
   }
@@ -463,19 +462,25 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
   public static void main(String[] args) {
     launch(args);
     // TODO: remove testing before submitting.
-    // Testing: 
+    // Testing:
     Quiz q1 = new Quiz();
     String[] options = {"answer", "Wrong1", "Wrong2", "Wrong3"};
     q1.addQuestion("Q1", "answer", options, "Test Questions", "");
     q1.addQuestion("Q2", "Wrong1", options, "Test Questions", "");
-    Question[] qs = q1.generateQuizQuestions(q1.currentTopics, 3);
+    q1.save();
+    Quiz q2 = new Quiz();
+    try {
+      q2.loadQuestions("Saved_Questions.json");
+      q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    Question[] qs = q2.generateQuizQuestions(q2.currentTopics, 4);
     for (Question q : qs) {
       if (q != null)
         System.out.println(q.getText());
       else
         System.out.println(q);
     }
-    q1.save();
   }
-
 }
