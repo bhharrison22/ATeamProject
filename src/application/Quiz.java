@@ -37,7 +37,7 @@ import javafx.util.converter.NumberStringConverter;
 
 public class Quiz extends Application implements QuizADT, QuizGUI {
 	
-	private ArrayList<Topic> currentTopics; //The list of current available topics
+	private ArrayList<Topic> currentTopics; // The list of current available topics
 	int numQuestions;
 	final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 	
@@ -408,7 +408,6 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
    */
   @Override
   public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions) {
-    // TODO: see if there's a more efficient way to do this
     Question[] quizQuestions = new Question[numQuestions];
     ArrayList<Question> allQuestions = new ArrayList<>();
     for (Topic t : topics) {
