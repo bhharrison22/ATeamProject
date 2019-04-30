@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -48,63 +49,75 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 	
 	@Override
 	public void mainScreen(Stage primaryStage) {
-	  // labels for respective sections of main page
-	  Label enter = new Label("Enter Question");
-	  Label load = new Label("Load Question");
-	  Label numQ = new Label("Number of Current Questions");
+	  Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
+	  GridPane grid = new GridPane();
+	  grid.setPadding(new Insets(10,10,10,10));
+	  grid.setMinSize(300,300);
+	  grid.setVgap(5);
+	  grid.setHgap(5);
 	  
-	  // textfields for user to enter questions and topic 
-	  TextField topic = new TextField();
-	  TextField question = new TextField();
-	  TextField path = new TextField(); // path for JSON file
-	  
-	  // auxillary buttons for GUI
-	  Button getImage = new Button("^");
-	  Button saveQuestion = new Button("SAVE");
-	  Button loadQ = new Button("LOAD");
-	  Button next = new Button("SAVE AND NEXT");
-	  next.setOnAction(e -> topicChoosingPage(primaryStage));
-	  
-	  // table containing questions (for now hardcoded)
-	  TableView<String> table = new TableView<String>();
-	  table.setEditable(true);
-	  TableColumn<String, String> qCol = new TableColumn<String, String>("Questions");
-	  table.getColumns().addAll(qCol);
-	  
-	  // root pane for the scene
-	  VBox root = new VBox();
-	  root.setPadding(new Insets(50, 20, 50, 20));
-	  root.setSpacing(50);
-	  root.setPrefSize(900, 300);
-	  
-	  // enter question
-	  HBox enterQuestion = new HBox();
-	  enterQuestion.setSpacing(10);
-      enterQuestion.setPadding(new Insets(10, 20, 10, 20));
-      enterQuestion.getChildren().addAll(enter, topic, question, getImage, saveQuestion, table);
-      
-      root.getChildren().addAll(enterQuestion);
-      
-      // load question
-      HBox loadQuestion = new HBox();
-      loadQuestion.setSpacing(10);
-      loadQuestion.setPadding(new Insets(10, 20, 10, 20));
-      loadQuestion.getChildren().addAll(load, path, loadQ);
-      
-      root.getChildren().addAll(loadQuestion);
-      
-      // bottom container
-      HBox save = new HBox();
-      save.setSpacing(10);
-      save.setPadding(new Insets(10, 20, 10, 20));
-      save.getChildren().addAll(numQ, next);
-      
-      root.getChildren().addAll(save);
-      
-      // set scene of this page
-      Scene scene = new Scene(root);
-      primaryStage.setScene(scene);
-      primaryStage.show();
+	  Button add = new Button("Add Question");
+	  Button load = new Button("Load Question");
+	  Button save = new Button("Save Question");
+	  Button next = new Button("Next");
+	  add.setOnAction(e->);
+//	  // labels for respective sections of main page
+//	  Label enter = new Label("Enter Question");
+//	  Label load = new Label("Load Question");
+//	  Label numQ = new Label("Number of Current Questions");
+//	  
+//	  // textfields for user to enter questions and topic 
+//	  TextField topic = new TextField();
+//	  TextField question = new TextField();
+//	  TextField path = new TextField(); // path for JSON file
+//	  
+//	  // auxillary buttons for GUI
+//	  Button getImage = new Button("^");
+//	  Button saveQuestion = new Button("SAVE");
+//	  Button loadQ = new Button("LOAD");
+//	  Button next = new Button("SAVE AND NEXT");
+//	  next.setOnAction(e -> topicChoosingPage(primaryStage));
+//	  
+//	  // table containing questions (for now hardcoded)
+//	  TableView<String> table = new TableView<String>();
+//	  table.setEditable(true);
+//	  TableColumn<String, String> qCol = new TableColumn<String, String>("Questions");
+//	  table.getColumns().addAll(qCol);
+//	  
+//	  // root pane for the scene
+//	  VBox root = new VBox();
+//	  root.setPadding(new Insets(50, 20, 50, 20));
+//	  root.setSpacing(50);
+//	  root.setPrefSize(900, 300);
+//	  
+//	  // enter question
+//	  HBox enterQuestion = new HBox();
+//	  enterQuestion.setSpacing(10);
+//      enterQuestion.setPadding(new Insets(10, 20, 10, 20));
+//      enterQuestion.getChildren().addAll(enter, topic, question, getImage, saveQuestion, table);
+//      
+//      root.getChildren().addAll(enterQuestion);
+//      
+//      // load question
+//      HBox loadQuestion = new HBox();
+//      loadQuestion.setSpacing(10);
+//      loadQuestion.setPadding(new Insets(10, 20, 10, 20));
+//      loadQuestion.getChildren().addAll(load, path, loadQ);
+//      
+//      root.getChildren().addAll(loadQuestion);
+//      
+//      // bottom container
+//      HBox save = new HBox();
+//      save.setSpacing(10);
+//      save.setPadding(new Insets(10, 20, 10, 20));
+//      save.getChildren().addAll(numQ, next);
+//      
+//      root.getChildren().addAll(save);
+//      
+//      // set scene of this page
+//      Scene scene = new Scene(root);
+//      primaryStage.setScene(scene);
+//      primaryStage.show();
       
 	}
 
