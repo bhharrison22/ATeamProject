@@ -1,5 +1,6 @@
 package application;
 
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -113,19 +114,15 @@ public class QuizGUI extends Application implements QuizGUIADT {
     topBox.setPadding(new Insets(10, 40, 10, 20));
     Label lbl1 = new Label("Choose topic: ");
     ObservableList<Topic> topic = FXCollections.observableArrayList();
-
-    // TODO implement Quiz methods to add topics in current topics
-    // currentTopics.add(new Topic("Linux")); // Hard coded topic list, remove later
-    // currentTopics.add(new Topic("Hash Table"));
-    // // Sorts topics in alphabetical order
-    // currentTopics.sort((a, b) -> {
-    // return a.toString().compareTo(b.toString());
-    // });
-    // if (currentTopics.isEmpty()) {
-    // topic.add(new Topic("No topics loaded"));
-    // } else {
-    // topic.addAll(currentTopics);
-    // }
+    ArrayList<Topic> currentTopics = quiz.getTopics();
+    currentTopics.sort((a, b) -> {
+      return a.toString().compareTo(b.toString());
+    });
+    if (currentTopics.isEmpty()) {
+      topic.add(new Topic("No topics loaded"));
+    } else {
+      topic.addAll(currentTopics);
+    }
     ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
     Button selectCurrentTopic = new Button("Select");
 

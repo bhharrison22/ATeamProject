@@ -205,6 +205,10 @@ public class Quiz implements QuizADT {
   public int numQuestions() {
     return numQuestions;
   }
+  
+  public ArrayList<Topic> getTopics(){
+    return currentTopics;
+  }
 
   /**
    * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
@@ -213,7 +217,6 @@ public class Quiz implements QuizADT {
    * @param args The command line args
    */
   public static void main(String[] args) {
-    launch(args);
     // TODO: remove testing before submitting.
     // Testing:
     Quiz q1 = new Quiz();
