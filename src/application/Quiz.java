@@ -364,7 +364,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
         JSONArray choices = new JSONArray();
         for(String choice : q.getChoiceArray()) { // adds all choices to JSONArray
           if(q.getAnswer().equals(choice)) {
-            JSONObject correct =new JSONObject();
+            JSONObject correct = new JSONObject();
             correct.put("isCorrect", "T");
             correct.put("choice", choice);
             choices.add(correct);
