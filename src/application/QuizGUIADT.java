@@ -2,6 +2,11 @@ package application;
 
 import javafx.stage.Stage;
 
+/**
+ * Interface blueprinting the Quiz Generator GUI
+ * @author AlexDo
+ *
+ */
 public interface QuizGUI {
 
 	/**
@@ -12,8 +17,24 @@ public interface QuizGUI {
 	public void mainScreen(Stage primaryStage);
 	
 	/**
-	 * The second page, where topics are chosen from the list
-	 * of available topics to start generating a quiz.
+	 * The page after user presses "Add Question" in the main screen,
+	 * where user can fill out text fields and forms manually.
+	 * @param primaryStage
+	 */
+	public void addQuestionPage(Stage primaryStage);
+	
+	/**
+	 * The page after user presses "Load Question" in the main screen,
+	 * where user can enter in a file path to load questions into the Quiz
+	 * from a JSON file.
+	 * @param primaryStage
+	 */
+	public void loadQuestionPage(Stage primaryStage);
+	
+	/**
+	 * The page after user presses next in the main screen,
+	 * where topics are chosen from the list of available 
+	 * topics to start generating a quiz.
 	 * @param primaryStage The primary stage
 	 */
 	public void topicChoosingPage(Stage primaryStage);
@@ -23,5 +44,7 @@ public interface QuizGUI {
 	 * @param primaryStage The primary stage
 	 */
 	public void takingQuizPage(Stage primaryStage, Question[] questions);
+	
+	
 	
 }
