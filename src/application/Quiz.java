@@ -38,7 +38,7 @@ import javafx.util.converter.NumberStringConverter;
 
 public class Quiz implements QuizADT {
 	
-	private ArrayList<Topic> currentTopics; //The list of current available topics
+	private ArrayList<Topic> currentTopics; // The list of current available topics
 	int numQuestions;
 	final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 	
@@ -79,7 +79,7 @@ public class Quiz implements QuizADT {
   public void loadQuestions(String JSONfilePath)
       throws FileNotFoundException, IOException, ParseException {
     JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(JSONfilePath));
-    JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSON array of questions in file
+    JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSONArray of questions in file
     for (int i = 0; i < questionArray.size(); i++) {
       JSONObject questionObj = (JSONObject) questionArray.get(i);
       String questionText = (String) questionObj.get("questionText"); // Question Text
@@ -162,7 +162,6 @@ public class Quiz implements QuizADT {
    */
   @Override
   public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions) {
-    // TODO: see if there's a more efficient way to do this
     Question[] quizQuestions = new Question[numQuestions];
     ArrayList<Question> allQuestions = new ArrayList<>();
     for (Topic t : topics) {
