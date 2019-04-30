@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -32,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 
 public class Quiz extends Application implements QuizADT, QuizGUI {
 	
@@ -111,7 +113,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		VBox mainBox = new VBox(); //This layout will be vertical, so VBox
 		mainBox.setPadding(new Insets(50, 20, 50, 20));
 		mainBox.setSpacing(50);
-		mainBox.setPrefSize(400, 400);
+		mainBox.setPrefSize(400, 600);
 		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
 		
 		//The stuff at the top, a drop down menu w a list of topics and a label
@@ -133,6 +135,7 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		}
 		ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
 		Button selectCurrentTopic = new Button("Select");
+		
 		//See end of midbox for action listener
 		topBox.getChildren().addAll(lbl1, dropDown, selectCurrentTopic);
 		mainBox.getChildren().add(topBox);
@@ -178,6 +181,18 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
           }
         });
 		
+		//The section that lets you choose how many quiz questions you want
+		HBox thirdBox = new HBox();
+        thirdBox.setSpacing(10);
+        thirdBox.setPadding(new Insets(10, 40, 10, 20));
+        Label numQQ = new Label("Number of quiz questions:");
+        //Creates a field that only accepts numbers
+        TextField numQuizQuestions = new TextField();
+        numQuizQuestions.setPrefWidth(40);
+        numQuizQuestions.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+        thirdBox.getChildren().addAll(numQQ, numQuizQuestions);
+        mainBox.getChildren().add(thirdBox);
+		
 		//The stuff at the bottom, a forward and back button
 		HBox bottomBox = new HBox();
 		bottomBox.setPadding(new Insets(10, 20, 10, 20));
@@ -187,15 +202,10 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
 		//Runs mainScreen method when user wants to go back
 		back.setOnAction(e -> mainScreen(primaryStage)); 
 		
-		Button forward = new Button("Ready");
+		Button forward = new Button("Take Quiz");
 		//Runs takingQuizPage when user is ready to take quiz
-		forward.setOnAction(e -> {
-		  ArrayList<Question> qs = new ArrayList<Question>();
-		  for (Topic t: currentTopics) {
-		    qs.addAll(t.getQuestions());
-		  }
-		  takingQuizPage(primaryStage, qs.toArray(new Question[0]));
-		});
+		forward.setOnAction(e -> takingQuizPage(primaryStage, 
+		    generateQuizQuestions(selectedTopics, Integer.parseInt(numQuizQuestions.getText()))));
 		
 		//Adds functionality to remove the latest topic selected
 		Button removeLatest = new Button("Remove last topic");
