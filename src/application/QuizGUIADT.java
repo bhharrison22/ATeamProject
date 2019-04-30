@@ -7,7 +7,7 @@ import javafx.stage.Stage;
  * @author AlexDo
  *
  */
-public interface QuizGUI {
+public interface QuizGUIADT {
 
 	/**
 	 * The start page of the application.
