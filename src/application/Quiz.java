@@ -361,10 +361,10 @@ public class Quiz extends Application implements QuizADT, QuizGUI {
           }
         }
         newQuestion.put("choiceArray", choices);
-        employeeList.add(newQuestion); //adds Question to overall Array of Question
+        questionList.add(newQuestion); //adds Question to overall Array of Question
       }
     }
-    writeToFile(employeeList);
+    writeToFile(questionList);
   }
 
   /**
