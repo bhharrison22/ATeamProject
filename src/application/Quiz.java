@@ -213,7 +213,6 @@ public class Quiz implements QuizADT {
    * @param args The command line args
    */
   public static void main(String[] args) {
-    launch(args);
     // TODO: remove testing before submitting.
     // Testing:
     Quiz q1 = new Quiz();
