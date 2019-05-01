@@ -38,7 +38,7 @@ import javafx.util.converter.NumberStringConverter;
 
 public class Quiz implements QuizADT {
 	
-	private ArrayList<Topic> currentTopics; //The list of current available topics
+	private ArrayList<Topic> currentTopics; // The list of current available topics
 	int numQuestions;
 	final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 	
@@ -79,7 +79,7 @@ public class Quiz implements QuizADT {
   public void loadQuestions(String JSONfilePath)
       throws FileNotFoundException, IOException, ParseException {
     JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(JSONfilePath));
-    JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSON array of questions in file
+    JSONArray questionArray = (JSONArray) jo.get("questionArray"); // JSONArray of questions in file
     for (int i = 0; i < questionArray.size(); i++) {
       JSONObject questionObj = (JSONObject) questionArray.get(i);
       String questionText = (String) questionObj.get("questionText"); // Question Text
@@ -162,7 +162,6 @@ public class Quiz implements QuizADT {
    */
   @Override
   public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions) {
-    // TODO: see if there's a more efficient way to do this
     Question[] quizQuestions = new Question[numQuestions];
     ArrayList<Question> allQuestions = new ArrayList<>();
     for (Topic t : topics) {
@@ -172,7 +171,7 @@ public class Quiz implements QuizADT {
     }
     for (int i = 0; i < numQuestions; i++) {
       if (!allQuestions.isEmpty()) {
-        int randIndex = (int) Math.random() * allQuestions.size();
+        int randIndex = (int) (Math.random() * allQuestions.size());
         quizQuestions[i] = allQuestions.get(randIndex);
         allQuestions.remove(randIndex);
       } else {
@@ -180,12 +179,6 @@ public class Quiz implements QuizADT {
       }
     }
     return quizQuestions;
-  }
-
-  @Override
-  public String[] generateQuiz(Question[] quizQuestions) {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   /**
@@ -206,6 +199,10 @@ public class Quiz implements QuizADT {
   public int numQuestions() {
     return numQuestions;
   }
+  
+  public ArrayList<Topic> getTopics(){
+    return currentTopics;
+  }
 
   /**
    * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
@@ -214,7 +211,6 @@ public class Quiz implements QuizADT {
    * @param args The command line args
    */
   public static void main(String[] args) {
-    launch(args);
     // TODO: remove testing before submitting.
     // Testing:
     Quiz q1 = new Quiz();
@@ -225,11 +221,22 @@ public class Quiz implements QuizADT {
     Quiz q2 = new Quiz();
     try {
       q2.loadQuestions("Saved_Questions.json");
+      q2.loadQuestions("testfile.json");
       q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
     } catch (Exception e) {
       e.printStackTrace();
     }
-    Question[] qs = q2.generateQuizQuestions(q2.currentTopics, 4);
+    System.out.println("Just Saved Questions:");
+    Question[] qs = q2.generateQuizQuestions(q1.currentTopics, 6);
+    for (Question q : qs) {
+      if (q != null)
+        System.out.println(q.getText());
+      else
+        System.out.println(q);
+    }
+    
+    System.out.println("\nAll Questions: ");
+    qs = q2.generateQuizQuestions(q2.currentTopics, 6);
     for (Question q : qs) {
       if (q != null)
         System.out.println(q.getText());
