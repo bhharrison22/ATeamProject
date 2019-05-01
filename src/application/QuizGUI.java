@@ -26,12 +26,13 @@ import javafx.util.converter.NumberStringConverter;
 public class QuizGUI extends Application implements QuizGUIADT {
 
   private Quiz quiz;
+  private String counter = "0";
 
   @Override
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
     Label numQues = new Label("Number of Questions in Quiz: ");
-    Label counter = new Label("0");
+    Label questions = new Label(this.counter);
     
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(10,10,10,10));
@@ -63,11 +64,11 @@ public class QuizGUI extends Application implements QuizGUIADT {
     VBox root = new VBox();
     root.getChildren().addAll(welcomeLabel, grid);
     HBox questionCounter = new HBox();
-    questionCounter.getChildren().addAll(numQues, counter, test);
+    questionCounter.getChildren().addAll(numQues, questions, test);
     
     root.getChildren().add(questionCounter);
     
-    test.setOnAction(e-> counter.setText(Integer.parseInt(counter.getText()) + 1 + ""));
+    test.setOnAction(e-> questions.setText(Integer.parseInt(questions.getText()) + 1 + ""));
     
     Scene scene = new Scene(root); 
     primaryStage.setScene(scene);
