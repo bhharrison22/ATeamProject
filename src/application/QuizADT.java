@@ -40,13 +40,6 @@ public interface QuizADT {
 	public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions);
 	
 	/**
-	 * Generates a quiz from a set of questions
-	 * @param quizQuestions The set of questions
-	 * @return A list of strings that represent the questions
-	 */
-	public String[] generateQuiz(Question[] quizQuestions);
-	
-	/**
 	 * Grades a set of answers based on a set of questions
 	 * @param quizQuestions The set of questions
 	 * @param answers The set of answers (pre: is same length as quizQuestions)

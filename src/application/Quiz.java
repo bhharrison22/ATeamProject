@@ -171,7 +171,7 @@ public class Quiz implements QuizADT {
     }
     for (int i = 0; i < numQuestions; i++) {
       if (!allQuestions.isEmpty()) {
-        int randIndex = (int) Math.random() * allQuestions.size();
+        int randIndex = (int) (Math.random() * allQuestions.size());
         quizQuestions[i] = allQuestions.get(randIndex);
         allQuestions.remove(randIndex);
       } else {
@@ -179,12 +179,6 @@ public class Quiz implements QuizADT {
       }
     }
     return quizQuestions;
-  }
-
-  @Override
-  public String[] generateQuiz(Question[] quizQuestions) {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   /**
@@ -227,11 +221,22 @@ public class Quiz implements QuizADT {
     Quiz q2 = new Quiz();
     try {
       q2.loadQuestions("Saved_Questions.json");
+      q2.loadQuestions("testfile.json");
       q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
     } catch (Exception e) {
       e.printStackTrace();
     }
-    Question[] qs = q2.generateQuizQuestions(q2.currentTopics, 4);
+    System.out.println("Just Saved Questions:");
+    Question[] qs = q2.generateQuizQuestions(q1.currentTopics, 6);
+    for (Question q : qs) {
+      if (q != null)
+        System.out.println(q.getText());
+      else
+        System.out.println(q);
+    }
+    
+    System.out.println("\nAll Questions: ");
+    qs = q2.generateQuizQuestions(q2.currentTopics, 6);
     for (Question q : qs) {
       if (q != null)
         System.out.println(q.getText());
