@@ -114,6 +114,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     topBox.setPadding(new Insets(10, 40, 10, 20));
     Label lbl1 = new Label("Choose topic: ");
     ObservableList<Topic> topic = FXCollections.observableArrayList();
+    // Obtains list of all topics and displays them:
     ArrayList<Topic> currentTopics = quiz.getTopics();
     currentTopics.sort((a, b) -> {
       return a.toString().compareTo(b.toString());
