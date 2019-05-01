@@ -30,6 +30,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
   @Override
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
+    Label numQues = new Label("Number of Questions in Quiz: ");
+    Label counter = new Label("0");
+    
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(10,10,10,10));
     grid.setMinSize(300,300);
@@ -41,31 +44,34 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Button load = new Button("Load Question");
     Button save = new Button("Save Question");
     Button next = new Button("Next");
+    Button test = new Button("Test");
     add.setOnAction(e-> addQuestionPage(primaryStage));
     load.setOnAction(e-> loadQuestionPage(primaryStage));
     save.setOnAction(e-> this.quiz.save());
     next.setOnAction(e-> topicChoosingPage(primaryStage));
-   
+    
     grid.add(add, 0, 2);
     grid.add(load, 1, 2);
     grid.add(save, 0, 3);
     grid.add(next, 1, 3);
-    
  
     HBox welcomeLabel = new HBox();
     welcomeLabel.setPadding(new Insets(50,0,0,0));
     welcomeLabel.setAlignment(Pos.CENTER);
     welcomeLabel.getChildren().add(welcome);
-
     
     VBox root = new VBox();
     root.getChildren().addAll(welcomeLabel, grid);
+    HBox questionCounter = new HBox();
+    questionCounter.getChildren().addAll(numQues, counter, test);
+    
+    root.getChildren().add(questionCounter);
+    
+    test.setOnAction(e-> counter.setText(Integer.parseInt(counter.getText()) + 1 + ""));
     
     Scene scene = new Scene(root); 
     primaryStage.setScene(scene);
-    primaryStage.show();
-
-    
+    primaryStage.show();    
   }
 
   @Override
