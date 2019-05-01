@@ -11,10 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -205,51 +209,67 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   @Override
   public void takingQuizPage(Stage primaryStage, Question[] questions) {
-    VBox root = new VBox();
-    root.setPadding(new Insets(50, 20, 50, 20));
-    root.setSpacing(50);
-    root.setPrefSize(700, 700);
-    root.setAlignment(Pos.TOP_CENTER);
-
-    Label lbl = new Label("Quiz");
-    lbl.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
-
-    Label lbl1 = new Label("Who is this?");
-
-    Image img = new Image("application/bucky.png");
-
-    ImageView imageview = new ImageView();
-    imageview.setImage(img);
-    imageview.setFitWidth(100);
-    imageview.setPreserveRatio(true);
-    imageview.setSmooth(true);
-    imageview.setCache(true);
-
-    Label lbl2 = new Label("a) Bucky\nb) Deb\nc) Jerry Seinfeld\nd) IDK");
-    TextField txt = new TextField();
-    Label lbl3 = new Label("Correct!");
-
-    txt.setOnAction(e -> {
-      ObservableList<Node> children = root.getChildren();
-      children.remove(lbl3);
-      if (txt.getText() != null && txt.getText().equalsIgnoreCase("a")) {
-        children.add(lbl3);
-      }
-    });
-
-    root.getChildren().add(lbl);
-    root.getChildren().add(lbl1);
-    root.getChildren().add(imageview);
-    root.getChildren().add(lbl2);
-    root.getChildren().add(txt);
-
-
-    Scene scene = new Scene(root);
-    primaryStage.setScene(scene);
-    primaryStage.show();
+	  
+	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
+			  "A is a proper superset of B", "A is the complement of B"};
+	  
+	  Question A = new Question("Which statement is TRUE regarding sets A and B?", "A is a proper superset of B", null , choices, "set");
+	  
+	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
+	  
+	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
+			  "when the problem size is small", null, choices1, "performance");
+	  
+	  Question[] questions1 = {A,B};
+	  
+	  
+	  int numCorrect = 0;
+	  
+	  for(Question q: questions1) {
+		  if(renderQuestion(primaryStage, q)) {
+			  numCorrect++;
+		  }
+	  }
+	  
+	 //Render final results page
+	 //Back to Homescreen Button
+	  
+	  
+			  
+	  
+    
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
   }
 
-  @Override
+  private Boolean renderQuestion(Stage primaryStage, Question q) {
+	  boolean result = false;
+	  //VBox set up here
+	  
+	  //Fill vbox with all relevant fields
+	  
+	  //if(Text to text comparison, return T or F) inside action event for a text box	  
+	  //case: T display correct, F display incorrect
+	  
+	  // when NEXT -> close that screen and return result
+	  
+	  return result;
+}
+
+@Override
   public void start(Stage primaryStage) throws Exception {
     this.quiz = new Quiz();
     try {
@@ -292,11 +312,68 @@ public class QuizGUI extends Application implements QuizGUIADT {
   }
 
 
-  @Override
   public void addQuestionPage(Stage primaryStage) {
-    // TODO YUANYE DO THIS
-
-  }
+	  VBox mainBox = new VBox();
+	  VBox choices = new VBox();
+	  VBox radioButtons = new VBox(10);
+	  BorderPane prompt = new BorderPane();
+	  BorderPane choice = new BorderPane();
+	  BorderPane buttons = new BorderPane();
+	  mainBox.setPadding(new Insets(50, 20, 50, 20));
+      mainBox.setSpacing(50);
+      mainBox.setPrefSize(400, 400);
+      Label choicePrompt = new Label("Select the correct choice");
+      prompt.setRight(choicePrompt);
+      TextField topic = new TextField("Enter the topic here");
+      TextArea content = new TextArea("Enter the question here");
+      content.setMinHeight(50);
+      content.setWrapText(true);
+      TextField choiceA = new TextField("Enter choice A here");
+      TextField choiceB = new TextField("Enter choice B here");
+      TextField choiceC = new TextField("Enter choice C here");
+      TextField choiceD = new TextField("Enter choice D here");
+      TextField choiceE = new TextField("Enter choice E here");
+      RadioButton rb1 = new RadioButton("A");
+      RadioButton rb2 = new RadioButton("B");
+      RadioButton rb3 = new RadioButton("C");
+      RadioButton rb4 = new RadioButton("D");
+      RadioButton rb5 = new RadioButton("E");
+      final ToggleGroup group = new ToggleGroup();
+      rb1.setToggleGroup(group);
+      rb2.setToggleGroup(group);
+      rb3.setToggleGroup(group);
+      rb4.setToggleGroup(group);
+      rb5.setToggleGroup(group);
+      radioButtons.getChildren().add(rb1);
+      rb1.setSelected(true);
+      radioButtons.getChildren().add(rb2);
+      radioButtons.getChildren().add(rb3);
+      radioButtons.getChildren().add(rb4);
+      radioButtons.getChildren().add(rb5);
+      Button backButton = new Button("Back");
+      backButton.setOnAction(e -> mainScreen(primaryStage));
+      Button addButton = new Button("Add");
+      addButton.setOnAction(e -> mainScreen(primaryStage) 
+      );
+      choices.getChildren().add(choiceA);
+      choices.getChildren().add(choiceB);
+      choices.getChildren().add(choiceC);
+      choices.getChildren().add(choiceD);
+      choices.getChildren().add(choiceE);
+      choice.setLeft(choices);
+      choice.setRight(radioButtons);
+      buttons.setLeft(backButton);
+      buttons.setRight(addButton);
+      mainBox.getChildren().add(topic);
+      mainBox.getChildren().add(content);
+      
+      mainBox.getChildren().add(prompt);
+      mainBox.getChildren().add(choice);
+      mainBox.getChildren().add(buttons);
+      Scene scene = new Scene(mainBox);
+      primaryStage.setScene(scene);
+      primaryStage.show();
+	}
 
   @Override
   public void loadQuestionPage(Stage primaryStage) {
