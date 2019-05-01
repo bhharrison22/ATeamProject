@@ -34,68 +34,36 @@ public class QuizGUI extends Application implements QuizGUIADT {
     grid.setMinSize(300,300);
     grid.setVgap(5);
     grid.setHgap(5);
+    grid.setAlignment(Pos.CENTER);
     
     Button add = new Button("Add Question");
     Button load = new Button("Load Question");
     Button save = new Button("Save Question");
     Button next = new Button("Next");
-//  // labels for respective sections of main page
-//  Label enter = new Label("Enter Question");
-//  Label load = new Label("Load Question");
-//  Label numQ = new Label("Number of Current Questions");
-//  
-//  // textfields for user to enter questions and topic 
-//  TextField topic = new TextField();
-//  TextField question = new TextField();
-//  TextField path = new TextField(); // path for JSON file
-//  
-//  // auxillary buttons for GUI
-//  Button getImage = new Button("^");
-//  Button saveQuestion = new Button("SAVE");
-//  Button loadQ = new Button("LOAD");
-//  Button next = new Button("SAVE AND NEXT");
-//  next.setOnAction(e -> topicChoosingPage(primaryStage));
-//  
-//  // table containing questions (for now hardcoded)
-//  TableView<String> table = new TableView<String>();
-//  table.setEditable(true);
-//  TableColumn<String, String> qCol = new TableColumn<String, String>("Questions");
-//  table.getColumns().addAll(qCol);
-//  
-//  // root pane for the scene
-//  VBox root = new VBox();
-//  root.setPadding(new Insets(50, 20, 50, 20));
-//  root.setSpacing(50);
-//  root.setPrefSize(900, 300);
-//  
-//  // enter question
-//  HBox enterQuestion = new HBox();
-//  enterQuestion.setSpacing(10);
-//    enterQuestion.setPadding(new Insets(10, 20, 10, 20));
-//    enterQuestion.getChildren().addAll(enter, topic, question, getImage, saveQuestion, table);
-//    
-//    root.getChildren().addAll(enterQuestion);
-//    
-//    // load question
-//    HBox loadQuestion = new HBox();
-//    loadQuestion.setSpacing(10);
-//    loadQuestion.setPadding(new Insets(10, 20, 10, 20));
-//    loadQuestion.getChildren().addAll(load, path, loadQ);
-//    
-//    root.getChildren().addAll(loadQuestion);
-//    
-//    // bottom container
-//    HBox save = new HBox();
-//    save.setSpacing(10);
-//    save.setPadding(new Insets(10, 20, 10, 20));
-//    save.getChildren().addAll(numQ, next);
-//    
-//    root.getChildren().addAll(save);
-//    
-//    // set scene of this page
-//    Scene scene = new Scene(root);
-//    primaryStage.setScene(scene);
-//    primaryStage.show();
+    add.setOnAction(e-> addQuestionPage(primaryStage));
+    load.setOnAction(e-> loadQuestionPage(primaryStage));
+    save.setOnAction(e-> this.quiz.save());
+    next.setOnAction(e-> topicChoosingPage(primaryStage));
+   
+    grid.add(add, 0, 2);
+    grid.add(load, 1, 2);
+    grid.add(save, 0, 3);
+    grid.add(next, 1, 3);
+    
+ 
+    HBox welcomeLabel = new HBox();
+    welcomeLabel.setPadding(new Insets(50,0,0,0));
+    welcomeLabel.setAlignment(Pos.CENTER);
+    welcomeLabel.getChildren().add(welcome);
+
+    
+    VBox root = new VBox();
+    root.getChildren().addAll(welcomeLabel, grid);
+    
+    Scene scene = new Scene(root); 
+    primaryStage.setScene(scene);
+    primaryStage.show();
+
     
   }
 
@@ -321,13 +289,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   @Override
   public void addQuestionPage(Stage primaryStage) {
-    // TODO Auto-generated method stub
+    // TODO YUANYE DO THIS
 
   }
 
   @Override
   public void loadQuestionPage(Stage primaryStage) {
-    // TODO Auto-generated method stub
+    // TODO BEN DO THIS
 
   }
 }
