@@ -56,12 +56,12 @@ public class QuizGUI extends Application implements QuizGUIADT {
     
     Button add = new Button("Add Question");
     Button load = new Button("Load Question");
-    Button save = new Button("Save Question");
+    Button save = new Button("Save Questions");
     Button next = new Button("Next");
     Button test = new Button("Test");
     add.setOnAction(e-> addQuestionPage(primaryStage));
     load.setOnAction(e-> loadQuestionPage(primaryStage));
-    save.setOnAction(e-> this.quiz.save());
+    save.setOnAction(e-> quiz.save());
     next.setOnAction(e-> topicChoosingPage(primaryStage));
     
     grid.add(add, 0, 2);
@@ -444,11 +444,11 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     HBox resultBox = new HBox();
     HBox buttonBox = new HBox();
     // Fields:
-    Label instrutLabel = new Label("Load Question: ");
+    Label instrutLabel = new Label("Load Question: Enter Relative JSON FilePath (No .JSON)");
     Label resultLabel = new Label("");
-    TextField JSONFile = new TextField("Enter Relative JSON FilePath (No .JSON)");
+    TextField JSONFile = new TextField("JSON FilePath");
     Button back = new Button("Back");
-    Button load = new Button("Load Question");
+    Button load = new Button("Load Questions");
     load.setOnAction(e -> {
       if (loadQuestion((JSONFile.getText() + ".json"))) {
         resultLabel.setTextFill(Color.web("#0000FF"));
