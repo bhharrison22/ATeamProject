@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -219,77 +220,53 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   @Override
   public void takingQuizPage(Stage primaryStage, Question[] questions) {
-	  //TODO test
-//	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
-//			  "A is a proper superset of B", "A is the complement of B"};
-//	  
-//	  Question A = new Question("Which statement is TRUE regarding sets A and B?", "A is a proper superset of B", null , choices, "set");
-//	  
-//	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
-//	  
-//	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
-//			  "when the problem size is small", "application/bucky.png", choices1, "performance");
-//	  
-//	  Question[] questions1 = {A,B};
-//	  
-	  int numCorrect = 0;
-//	  
-//	  for(Question q: questions1) {
-//			  if(renderQuestion(primaryStage, q)) {
-//				  numCorrect++;
-//			  } else {
-//			  }
-//	  }
+
+	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
+			  "A is a proper superset of B", "A is the complement of B"};
 	  
-	 //Render final results page
-	 //Back to Homescreen Button
-	  for (Question q: questions) {
-	    //Possible for there to be a tail of nulls
+	  Question A = new Question("Which statement is TRUE regarding sets A and B?", "A is a proper superset of B", null , choices, "set");
+	  
+	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
+	  
+	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
+			  "when the problem size is small", "application/bucky.png", choices1, "performance");
+	  
+	  Question[] questions1 = {A,B};	  
+	  int numCorrect = 0;
+
+	  for (Question q: questions1) {
 	    if (q == null) {
 	      break;
 	    } else {
-	      if (renderQuestion(primaryStage, q)) {
+	      if (renderQuestion( q)) {
 	        numCorrect++;
 	      }
 	    }
 	  }
-	  
-			  
-	  
-    
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 
-	  
-		 //Render final results page
-		 //Back to Homescreen Button
-	  }
-  private Boolean renderQuestion(Stage primaryStage, Question q) {
+	  System.out.println(numCorrect);
+}
+  
+  private Boolean renderQuestion(Question q) {
 	  Stage secondary = new Stage();
 	  boolean result = false;
 
       VBox layout = new VBox();
       Scene scene = new Scene(layout, 700, 700);
+      layout.setPadding(new Insets(10, 50, 50, 50));
+      layout.setSpacing(20);
       
       
       Label title = new Label("Quiz");
       title.setFont(Font.font(50));
+      title.setLineSpacing(15);
       layout.getChildren().add(title);
       layout.setAlignment(Pos.BASELINE_CENTER);
       
       Label question = new Label(q.getText()); 
-      question.setFont(Font.font(10));
+      question.setFont(Font.font(20));
       layout.getChildren().add(question);
+//      question.setWrapText(true);
       layout.setAlignment(Pos.BASELINE_CENTER);
       
       try {
@@ -314,23 +291,28 @@ public class QuizGUI extends Application implements QuizGUIADT {
       TextField answer = new TextField();
       
       answer.setOnAction( e -> {
-      boolean correct = checkAnswer(result, answer.getText(), q.getAnswer());
+      boolean correct = checkAnswer(answer.getText(), q.getAnswer());
       
       if(correct) {
     	  layout.getChildren().add(new Label("Correct!"));
       } else {
     	  layout.getChildren().add(new Label("Incorrect!"));
       }	 
-      secondary.close();
       });
-     
+      
       layout.getChildren().add(answer);
+      
+      Button next = new Button("Next");
+      next.setOnAction(e -> {
+    	  secondary.close();
+      });
+      
+      layout.getChildren().add(next);
       
       secondary.setScene(scene);
       secondary.showAndWait();
       
-	  // when NEXT -> close that screen and return result
-      
+	  result = checkAnswer(answer.getText(), q.getAnswer());
       
       return result;
 }
@@ -338,12 +320,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
   
   
 
-private boolean checkAnswer(boolean result, String input, String answer) {
+private boolean checkAnswer(String input, String answer) {
 	if(input.equals(answer)) {
-		result = true;
 		return true;
 	} else {
-		result = false;
 		return false;
 	}	
 }
