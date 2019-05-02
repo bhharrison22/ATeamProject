@@ -273,7 +273,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		 //Back to Homescreen Button
 	  }
 
-	  //Annoying, necessary so the anon method can call this
   private Boolean renderQuestion(Stage primaryStage, Question q) {
 	  
 	  boolean result = false;
