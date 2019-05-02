@@ -413,7 +413,29 @@ private boolean checkAnswer(boolean result, String input, String answer) {
       Button backButton = new Button("Back");
       backButton.setOnAction(e -> mainScreen(primaryStage));
       Button addButton = new Button("Add");
-      addButton.setOnAction(e -> mainScreen(primaryStage) 
+      addButton.setOnAction(e -> {
+        String answer = "";
+        switch (((RadioButton)(group.getSelectedToggle())).getText()) {
+          case "A":
+            answer = choiceA.getText();
+            break;
+          case "B":
+            answer = choiceB.getText();
+            break;
+          case "C":
+            answer = choiceC.getText();
+            break;
+          case "D":
+            answer = choiceD.getText();
+            break;
+          case "E":
+            answer = choiceE.getText();
+            break;
+        }
+        String[] options = {choiceA.getText(), choiceB.getText(), choiceC.getText(), choiceD.getText(), choiceE.getText()};
+        quiz.addQuestion(content.getText(), answer, options, topic.getText(), null);
+        mainScreen(primaryStage);
+      }
       );
       choices.getChildren().add(choiceA);
       choices.getChildren().add(choiceB);
