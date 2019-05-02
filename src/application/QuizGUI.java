@@ -421,7 +421,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
     EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent e) {
-        mainScreen(primaryStage);
         String answer = null;
         if (rb1.isSelected() == true) {
           answer = choiceA.getText();
@@ -447,6 +446,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
         String topicText = topic.getText();
         String imageText = image.getText();
         quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
+        mainScreen(primaryStage);
       }
     };
     addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
