@@ -119,7 +119,7 @@ public class Quiz implements QuizADT {
         newQuestion.put("image", q.getImagePath());
         JSONArray choices = new JSONArray();
         for (String choice : q.getChoiceArray()) { // adds all choices to a JSONArray
-          if (q.getAnswer() != null || q.getAnswer().equals(choice)) {
+          if (q != null || q.getAnswer().equals(choice)) {
             JSONObject correct = new JSONObject();
             correct.put("isCorrect", "T");
             correct.put("choice", choice);
