@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -438,44 +439,38 @@ public class QuizGUI extends Application implements QuizGUIADT {
   }
 
   /**
-   * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
-   * type shenanigans.
+   * The page after user presses "Add Question" in the main screen, where user can fill out text
+   * fields and forms manually.
    * 
-   * @param args The command line args
-   */
-  public static void main(String[] args) {
-    launch(args);
-
-  }
-
-  /**
-   * The page after user presses "Add Question" in the main screen,
-   * where user can fill out text fields and forms manually.
    * @param primaryStage
    */
   @Override
   public void addQuestionPage(Stage primaryStage) {
-    //the main pane
+    // the main pane
     VBox mainBox = new VBox();
-    //pane displaying 
+    // pane displaying
     VBox choices = new VBox();
-    //pane containing radio buttons
+    // pane containing radio buttons
     VBox radioButtons = new VBox(10);
-    //pane containing the radio 
+    // pane containing error message
+    VBox error = new VBox();
+    // pane containing the radio
     BorderPane prompt = new BorderPane();
-    //pane containing 
+    // pane containing
     BorderPane choice = new BorderPane();
-    //pane containing the buttons
+    // pane containing the buttons
     BorderPane buttons = new BorderPane();
-    //set the VBox
+    // set the VBox
     mainBox.setPadding(new Insets(50, 20, 50, 20));
     mainBox.setSpacing(20);
     mainBox.setPrefSize(400, 400);
-    //set labels above the text fields to prompt the user
+    // set labels above the text fields to prompt the user
     Label topicPrompt = new Label("Enter question topic");
     Label questionPrompt = new Label("Enter question");
     Label imagePrompt = new Label("Enter path of question of image (optional)");
     Label choicePrompt = new Label("Select the correct choice");
+    Label errorPrompt = new Label("");
+    errorPrompt.setTextFill(Color.web("#FF0000"));
 
     prompt.setRight(choicePrompt);
     //create text areas/fields to gather the info for the question
@@ -526,7 +521,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
     EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent e) {
-
         String answer = null;
         if (rb1.isSelected() == true) {
           answer = choiceA.getText();
@@ -551,12 +545,22 @@ public class QuizGUI extends Application implements QuizGUIADT {
         options[4] = choiceE.getText();
         String topicText = topic.getText();
         String imageText = image.getText();
-        quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
-        mainScreen(primaryStage);
+        try {
+          File file = new File(imageText);
+          quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
+          mainScreen(primaryStage);
+        } catch (Exception ex) {
+          if(imageText.isEmpty()) {
+            quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
+            mainScreen(primaryStage);
+          } else {
+            errorPrompt.setText("Invalid image location. Please entera valid location or leave box empty");
+          }
+        }
       }
     };
     addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
-    //add everything to the choices pane
+    // add everything to the choices pane
     choices.getChildren().add(choiceA);
     choices.getChildren().add(choiceB);
     choices.getChildren().add(choiceC);
@@ -566,19 +570,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
     choice.setRight(radioButtons);
     buttons.setLeft(backButton);
     buttons.setRight(addButton);
+    error.getChildren().add(errorPrompt);
     //add everything to the main pane
-    mainBox.getChildren().add(topicPrompt);
-    mainBox.getChildren().add(topic);
-    mainBox.getChildren().add(questionPrompt);
-    mainBox.getChildren().add(content);
-    mainBox.getChildren().add(imagePrompt);
-    mainBox.getChildren().add(image);
-    mainBox.getChildren().add(prompt);
-    mainBox.getChildren().add(choice);
-    mainBox.getChildren().add(buttons);
+    mainBox.getChildren().addAll(topicPrompt, topic, questionPrompt, content, imagePrompt, image, prompt, choice, buttons, error);
     Scene scene = new Scene(mainBox);
-    primaryStage.setScene(scene);
-    this.quiz.numQuestions();
     //go back to the primary stage
     primaryStage.show();
   }
@@ -711,5 +706,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+  
+  /**
+   * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
+   * type shenanigans.
+   * 
+   * @param args The command line args
+   */
+  public static void main(String[] args) {
+    launch(args);
+
   }
 }
