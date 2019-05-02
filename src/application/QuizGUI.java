@@ -234,9 +234,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			  if(renderQuestion(primaryStage, q)) {
 				  numCorrect++;
 			  }
-		  }
-<<<<<<< HEAD
-=======
 	  }
 	  
 	 //Render final results page
@@ -267,7 +264,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	  
 	  
 	  
->>>>>>> 890a14d2adcbabb2d5f84544c6ec23f82996881b
+
 	  
 		 //Render final results page
 		 //Back to Homescreen Button
