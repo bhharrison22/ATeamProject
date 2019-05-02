@@ -220,26 +220,26 @@ public class QuizGUI extends Application implements QuizGUIADT {
   @Override
   public void takingQuizPage(Stage primaryStage, Question[] questions) {
 	  //TODO test
-	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
-			  "A is a proper superset of B", "A is the complement of B"};
-	  
-	  Question A = new Question("Which statement is TRUE regarding sets A and B?", "A is a proper superset of B", null , choices, "set");
-	  
-	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
-	  
-	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
-			  "when the problem size is small", "application/bucky.png", choices1, "performance");
-	  
-	  Question[] questions1 = {A,B};
-	  
+//	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
+//			  "A is a proper superset of B", "A is the complement of B"};
+//	  
+//	  Question A = new Question("Which statement is TRUE regarding sets A and B?", "A is a proper superset of B", null , choices, "set");
+//	  
+//	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
+//	  
+//	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
+//			  "when the problem size is small", "application/bucky.png", choices1, "performance");
+//	  
+//	  Question[] questions1 = {A,B};
+//	  
 	  int numCorrect = 0;
-	  
-	  for(Question q: questions1) {
-			  if(renderQuestion(primaryStage, q)) {
-				  numCorrect++;
-			  } else {
-			  }
-	  }
+//	  
+//	  for(Question q: questions1) {
+//			  if(renderQuestion(primaryStage, q)) {
+//				  numCorrect++;
+//			  } else {
+//			  }
+//	  }
 	  
 	 //Render final results page
 	 //Back to Homescreen Button
@@ -292,12 +292,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
       layout.getChildren().add(question);
       layout.setAlignment(Pos.BASELINE_CENTER);
       
-      if(q.getImagePath() != null) {
-    	ImageView img = new ImageView(q.getImagePath()); 
-    	img.setFitHeight(100);
-    	img.setFitWidth(100);
-      	layout.getChildren().add(img);
-      	layout.setAlignment(Pos.BASELINE_CENTER);
+      try {
+        if(q.getImagePath() != null) {
+          ImageView img = new ImageView(q.getImagePath()); 
+          img.setFitHeight(100);
+          img.setFitWidth(100);
+          layout.getChildren().add(img);
+          layout.setAlignment(Pos.BASELINE_CENTER);
+        }
+      } catch (IllegalArgumentException e) {
+        System.out.println("Bad image path");
       }
       
       for(String s: q.getChoiceArray()) {
