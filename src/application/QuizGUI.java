@@ -40,13 +40,14 @@ import javafx.util.converter.NumberStringConverter;
 public class QuizGUI extends Application implements QuizGUIADT {
 
   private Quiz quiz;
-  private String counter = "0";
+  private Label counter = new Label("0");
 
   @Override
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
     Label numQues = new Label("Number of Questions in Quiz: ");
-    Label questions = new Label(this.counter);
+    System.out.println(this.quiz.numQuestions());
+    this.counter.setText(this.quiz.numQuestions() + "");
     
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(10,10,10,10));
@@ -59,7 +60,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Button load = new Button("Load Question");
     Button save = new Button("Save Questions");
     Button next = new Button("Next");
-    Button test = new Button("Test");
+
     add.setOnAction(e-> addQuestionPage(primaryStage));
     load.setOnAction(e-> loadQuestionPage(primaryStage));
     save.setOnAction(e-> quiz.save());
@@ -78,11 +79,11 @@ public class QuizGUI extends Application implements QuizGUIADT {
     VBox root = new VBox();
     root.getChildren().addAll(welcomeLabel, grid);
     HBox questionCounter = new HBox();
-    questionCounter.getChildren().addAll(numQues, questions, test);
+    questionCounter.getChildren().addAll(numQues, this.counter);
     
     root.getChildren().add(questionCounter);
     
-    test.setOnAction(e-> questions.setText(Integer.parseInt(questions.getText()) + 1 + ""));
+
     
     Scene scene = new Scene(root); 
     primaryStage.setScene(scene);
@@ -448,7 +449,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
         options[4] = choiceE.getText();
         String topicText = topic.getText();
         String imageText = image.getText();
-        quiz.addQuestion( content.getText(), answer, options, topicText,
+        quiz.addQuestion(content.getText(), answer, options, topicText,
             imageText);
       } 
     };   
@@ -470,6 +471,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     mainBox.getChildren().add(buttons);
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
+    this.quiz.numQuestions();
     primaryStage.show();
   }
 

@@ -61,6 +61,7 @@ public class Quiz implements QuizADT {
     for (Topic t : currentTopics) {
       if (t.toString().equals(newQuestion.getTopic())) { // Topic exists
         t.addQuestion(newQuestion);
+        numQuestions++;
         return; // exits method
       }
     }
