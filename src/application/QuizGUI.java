@@ -232,10 +232,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	  
 	  for(Question q: questions1) {
 			  if(renderQuestion(primaryStage, q)) {
-			    System.out.println(q.getText() + " hewwo?");
 				  numCorrect++;
 			  } else {
-			    System.out.println(q.getText() + " goodbye");
 			  }
 	  }
 	  
