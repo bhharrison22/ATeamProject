@@ -1,8 +1,14 @@
 package application;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.json.simple.parser.ParseException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -10,93 +16,76 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 public class QuizGUI extends Application implements QuizGUIADT {
 
   private Quiz quiz;
+  private String counter = "0";
 
   @Override
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
+    Label numQues = new Label("Number of Questions in Quiz: ");
+    Label questions = new Label(this.counter);
+    
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(10,10,10,10));
     grid.setMinSize(300,300);
     grid.setVgap(5);
     grid.setHgap(5);
+    grid.setAlignment(Pos.CENTER);
     
     Button add = new Button("Add Question");
     Button load = new Button("Load Question");
-    Button save = new Button("Save Question");
+    Button save = new Button("Save Questions");
     Button next = new Button("Next");
-//  // labels for respective sections of main page
-//  Label enter = new Label("Enter Question");
-//  Label load = new Label("Load Question");
-//  Label numQ = new Label("Number of Current Questions");
-//  
-//  // textfields for user to enter questions and topic 
-//  TextField topic = new TextField();
-//  TextField question = new TextField();
-//  TextField path = new TextField(); // path for JSON file
-//  
-//  // auxillary buttons for GUI
-//  Button getImage = new Button("^");
-//  Button saveQuestion = new Button("SAVE");
-//  Button loadQ = new Button("LOAD");
-//  Button next = new Button("SAVE AND NEXT");
-//  next.setOnAction(e -> topicChoosingPage(primaryStage));
-//  
-//  // table containing questions (for now hardcoded)
-//  TableView<String> table = new TableView<String>();
-//  table.setEditable(true);
-//  TableColumn<String, String> qCol = new TableColumn<String, String>("Questions");
-//  table.getColumns().addAll(qCol);
-//  
-//  // root pane for the scene
-//  VBox root = new VBox();
-//  root.setPadding(new Insets(50, 20, 50, 20));
-//  root.setSpacing(50);
-//  root.setPrefSize(900, 300);
-//  
-//  // enter question
-//  HBox enterQuestion = new HBox();
-//  enterQuestion.setSpacing(10);
-//    enterQuestion.setPadding(new Insets(10, 20, 10, 20));
-//    enterQuestion.getChildren().addAll(enter, topic, question, getImage, saveQuestion, table);
-//    
-//    root.getChildren().addAll(enterQuestion);
-//    
-//    // load question
-//    HBox loadQuestion = new HBox();
-//    loadQuestion.setSpacing(10);
-//    loadQuestion.setPadding(new Insets(10, 20, 10, 20));
-//    loadQuestion.getChildren().addAll(load, path, loadQ);
-//    
-//    root.getChildren().addAll(loadQuestion);
-//    
-//    // bottom container
-//    HBox save = new HBox();
-//    save.setSpacing(10);
-//    save.setPadding(new Insets(10, 20, 10, 20));
-//    save.getChildren().addAll(numQ, next);
-//    
-//    root.getChildren().addAll(save);
-//    
-//    // set scene of this page
-//    Scene scene = new Scene(root);
-//    primaryStage.setScene(scene);
-//    primaryStage.show();
+    Button test = new Button("Test");
+    add.setOnAction(e-> addQuestionPage(primaryStage));
+    load.setOnAction(e-> loadQuestionPage(primaryStage));
+    save.setOnAction(e-> quiz.save());
+    next.setOnAction(e-> topicChoosingPage(primaryStage));
     
+    grid.add(add, 0, 2);
+    grid.add(load, 1, 2);
+    grid.add(save, 0, 3);
+    grid.add(next, 1, 3);
+ 
+    HBox welcomeLabel = new HBox();
+    welcomeLabel.setPadding(new Insets(50,0,0,0));
+    welcomeLabel.setAlignment(Pos.CENTER);
+    welcomeLabel.getChildren().add(welcome);
+    
+    VBox root = new VBox();
+    root.getChildren().addAll(welcomeLabel, grid);
+    HBox questionCounter = new HBox();
+    questionCounter.getChildren().addAll(numQues, questions, test);
+    
+    root.getChildren().add(questionCounter);
+    
+    test.setOnAction(e-> questions.setText(Integer.parseInt(questions.getText()) + 1 + ""));
+    
+    Scene scene = new Scene(root); 
+    primaryStage.setScene(scene);
+    primaryStage.show();    
   }
 
   @Override
@@ -113,19 +102,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
     topBox.setPadding(new Insets(10, 40, 10, 20));
     Label lbl1 = new Label("Choose topic: ");
     ObservableList<Topic> topic = FXCollections.observableArrayList();
-
-    // TODO implement Quiz methods to add topics in current topics
-    // currentTopics.add(new Topic("Linux")); // Hard coded topic list, remove later
-    // currentTopics.add(new Topic("Hash Table"));
-    // // Sorts topics in alphabetical order
-    // currentTopics.sort((a, b) -> {
-    // return a.toString().compareTo(b.toString());
-    // });
-    // if (currentTopics.isEmpty()) {
-    // topic.add(new Topic("No topics loaded"));
-    // } else {
-    // topic.addAll(currentTopics);
-    // }
+    // Obtains list of all topics and displays them:
+    ArrayList<Topic> currentTopics = quiz.getTopics();
+    currentTopics.sort((a, b) -> {
+      return a.toString().compareTo(b.toString());
+    });
+    if (currentTopics.isEmpty()) {
+      topic.add(new Topic("No topics loaded"));
+    } else {
+      topic.addAll(currentTopics);
+    }
     ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
     Button selectCurrentTopic = new Button("Select");
 
@@ -180,9 +166,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
     thirdBox.setPadding(new Insets(10, 40, 10, 20));
     Label numQQ = new Label("Number of quiz questions:");
     // Creates a field that only accepts numbers
-    TextField numQuizQuestions = new TextField();
+    TextField numQuizQuestions = new TextField("0");
     numQuizQuestions.setPrefWidth(40);
     numQuizQuestions.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+    numQuizQuestions.setText("0");
     thirdBox.getChildren().addAll(numQQ, numQuizQuestions);
     mainBox.getChildren().add(thirdBox);
 
@@ -232,51 +219,136 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   @Override
   public void takingQuizPage(Stage primaryStage, Question[] questions) {
-    VBox root = new VBox();
-    root.setPadding(new Insets(50, 20, 50, 20));
-    root.setSpacing(50);
-    root.setPrefSize(700, 700);
-    root.setAlignment(Pos.TOP_CENTER);
+	  //TODO test
+//	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
+//			  "A is a proper superset of B", "A is the complement of B"};
+//	  
+//	  Question A = new Question("Which statement is TRUE regarding sets A and B?", "A is a proper superset of B", null , choices, "set");
+//	  
+//	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
+//	  
+//	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
+//			  "when the problem size is small", "application/bucky.png", choices1, "performance");
+//	  
+//	  Question[] questions1 = {A,B};
+//	  
+	  int numCorrect = 0;
+//	  
+//	  for(Question q: questions1) {
+//			  if(renderQuestion(primaryStage, q)) {
+//				  numCorrect++;
+//			  } else {
+//			  }
+//	  }
+	  
+	 //Render final results page
+	 //Back to Homescreen Button
+	  for (Question q: questions) {
+	    //Possible for there to be a tail of nulls
+	    if (q == null) {
+	      break;
+	    } else {
+	      if (renderQuestion(primaryStage, q)) {
+	        numCorrect++;
+	      }
+	    }
+	  }
+	  
+			  
+	  
+    
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 
-    Label lbl = new Label("Quiz");
-    lbl.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
+	  
+		 //Render final results page
+		 //Back to Homescreen Button
+	  }
+  private Boolean renderQuestion(Stage primaryStage, Question q) {
+	  Stage secondary = new Stage();
+	  boolean result = false;
 
-    Label lbl1 = new Label("Who is this?");
-
-    Image img = new Image("application/bucky.png");
-
-    ImageView imageview = new ImageView();
-    imageview.setImage(img);
-    imageview.setFitWidth(100);
-    imageview.setPreserveRatio(true);
-    imageview.setSmooth(true);
-    imageview.setCache(true);
-
-    Label lbl2 = new Label("a) Bucky\nb) Deb\nc) Jerry Seinfeld\nd) IDK");
-    TextField txt = new TextField();
-    Label lbl3 = new Label("Correct!");
-
-    txt.setOnAction(e -> {
-      ObservableList<Node> children = root.getChildren();
-      children.remove(lbl3);
-      if (txt.getText() != null && txt.getText().equalsIgnoreCase("a")) {
-        children.add(lbl3);
+      VBox layout = new VBox();
+      Scene scene = new Scene(layout, 700, 700);
+      
+      
+      Label title = new Label("Quiz");
+      title.setFont(Font.font(50));
+      layout.getChildren().add(title);
+      layout.setAlignment(Pos.BASELINE_CENTER);
+      
+      Label question = new Label(q.getText()); 
+      question.setFont(Font.font(10));
+      layout.getChildren().add(question);
+      layout.setAlignment(Pos.BASELINE_CENTER);
+      
+      try {
+        if(q.getImagePath() != null) {
+          ImageView img = new ImageView(q.getImagePath()); 
+          img.setFitHeight(100);
+          img.setFitWidth(100);
+          layout.getChildren().add(img);
+          layout.setAlignment(Pos.BASELINE_CENTER);
+        }
+      } catch (IllegalArgumentException e) {
+        System.out.println("Bad image path");
       }
-    });
+      
+      for(String s: q.getChoiceArray()) {
+    	  Label choice = new Label(s); 
+          choice.setFont(Font.font(10));
+          layout.getChildren().add(choice);
+          layout.setAlignment(Pos.BASELINE_CENTER);
+      }
+      
+      TextField answer = new TextField();
+      
+      answer.setOnAction( e -> {
+      boolean correct = checkAnswer(result, answer.getText(), q.getAnswer());
+      
+      if(correct) {
+    	  layout.getChildren().add(new Label("Correct!"));
+      } else {
+    	  layout.getChildren().add(new Label("Incorrect!"));
+      }	 
+      secondary.close();
+      });
+     
+      layout.getChildren().add(answer);
+      
+      secondary.setScene(scene);
+      secondary.showAndWait();
+      
+	  // when NEXT -> close that screen and return result
+      
+      
+      return result;
+}
 
-    root.getChildren().add(lbl);
-    root.getChildren().add(lbl1);
-    root.getChildren().add(imageview);
-    root.getChildren().add(lbl2);
-    root.getChildren().add(txt);
+  
+  
 
+private boolean checkAnswer(boolean result, String input, String answer) {
+	if(input.equals(answer)) {
+		result = true;
+		return true;
+	} else {
+		result = false;
+		return false;
+	}	
+}
 
-    Scene scene = new Scene(root);
-    primaryStage.setScene(scene);
-    primaryStage.show();
-  }
-
-  @Override
+@Override
   public void start(Stage primaryStage) throws Exception {
     this.quiz = new Quiz();
     try {
@@ -296,38 +368,147 @@ public class QuizGUI extends Application implements QuizGUIADT {
    */
   public static void main(String[] args) {
     launch(args);
-    // TODO: remove testing before submitting.
-    // // Testing:
-    // Quiz q1 = new Quiz();
-    // String[] options = {"answer", "Wrong1", "Wrong2", "Wrong3"};
-    // q1.addQuestion("Q1", "answer", options, "Test Questions", "");
-    // q1.addQuestion("Q2", "Wrong1", options, "Test Questions", "");
-    // q1.save();
-    // Quiz q2 = new Quiz();
-    // try {
-    // q2.loadQuestions("Saved_Questions.json");
-    // q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // Question[] qs = q2.generateQuizQuestions(q2.currentTopics, 4);
-    // for (Question q : qs) {
-    // if (q != null)
-    // System.out.println(q.getText());
-    // else
-    // System.out.println(q);
+
   }
 
 
-  @Override
   public void addQuestionPage(Stage primaryStage) {
-    // TODO Auto-generated method stub
-
-  }
+	  VBox mainBox = new VBox();
+	  VBox choices = new VBox();
+	  VBox radioButtons = new VBox(10);
+	  BorderPane prompt = new BorderPane();
+	  BorderPane choice = new BorderPane();
+	  BorderPane buttons = new BorderPane();
+	  mainBox.setPadding(new Insets(50, 20, 50, 20));
+      mainBox.setSpacing(50);
+      mainBox.setPrefSize(400, 400);
+      Label choicePrompt = new Label("Select the correct choice");
+      prompt.setRight(choicePrompt);
+      TextField topic = new TextField("Enter the topic here");
+      TextArea content = new TextArea("Enter the question here");
+      content.setMinHeight(50);
+      content.setWrapText(true);
+      TextField choiceA = new TextField("Enter choice A here");
+      TextField choiceB = new TextField("Enter choice B here");
+      TextField choiceC = new TextField("Enter choice C here");
+      TextField choiceD = new TextField("Enter choice D here");
+      TextField choiceE = new TextField("Enter choice E here");
+      RadioButton rb1 = new RadioButton("A");
+      RadioButton rb2 = new RadioButton("B");
+      RadioButton rb3 = new RadioButton("C");
+      RadioButton rb4 = new RadioButton("D");
+      RadioButton rb5 = new RadioButton("E");
+      final ToggleGroup group = new ToggleGroup();
+      rb1.setToggleGroup(group);
+      rb2.setToggleGroup(group);
+      rb3.setToggleGroup(group);
+      rb4.setToggleGroup(group);
+      rb5.setToggleGroup(group);
+      radioButtons.getChildren().add(rb1);
+      rb1.setSelected(true);
+      radioButtons.getChildren().add(rb2);
+      radioButtons.getChildren().add(rb3);
+      radioButtons.getChildren().add(rb4);
+      radioButtons.getChildren().add(rb5);
+      Button backButton = new Button("Back");
+      backButton.setOnAction(e -> mainScreen(primaryStage));
+      Button addButton = new Button("Add");
+      addButton.setOnAction(e -> {
+        String answer = "";
+        switch (((RadioButton)(group.getSelectedToggle())).getText()) {
+          case "A":
+            answer = choiceA.getText();
+            break;
+          case "B":
+            answer = choiceB.getText();
+            break;
+          case "C":
+            answer = choiceC.getText();
+            break;
+          case "D":
+            answer = choiceD.getText();
+            break;
+          case "E":
+            answer = choiceE.getText();
+            break;
+        }
+        String[] options = {choiceA.getText(), choiceB.getText(), choiceC.getText(), choiceD.getText(), choiceE.getText()};
+        //TODO images
+        quiz.addQuestion(content.getText(), answer, options, topic.getText(), null);
+        mainScreen(primaryStage);
+      }
+      );
+      choices.getChildren().add(choiceA);
+      choices.getChildren().add(choiceB);
+      choices.getChildren().add(choiceC);
+      choices.getChildren().add(choiceD);
+      choices.getChildren().add(choiceE);
+      choice.setLeft(choices);
+      choice.setRight(radioButtons);
+      buttons.setLeft(backButton);
+      buttons.setRight(addButton);
+      mainBox.getChildren().add(topic);
+      mainBox.getChildren().add(content);
+      
+      mainBox.getChildren().add(prompt);
+      mainBox.getChildren().add(choice);
+      mainBox.getChildren().add(buttons);
+      Scene scene = new Scene(mainBox);
+      primaryStage.setScene(scene);
+      primaryStage.show();
+	}
 
   @Override
   public void loadQuestionPage(Stage primaryStage) {
-    // TODO Auto-generated method stub
-
+    // Layouts:
+    VBox mainBox = new VBox();
+    HBox instuctBox = new HBox();
+    HBox textBox = new HBox();
+    HBox resultBox = new HBox();
+    HBox buttonBox = new HBox();
+    // Fields:
+    Label instrutLabel = new Label("Load Question: Enter Relative JSON FilePath (No .JSON)");
+    Label resultLabel = new Label("");
+    TextField JSONFile = new TextField("JSON FilePath");
+    Button back = new Button("Back");
+    Button load = new Button("Load Questions");
+    load.setOnAction(e -> {
+      if (loadQuestion((JSONFile.getText() + ".json"))) {
+        resultLabel.setTextFill(Color.web("#0000FF"));
+        resultLabel.setText("Questions Added!");
+      }
+      else {
+        resultLabel.setTextFill(Color.web("#FF0000"));
+        resultLabel.setText("Addition failed");
+      }
+    });
+    back.setOnAction(e -> mainScreen(primaryStage));
+    JSONFile.setPrefWidth(300);
+    // Adding elements:
+    mainBox.setSpacing(10);
+    mainBox.setPrefSize(400, 400);
+    instuctBox.getChildren().add(instrutLabel);
+    instuctBox.setPadding(new Insets(10, 0, 0, 20));
+    textBox.setPadding(new Insets(0, 20, 20, 20));
+    textBox.getChildren().addAll(JSONFile);
+    buttonBox.setPadding(new Insets(20, 20, 20, 20));
+    buttonBox.setSpacing(20);
+    buttonBox.getChildren().addAll(back, load);
+    resultBox.getChildren().add(resultLabel);
+    resultBox.setPadding(new Insets(10, 0, 0, 20));
+    mainBox.getChildren().addAll(instuctBox, textBox, buttonBox, resultBox);
+    Scene scene = new Scene(mainBox);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
+  
+  private boolean loadQuestion(String JSONfilePath) {
+    try {
+      quiz.loadQuestions(JSONfilePath);
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 }

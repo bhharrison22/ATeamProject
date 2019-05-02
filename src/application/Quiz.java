@@ -42,6 +42,7 @@ public class Quiz implements QuizADT {
 	int numQuestions;
 	final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 	
+	
 	public Quiz() {
       currentTopics = new ArrayList<>();
       numQuestions = 0;
@@ -117,7 +118,7 @@ public class Quiz implements QuizADT {
         newQuestion.put("image", q.getImagePath());
         JSONArray choices = new JSONArray();
         for (String choice : q.getChoiceArray()) { // adds all choices to a JSONArray
-          if (q.getAnswer().equals(choice)) {
+          if (q.getAnswer() != null || q.getAnswer().equals(choice)) {
             JSONObject correct = new JSONObject();
             correct.put("isCorrect", "T");
             correct.put("choice", choice);
@@ -171,7 +172,7 @@ public class Quiz implements QuizADT {
     }
     for (int i = 0; i < numQuestions; i++) {
       if (!allQuestions.isEmpty()) {
-        int randIndex = (int) Math.random() * allQuestions.size();
+        int randIndex = (int) (Math.random() * allQuestions.size());
         quizQuestions[i] = allQuestions.get(randIndex);
         allQuestions.remove(randIndex);
       } else {
@@ -179,12 +180,6 @@ public class Quiz implements QuizADT {
       }
     }
     return quizQuestions;
-  }
-
-  @Override
-  public String[] generateQuiz(Question[] quizQuestions) {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   /**
@@ -205,6 +200,10 @@ public class Quiz implements QuizADT {
   public int numQuestions() {
     return numQuestions;
   }
+  
+  public ArrayList<Topic> getTopics(){
+    return currentTopics;
+  }
 
   /**
    * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
@@ -213,7 +212,6 @@ public class Quiz implements QuizADT {
    * @param args The command line args
    */
   public static void main(String[] args) {
-    launch(args);
     // TODO: remove testing before submitting.
     // Testing:
     Quiz q1 = new Quiz();
@@ -224,11 +222,22 @@ public class Quiz implements QuizADT {
     Quiz q2 = new Quiz();
     try {
       q2.loadQuestions("Saved_Questions.json");
+      q2.loadQuestions("testfile.json");
       q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
     } catch (Exception e) {
       e.printStackTrace();
     }
-    Question[] qs = q2.generateQuizQuestions(q2.currentTopics, 4);
+    System.out.println("Just Saved Questions:");
+    Question[] qs = q2.generateQuizQuestions(q1.currentTopics, 6);
+    for (Question q : qs) {
+      if (q != null)
+        System.out.println(q.getText());
+      else
+        System.out.println(q);
+    }
+    
+    System.out.println("\nAll Questions: ");
+    qs = q2.generateQuizQuestions(q2.currentTopics, 6);
     for (Question q : qs) {
       if (q != null)
         System.out.println(q.getText());
