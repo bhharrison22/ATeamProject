@@ -361,33 +361,49 @@ public class QuizGUI extends Application implements QuizGUIADT {
     launch(args);
 
   }
-
+  /**
+   * The page after user presses "Add Question" in the main screen,
+   * where user can fill out text fields and forms manually.
+   * @param primaryStage
+   */
+  @Override
   public void addQuestionPage(Stage primaryStage) {
+    //the main pane
     VBox mainBox = new VBox();
+    //pane displaying 
     VBox choices = new VBox();
+    //pane containing radio buttons
     VBox radioButtons = new VBox(10);
+    //pane containing the radio 
     BorderPane prompt = new BorderPane();
+    //pane containing 
     BorderPane choice = new BorderPane();
+    //pane containing the buttons
     BorderPane buttons = new BorderPane();
+    //set the VBox
     mainBox.setPadding(new Insets(50, 20, 50, 20));
     mainBox.setSpacing(20);
     mainBox.setPrefSize(400, 400);
+    //set labels above the text fields to prompt the user
     Label topicPrompt = new Label("Enter question topic");
     Label questionPrompt = new Label("Enter question");
     Label imagePrompt = new Label("Enter path of question of image (optional)");
     Label choicePrompt = new Label("Select the correct choice");
 
     prompt.setRight(choicePrompt);
+    //create text areas/fields to gather the info for the question
     TextField topic = new TextField();
     topic.setPromptText("Enter the topic here");
     TextArea content = new TextArea();
     content.setPromptText("Enter the question here");
+    //make it pretty
     content.setMinHeight(50);
     content.setWrapText(true);
-
+    //prompt the user for the image
     TextField image = new TextField();
     image.setPromptText("Enter the path for the image");
     TextField choiceA = new TextField();
+    //gather the choice options
     choiceA.setPromptText("Enter choice A here");
     TextField choiceB = new TextField();
     choiceB.setPromptText("Enter choice B here");
@@ -397,7 +413,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     choiceD.setPromptText("Enter choice D here");
     TextField choiceE = new TextField();
     choiceE.setPromptText("Enter choice E here");
-
+    //use a radio button group to let the user to select the correct choice
     RadioButton rb1 = new RadioButton("A");
     RadioButton rb2 = new RadioButton("B");
     RadioButton rb3 = new RadioButton("C");
@@ -421,7 +437,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent e) {
-        mainScreen(primaryStage);
+
         String answer = null;
         if (rb1.isSelected() == true) {
           answer = choiceA.getText();
@@ -447,6 +463,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
         String topicText = topic.getText();
         String imageText = image.getText();
         quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
+        mainScreen(primaryStage);
       }
     };
     addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
