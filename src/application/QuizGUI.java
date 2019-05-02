@@ -163,9 +163,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Label numQQ = new Label("Number of quiz questions:");
     // Creates a field that only accepts numbers
     TextField numQuizQuestions = new TextField("0");
-    numQuizQuestions.setText("0");
     numQuizQuestions.setPrefWidth(40);
     numQuizQuestions.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+    numQuizQuestions.setText("0");
     thirdBox.getChildren().addAll(numQQ, numQuizQuestions);
     mainBox.getChildren().add(thirdBox);
 
@@ -215,7 +215,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   @Override
   public void takingQuizPage(Stage primaryStage, Question[] questions) {
-	  
+	  //TODO test
 	  String[] choices = {"A is a subset of B, but not a proper subset of B", "A is a proper subset of B", "A is a superset of B, but not a proper superset of B",
 			  "A is a proper superset of B", "A is the complement of B"};
 	  
@@ -232,7 +232,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	  
 	  for(Question q: questions1) {
 			  if(renderQuestion(primaryStage, q)) {
+			    System.out.println(q.getText() + " hewwo?");
 				  numCorrect++;
+			  } else {
+			    System.out.println(q.getText() + " goodbye");
 			  }
 	  }
 	  
@@ -270,8 +273,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		 //Back to Homescreen Button
 	  }
 
-	  
-	  
+	  //Annoying, necessary so the anon method can call this
   private Boolean renderQuestion(Stage primaryStage, Question q) {
 	  
 	  boolean result = false;
@@ -309,7 +311,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
       
       answer.setOnAction( e -> {
       boolean correct = checkAnswer(result, answer.getText(), q.getAnswer());
-      
+      notify();
       if(correct) {
     	  layout.getChildren().add(new Label("Correct!"));
       } else {
@@ -323,6 +325,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
       primaryStage.show();
 	  
 	  // when NEXT -> close that screen and return result
+      
+      try {
+        //Waits to be notified by an answer
+        wait();
+      } catch (InterruptedException e1) {
+        e1.printStackTrace();
+      }
       
       return result;
 }
