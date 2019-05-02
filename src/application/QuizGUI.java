@@ -546,17 +546,12 @@ public class QuizGUI extends Application implements QuizGUIADT {
         options[4] = choiceE.getText();
         String topicText = topic.getText();
         String imageText = image.getText();
-        try {
-          File file = new File(imageText);
+        File file = new File(imageText);
+        if(!file.exists() && !imageText.isEmpty()) {
+          errorPrompt.setText("Please enter a valid location or leave box empty");
+        } else {
           quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
           mainScreen(primaryStage);
-        } catch (Exception ex) {
-          if(imageText.isEmpty()) {
-            quiz.addQuestion(content.getText(), answer, options, topicText, imageText);
-            mainScreen(primaryStage);
-          } else {
-            errorPrompt.setText("Invalid image location. Please entera valid location or leave box empty");
-          }
         }
       }
     };
@@ -575,6 +570,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     //add everything to the main pane
     mainBox.getChildren().addAll(topicPrompt, topic, questionPrompt, content, imagePrompt, image, prompt, choice, buttons, error);
     Scene scene = new Scene(mainBox);
+    primaryStage.setScene(scene);
     //go back to the primary stage
     primaryStage.show();
   }
