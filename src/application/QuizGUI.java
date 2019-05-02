@@ -46,20 +46,23 @@ public class QuizGUI extends Application implements QuizGUIADT {
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
     Label numQues = new Label("Number of Questions in Quiz: ");
-    System.out.println(this.quiz.numQuestions());
     this.counter.setText(this.quiz.numQuestions() + "");
     
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(10,10,10,10));
     grid.setMinSize(300,300);
-    grid.setVgap(5);
-    grid.setHgap(5);
+    grid.setVgap(20);
+    grid.setHgap(20);
     grid.setAlignment(Pos.CENTER);
     
     Button add = new Button("Add Question");
+    add.setMaxWidth(150);
     Button load = new Button("Load Question");
+    load.setMaxWidth(150);
     Button save = new Button("Save Questions");
-    Button next = new Button("Next");
+    save.setMaxWidth(150);
+    Button next = new Button("Make Quiz");
+    next.setMaxWidth(150);
 
     add.setOnAction(e-> addQuestionPage(primaryStage));
     load.setOnAction(e-> loadQuestionPage(primaryStage));
@@ -255,24 +258,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	      }
 	    }
 	  }
-	  
-			  
-	  
-    
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 
-	  
 		 //Render final results page
 		 //Back to Homescreen Button
 	  }
@@ -372,8 +358,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     launch(args);
 
   }
-
-
+  
   public void addQuestionPage(Stage primaryStage) {
     VBox mainBox = new VBox();
     VBox choices = new VBox();
