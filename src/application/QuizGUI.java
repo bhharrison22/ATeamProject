@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import org.json.simple.parser.ParseException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -656,8 +657,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
     save.setMaxWidth(150);
     Button exitNoSave = new Button("Exit without Save");
     save.setMaxWidth(150);
-    save.setOnAction(e -> {quiz.save(); goodBye.setText("Saved all questions (" + quiz.numQuestions() + ") to " + fileName.getText() + ", goodbye!");});
-    exitNoSave.setOnAction(e -> goodBye.setText("Exiting quiz without saving, goodbye!"));
+    save.setOnAction(e -> {quiz.save(); goodBye.setText("Saved all questions (" + quiz.numQuestions() + ") to " + fileName.getText() + ", goodbye!"); try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e1) {
+      e1.printStackTrace();
+    } Platform.exit();});
+    exitNoSave.setOnAction(e -> {goodBye.setText("Exiting quiz without saving, goodbye!"); try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e1) {
+      e1.printStackTrace();
+    } Platform.exit();});
     
     // the grid containing the buttons
     GridPane grid = new GridPane();
