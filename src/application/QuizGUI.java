@@ -46,6 +46,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
     Label numQues = new Label("Number of Questions in Quiz: ");
+    System.out.println(this.quiz.numQuestions());
     this.counter.setText(this.quiz.numQuestions() + "");
     
     GridPane grid = new GridPane();
@@ -58,7 +59,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Button add = new Button("Add Question");
     Button load = new Button("Load Question");
     Button save = new Button("Save Questions");
-    Button next = new Button("Take Quiz");
+    Button next = new Button("Next");
 
     add.setOnAction(e-> addQuestionPage(primaryStage));
     load.setOnAction(e-> loadQuestionPage(primaryStage));
@@ -69,6 +70,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     grid.add(load, 1, 2);
     grid.add(save, 0, 3);
     grid.add(next, 1, 3);
+ 
     HBox welcomeLabel = new HBox();
     welcomeLabel.setPadding(new Insets(50,0,0,0));
     welcomeLabel.setAlignment(Pos.CENTER);
@@ -380,20 +382,34 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     BorderPane choice = new BorderPane();
     BorderPane buttons = new BorderPane();
     mainBox.setPadding(new Insets(50, 20, 50, 20));
-    mainBox.setSpacing(50);
+    mainBox.setSpacing(20);
     mainBox.setPrefSize(400, 400);
+    Label topicPrompt = new Label("Enter question topic");
+    Label questionPrompt = new Label("Enter question");
+    Label imagePrompt = new Label("Enter path of question of image (optional)");
     Label choicePrompt = new Label("Select the correct choice");
+
     prompt.setRight(choicePrompt);
-    TextField topic = new TextField("Enter the topic here");
-    TextArea content = new TextArea("Enter the question here");
+    TextField topic = new TextField();
+    topic.setPromptText("Enter the topic here");
+    TextArea content = new TextArea();
+    content.setPromptText("Enter the question here");
     content.setMinHeight(50);
     content.setWrapText(true);
-    TextField image = new TextField("Enter the route for the image");
-    TextField choiceA = new TextField("Enter choice A here");
-    TextField choiceB = new TextField("Enter choice B here");
-    TextField choiceC = new TextField("Enter choice C here");
-    TextField choiceD = new TextField("Enter choice D here");
-    TextField choiceE = new TextField("Enter choice E here");
+    
+    TextField image = new TextField();
+    image.setPromptText("Enter the path for the image");
+    TextField choiceA = new TextField();
+    choiceA.setPromptText("Enter choice A here");
+    TextField choiceB = new TextField();
+    choiceB.setPromptText("Enter choice B here");
+    TextField choiceC = new TextField();
+    choiceC.setPromptText("Enter choice C here");
+    TextField choiceD = new TextField();
+    choiceD.setPromptText("Enter choice D here");
+    TextField choiceE = new TextField();
+    choiceE.setPromptText("Enter choice E here");
+    
     RadioButton rb1 = new RadioButton("A");
     RadioButton rb2 = new RadioButton("B");
     RadioButton rb3 = new RadioButton("C");
@@ -417,6 +433,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() { 
       @Override 
       public void handle(MouseEvent e) { 
+        mainScreen(primaryStage);
         String answer = null;
         if(rb1.isSelected() == true) 
         {
@@ -448,7 +465,6 @@ private boolean checkAnswer(boolean result, String input, String answer) {
         String imageText = image.getText();
         quiz.addQuestion(content.getText(), answer, options, topicText,
             imageText);
-        mainScreen(primaryStage);
       } 
     };   
     addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
@@ -461,8 +477,11 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     choice.setRight(radioButtons);
     buttons.setLeft(backButton);
     buttons.setRight(addButton);
+    mainBox.getChildren().add(topicPrompt);
     mainBox.getChildren().add(topic);
+    mainBox.getChildren().add(questionPrompt);
     mainBox.getChildren().add(content);
+    mainBox.getChildren().add(imagePrompt);
     mainBox.getChildren().add(image);
     mainBox.getChildren().add(prompt);
     mainBox.getChildren().add(choice);
@@ -484,7 +503,8 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     // Fields:
     Label instrutLabel = new Label("Load Question: Enter Relative JSON FilePath (No .JSON)");
     Label resultLabel = new Label("");
-    TextField JSONFile = new TextField("JSON FilePath");
+    TextField JSONFile = new TextField();
+    JSONFile.setPromptText("JSON FilePath");
     Button back = new Button("Back");
     Button load = new Button("Load Questions");
     load.setOnAction(e -> {
