@@ -474,6 +474,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
     primaryStage.show();
   }
 
+  /**
+   * Creates Page where the user can load Question(s) from a JSON file
+   */
   @Override
   public void loadQuestionPage(Stage primaryStage) {
     // Layouts:
@@ -518,6 +521,12 @@ public class QuizGUI extends Application implements QuizGUIADT {
     primaryStage.show();
   }
 
+  /**
+   * Takes questions from a JSON file and parses it into the Quiz's storage
+   * 
+   * @param JSONfilePath is the file path of the JSON file
+   * @return true if retrieval successful, false otherwise
+   */
   private boolean loadQuestion(String JSONfilePath) {
     try {
       quiz.loadQuestions(JSONfilePath);
