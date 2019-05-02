@@ -162,7 +162,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
     thirdBox.setPadding(new Insets(10, 40, 10, 20));
     Label numQQ = new Label("Number of quiz questions:");
     // Creates a field that only accepts numbers
-    TextField numQuizQuestions = new TextField();
+    TextField numQuizQuestions = new TextField("0");
+    numQuizQuestions.setText("0");
     numQuizQuestions.setPrefWidth(40);
     numQuizQuestions.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
     thirdBox.getChildren().addAll(numQQ, numQuizQuestions);
@@ -234,6 +235,39 @@ public class QuizGUI extends Application implements QuizGUIADT {
 				  numCorrect++;
 			  }
 		  }
+<<<<<<< HEAD
+=======
+	  }
+	  
+	 //Render final results page
+	 //Back to Homescreen Button
+	  for (Question q: questions) {
+	    //Possible for there to be a tail of nulls
+	    if (q == null) {
+	      break;
+	    } else {
+	      if (renderQuestion(primaryStage, q)) {
+	        numCorrect++;
+	      }
+	    }
+	  }
+	  
+			  
+	  
+    
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+>>>>>>> 890a14d2adcbabb2d5f84544c6ec23f82996881b
 	  
 		 //Render final results page
 		 //Back to Homescreen Button
