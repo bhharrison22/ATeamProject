@@ -42,6 +42,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   private Quiz quiz;
   private Label counter = new Label("0");
+  private final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 
   /**
    * The start page of the application. Questions can be created here and JSON Files can be loaded
@@ -94,7 +95,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     add.setOnAction(e -> addQuestionPage(primaryStage));
     load.setOnAction(e -> loadQuestionPage(primaryStage));
     save.setOnAction(e -> {
-      quiz.save();
+      quiz.save(SAVED_QUESTION_FILE_PATH);
       questionsAdded.setTextFill(Color.web("#FF0000"));
       questionsAdded
           .setText("All questions (" + this.quiz.numQuestions() + ") saved to a JSON file");
@@ -568,7 +569,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
   @Override
   public void loadQuestionPage(Stage primaryStage) {
     // Layouts:
-    VBox mainBox = new VBox();
+    VBox mainBox = new VBox(); // Main Container
     HBox instuctBox = new HBox();
     HBox textBox = new HBox();
     HBox resultBox = new HBox();
@@ -583,8 +584,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
     // Setting field behavior:
     JSONFile.setPromptText("JSON FilePath");
+    JSONFile.setPrefWidth(300);
     back.setMaxWidth(150);
-    load.setMaxWidth(150);
+    load.setMaxWidth(150);  
 
     // Loads files from inputed filepath and displays message to indicate success
     load.setOnAction(e -> {
@@ -597,22 +599,23 @@ public class QuizGUI extends Application implements QuizGUIADT {
       }
     });
     back.setOnAction(e -> mainScreen(primaryStage)); // Has back button return user to main screen
-    JSONFile.setPrefWidth(300);
-
-    // Adding elements:
+    
+    // Setting style for layouts:
     mainBox.setSpacing(10);
     mainBox.setPrefSize(400, 400);
-    instuctBox.getChildren().add(instrutLabel);
     instuctBox.setPadding(new Insets(10, 0, 0, 20));
     textBox.setPadding(new Insets(0, 20, 20, 20));
-    textBox.getChildren().addAll(JSONFile);
     buttonBox.setPadding(new Insets(20, 20, 20, 20));
     buttonBox.setSpacing(20);
+    resultBox.setPadding(new Insets(10, 0, 0, 20));
+    
+    // Adding elements to layouts
+    textBox.getChildren().addAll(JSONFile);
+    instuctBox.getChildren().add(instrutLabel);
     buttonBox.getChildren().addAll(back, load);
     resultBox.getChildren().add(resultLabel);
-    resultBox.setPadding(new Insets(10, 0, 0, 20));
     mainBox.getChildren().addAll(instuctBox, textBox, buttonBox, resultBox);
-
+    
     // Setting Scene:
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
@@ -685,6 +688,5 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.show();
-    
   }
 }

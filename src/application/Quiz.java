@@ -45,7 +45,6 @@ public class Quiz implements QuizADT {
 
   private ArrayList<Topic> currentTopics; // The list of current available topics
   int numQuestions;
-  final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
 
   /*
    * Main constructor for Quiz. Takes no parameters.
@@ -115,7 +114,7 @@ public class Quiz implements QuizADT {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void save() {
+  public void save(String JSONfilePath) {
     JSONArray questionList = new JSONArray(); // List of Questions stored as a JSONObject
     // Loops through all Questions being storage:
     for (Topic t : currentTopics) {
@@ -142,7 +141,7 @@ public class Quiz implements QuizADT {
         questionList.add(newQuestion); // adds this Question to overall Array of Questions
       }
     }
-    writeToFile(questionList);
+    writeToFile(questionList, JSONfilePath);
   }
 
   /**
@@ -150,12 +149,12 @@ public class Quiz implements QuizADT {
    * 
    * @param questions is a JSONArray which will be written to the file
    */
-  private void writeToFile(JSONArray questions) {
+  private void writeToFile(JSONArray questions, String JSONfilePath) {
     try {
       JSONObject masterObj = new JSONObject();
       masterObj.put("questionArray", questions);
-      FileWriter file = new FileWriter(SAVED_QUESTION_FILE_PATH, false);
-      file.write(masterObj.toJSONString());
+      FileWriter file = new FileWriter(JSONfilePath, false);
+      file.write(masterObj.toJSONString()); // writes sent questions in in JSON form o 
       file.flush();
       file.close();
     } catch (IOException e) {
@@ -173,14 +172,14 @@ public class Quiz implements QuizADT {
   public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions) {
     Question[] quizQuestions = new Question[numQuestions];
     ArrayList<Question> allQuestions = new ArrayList<>();
-    for (Topic t : topics) {
+    for (Topic t : topics) { // loops through all stored questions
       for (Question q : t.getQuestions()) {
         allQuestions.add(q);
       }
     }
     for (int i = 0; i < numQuestions; i++) {
       if (!allQuestions.isEmpty()) {
-        int randIndex = (int) (Math.random() * allQuestions.size());
+        int randIndex = (int) (Math.random() * allQuestions.size()); // gets random index
         quizQuestions[i] = allQuestions.get(randIndex);
         allQuestions.remove(randIndex);
       } else {
