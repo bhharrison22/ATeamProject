@@ -136,64 +136,84 @@ public class QuizGUI extends Application implements QuizGUIADT {
    */
   @Override
   public void topicChoosingPage(Stage primaryStage) {
-    VBox mainBox = new VBox(); // This layout will be vertical, so VBox
+    //The main VBox, layout will be oriented vertically
+    VBox mainBox = new VBox();
     mainBox.setPadding(new Insets(50, 20, 50, 20));
     mainBox.setSpacing(50);
     mainBox.setPrefSize(400, 600);
-    ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
-
+    
+    
     // The stuff at the top, a drop down menu w a list of topics and a label
     HBox topBox = new HBox();
+    Label lbl1 = new Label("Choose topic: ");
     topBox.setSpacing(10);
     topBox.setPadding(new Insets(10, 40, 10, 20));
-    Label lbl1 = new Label("Choose topic: ");
+    
+    //The list of selected topics
     ObservableList<Topic> topic = FXCollections.observableArrayList();
-    // Obtains list of all topics and displays them:
+    
+    //The list of topics available for selection, sorted by alpha
     ArrayList<Topic> currentTopics = quiz.getTopics();
-    currentTopics.sort((a, b) -> {
-      return a.toString().compareTo(b.toString());
-    });
+    currentTopics.sort((a, b) -> a.toString().compareTo(b.toString()));
     if (currentTopics.isEmpty()) {
       topic.add(new Topic("No topics loaded"));
     } else {
       topic.addAll(currentTopics);
     }
+    
+    //Dropdown list of available topics
     ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
+    //Allows user to select current topic. see below midBox for listener
     Button selectCurrentTopic = new Button("Select");
-
-    // See end of midbox for action listener
+    
+    //Adds to main box
     topBox.getChildren().addAll(lbl1, dropDown, selectCurrentTopic);
     mainBox.getChildren().add(topBox);
 
+    
+    
     // The stuff in the middle, a list of selected topics
     HBox midBox = new HBox();
     midBox.setSpacing(10);
     midBox.setPadding(new Insets(10, 40, 10, 20));
 
+    //The list of topics that the user has selected
+    ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
+    //Default behavior, tells the user that they haven't selected any topics yet
     if (selectedTopics.isEmpty()) {
       selectedTopics.add(new Topic("No topics selected"));
     }
+    
+    //Creates labels which represent the list of selected topics
     Label lbl2 = new Label("Selected topics: ");
     String tops = "";
     for (Topic t : selectedTopics) {
       tops += t.toString() + "\n";
     }
     Label selTops = new Label(tops);
+    
+    //Adds to main box
     midBox.getChildren().addAll(lbl2, selTops);
     mainBox.getChildren().add(midBox);
+    
+    
     // Allows user to add topics to their selected list
     selectCurrentTopic.setOnAction(e -> {
+      //Takes the current selected topic
       Topic selected = dropDown.getValue();
-      // If some topic is selected...
+      // If some topic has been selected prior to this call, then...
       if (!selected.toString().equals("No topics selected")) {
         // Removes default text
         if (selectedTopics.toString().contains("No topics selected")) {
           selectedTopics.remove(0);
         }
+        
         // Avoids duplicates
         if (!selectedTopics.contains(selected)) {
           selectedTopics.add(selected);
         }
+        
+        //Constructs a string representation for the label
         String tops1 = "";
         int numQuestions = 0;
         for (Topic t : selectedTopics) {
@@ -201,63 +221,81 @@ public class QuizGUI extends Application implements QuizGUIADT {
           numQuestions += t.getQuestions().size();
         }
         tops1 += "" + numQuestions + " total questions selected";
-        // Updates the list of selected topics
+        
+        // Updates the label to show the new list of selected topics
         selTops.setText(tops1);
       }
     });
 
+    
+    
     // The section that lets you choose how many quiz questions you want
     HBox thirdBox = new HBox();
     thirdBox.setSpacing(10);
     thirdBox.setPadding(new Insets(10, 40, 10, 20));
+    
+    //Instructor label
     Label numQQ = new Label("Number of quiz questions:");
+    
     // Creates a field that only accepts numbers
-    TextField numQuizQuestions = new TextField("0");
+    TextField numQuizQuestions = new TextField();
     numQuizQuestions.setPrefWidth(40);
     numQuizQuestions.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+    //Sets default text so error isn't thrown when no questions are selected
     numQuizQuestions.setText("0");
+    
+    //Adds to main box
     thirdBox.getChildren().addAll(numQQ, numQuizQuestions);
     mainBox.getChildren().add(thirdBox);
 
+    
+    
     // The stuff at the bottom, a forward and back button
     HBox bottomBox = new HBox();
     bottomBox.setPadding(new Insets(10, 20, 10, 20));
     bottomBox.setSpacing(20);
 
+    //Back button that takes user back to main screen
     Button back = new Button("Back");
-    // Runs mainScreen method when user wants to go back
     back.setOnAction(e -> mainScreen(primaryStage));
 
+    //Forward button that creates a list of questions and opens up the taking quiz page
     Button forward = new Button("Take Quiz");
-    // Runs takingQuizPage when user is ready to take quiz
     forward.setOnAction(e -> takingQuizPage(primaryStage, this.quiz
         .generateQuizQuestions(selectedTopics, Integer.parseInt(numQuizQuestions.getText()))));
 
-    // Adds functionality to remove the latest topic selected
+    // Allows the user to remove the last topic that they added
     Button removeLatest = new Button("Remove last topic");
     removeLatest.setOnAction(e -> {
-      // If a topic has been selected...
+      // If the user has selected a topic prior to this method call
       if (!selTops.toString().contains("No topics selected")) {
         // Remove latest selection
         selectedTopics.remove(selectedTopics.size() - 1);
+        
         // Rebuild selected topics list
         String tops1 = "";
+        int numQuestions = 0;
         for (Topic t : selectedTopics) {
-          tops1 += t.toString() + "\n";
+          tops1 += "" + t.getQuestions().size() + " " + t.toString() + "\n";
+          numQuestions += t.getQuestions().size();
         }
+        tops1 += "" + numQuestions + " total questions selected";
+        
         // Avoids having an empty selection list by adding placeholder text
-        if (!tops1.equals("")) {
+        if (!selectedTopics.isEmpty()) {
           selTops.setText(tops1);
         } else {
           selTops.setText("No topics selected");
         }
-
       }
     });
 
+    //Adds to main box
     bottomBox.getChildren().addAll(back, removeLatest, forward);
     mainBox.getChildren().add(bottomBox);
 
+    
+    //Shows main screen
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
     primaryStage.show();
