@@ -350,10 +350,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
     secondary.setScene(scene);
     secondary.showAndWait();
-
     // when NEXT -> close that screen and return result
-
-
     return result;
   }
 
