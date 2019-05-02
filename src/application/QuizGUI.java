@@ -46,7 +46,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
   public void mainScreen(Stage primaryStage) {
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
     Label numQues = new Label("Number of Questions in Quiz: ");
-    System.out.println(this.quiz.numQuestions());
     this.counter.setText(this.quiz.numQuestions() + "");
     
     GridPane grid = new GridPane();
@@ -419,7 +418,6 @@ private boolean checkAnswer(boolean result, String input, String answer) {
     EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() { 
       @Override 
       public void handle(MouseEvent e) { 
-        mainScreen(primaryStage);
         String answer = null;
         if(rb1.isSelected() == true) 
         {
@@ -451,6 +449,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
         String imageText = image.getText();
         quiz.addQuestion(content.getText(), answer, options, topicText,
             imageText);
+        mainScreen(primaryStage);
       } 
     };   
     addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
