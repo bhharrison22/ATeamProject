@@ -58,7 +58,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Button add = new Button("Add Question");
     Button load = new Button("Load Question");
     Button save = new Button("Save Questions");
-    Button next = new Button("Next");
+    Button next = new Button("Take Quiz");
 
     add.setOnAction(e-> addQuestionPage(primaryStage));
     load.setOnAction(e-> loadQuestionPage(primaryStage));
