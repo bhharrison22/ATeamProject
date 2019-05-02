@@ -127,7 +127,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
-
+ 
   /**
    * The page after user presses next in the main screen, where topics are chosen from the list of
    * available topics to start generating a quiz.
@@ -633,5 +633,49 @@ public class QuizGUI extends Application implements QuizGUIADT {
       e.printStackTrace();
       return false;
     }
+  }
+  
+  /**
+   * Exit page prompting user to exit saving questions in quiz or exit without saving,
+   * will provide a goodbye message.
+   */
+  @Override
+  public void exitPage(Stage primaryStage) {
+    // main container
+    VBox root = new VBox();
+    
+    // various labels for the exit page
+    Label thanks = new Label("Thanks for taking the quiz");
+    Label savePrompt = new Label("Enter file name to save all questions to json file");
+    Label goodBye = new Label(""); // will change depending on button chosen
+    TextField fileName = new TextField();
+    fileName.setPromptText("Enter file name");
+    
+    // buttons for either save or exit without saving
+    Button save = new Button("Save");
+    save.setMaxWidth(150);
+    Button exitNoSave = new Button("Exit without Save");
+    save.setMaxWidth(150);
+    save.setOnAction(e -> {quiz.save(); goodBye.setText("Saved all questions (" + quiz.numQuestions() + ") to " + fileName.getText() + ", goodbye!");});
+    exitNoSave.setOnAction(e -> goodBye.setText("Exiting quiz without saving, goodbye!"));
+    
+    // the grid containing the buttons
+    GridPane grid = new GridPane();
+    grid.setPadding(new Insets(10, 10, 10, 10));
+    grid.setMinSize(200, 200);
+    grid.setVgap(20);
+    grid.setHgap(20);
+    grid.setAlignment(Pos.CENTER);
+    grid.add(save, 0, 0);
+    grid.add(exitNoSave, 1, 0);
+    
+    // add all the components of this page in a VBox in order
+    root.getChildren().addAll(thanks, savePrompt, fileName, grid, goodBye);
+    
+    // setup scene and show
+    Scene scene = new Scene(root);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+    
   }
 }

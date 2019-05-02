@@ -45,6 +45,10 @@ public interface QuizGUIADT {
 	 */
 	public void takingQuizPage(Stage primaryStage, Question[] questions);
 	
-	
+	/**
+	 * Exit page prompting user to exit saving questions in quiz or exit without saving,
+	 * will provide a goodbye message.
+	 */
+	public void exitPage(Stage primaryStage);
 	
 }
