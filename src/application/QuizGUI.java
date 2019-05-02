@@ -266,7 +266,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
       Label question = new Label(q.getText()); 
       question.setFont(Font.font(20));
       layout.getChildren().add(question);
-//      question.setWrapText(true);
       layout.setAlignment(Pos.BASELINE_CENTER);
       
       try {
@@ -298,6 +297,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
       } else {
     	  layout.getChildren().add(new Label("Incorrect!"));
       }	 
+      
+      answer.setOnAction(null);
       });
       
       layout.getChildren().add(answer);
@@ -310,6 +311,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
       layout.getChildren().add(next);
       
       secondary.setScene(scene);
+      
       secondary.showAndWait();
       
 	  result = checkAnswer(answer.getText(), q.getAnswer());
