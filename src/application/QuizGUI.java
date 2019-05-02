@@ -453,7 +453,27 @@ private boolean checkAnswer(boolean result, String input, String answer) {
 
   @Override
   public void loadQuestionPage(Stage primaryStage) {
-    // TODO BEN DO THIS
-
+    // Layouts:
+    VBox mainBox = new VBox();
+    HBox textBox = new HBox();
+    HBox buttonBox = new HBox();
+    // Feilds:
+    Label instrutLabel = new Label("Load Question: ");
+    TextField JSONFile = new TextField("Enter Relative JSON FilePath");
+    Button back = new Button("Back");
+    Button load = new Button("Load Question");
+    JSONFile.setPrefWidth(300);
+    // Adding elements:
+    mainBox.setSpacing(10);
+    mainBox.setPrefSize(400, 400);
+    textBox.setPadding(new Insets(20, 20, 20, 20));
+    textBox.getChildren().addAll(instrutLabel, JSONFile);
+    buttonBox.setPadding(new Insets(20, 20, 20, 20));
+    buttonBox.setSpacing(20);
+    buttonBox.getChildren().addAll(back, load);
+    mainBox.getChildren().addAll(textBox, buttonBox);
+    Scene scene = new Scene(mainBox);
+    primaryStage.setScene(scene);
+    primaryStage.show();
   }
 }
