@@ -1,6 +1,9 @@
 package application;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import org.json.simple.parser.ParseException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -365,26 +369,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
    */
   public static void main(String[] args) {
     launch(args);
-    // TODO: remove testing before submitting.
-    // // Testing:
-    // Quiz q1 = new Quiz();
-    // String[] options = {"answer", "Wrong1", "Wrong2", "Wrong3"};
-    // q1.addQuestion("Q1", "answer", options, "Test Questions", "");
-    // q1.addQuestion("Q2", "Wrong1", options, "Test Questions", "");
-    // q1.save();
-    // Quiz q2 = new Quiz();
-    // try {
-    // q2.loadQuestions("Saved_Questions.json");
-    // q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // Question[] qs = q2.generateQuizQuestions(q2.currentTopics, 4);
-    // for (Question q : qs) {
-    // if (q != null)
-    // System.out.println(q.getText());
-    // else
-    // System.out.println(q);
+
   }
 
 
@@ -455,25 +440,53 @@ private boolean checkAnswer(boolean result, String input, String answer) {
   public void loadQuestionPage(Stage primaryStage) {
     // Layouts:
     VBox mainBox = new VBox();
+    HBox instuctBox = new HBox();
     HBox textBox = new HBox();
+    HBox resultBox = new HBox();
     HBox buttonBox = new HBox();
-    // Feilds:
+    // Fields:
     Label instrutLabel = new Label("Load Question: ");
-    TextField JSONFile = new TextField("Enter Relative JSON FilePath");
+    Label resultLabel = new Label("");
+    TextField JSONFile = new TextField("Enter Relative JSON FilePath (No .JSON)");
     Button back = new Button("Back");
     Button load = new Button("Load Question");
+    load.setOnAction(e -> {
+      if (loadQuestion((JSONFile.getText() + ".json"))) {
+        resultLabel.setTextFill(Color.web("#0000FF"));
+        resultLabel.setText("Questions Added!");
+      }
+      else {
+        resultLabel.setTextFill(Color.web("#FF0000"));
+        resultLabel.setText("Addition failed");
+      }
+    });
+    back.setOnAction(e -> mainScreen(primaryStage));
     JSONFile.setPrefWidth(300);
     // Adding elements:
     mainBox.setSpacing(10);
     mainBox.setPrefSize(400, 400);
-    textBox.setPadding(new Insets(20, 20, 20, 20));
-    textBox.getChildren().addAll(instrutLabel, JSONFile);
+    instuctBox.getChildren().add(instrutLabel);
+    instuctBox.setPadding(new Insets(10, 0, 0, 20));
+    textBox.setPadding(new Insets(0, 20, 20, 20));
+    textBox.getChildren().addAll(JSONFile);
     buttonBox.setPadding(new Insets(20, 20, 20, 20));
     buttonBox.setSpacing(20);
     buttonBox.getChildren().addAll(back, load);
-    mainBox.getChildren().addAll(textBox, buttonBox);
+    resultBox.getChildren().add(resultLabel);
+    resultBox.setPadding(new Insets(10, 0, 0, 20));
+    mainBox.getChildren().addAll(instuctBox, textBox, buttonBox, resultBox);
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+  
+  private boolean loadQuestion(String JSONfilePath) {
+    try {
+      quiz.loadQuestions(JSONfilePath);
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 }
