@@ -448,32 +448,49 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
   }
 
+  /**
+   * The page after user presses "Add Question" in the main screen,
+   * where user can fill out text fields and forms manually.
+   * @param primaryStage
+   */
+  @Override
   public void addQuestionPage(Stage primaryStage) {
+    //the main pane
     VBox mainBox = new VBox();
+    //pane displaying 
     VBox choices = new VBox();
+    //pane containing radio buttons
     VBox radioButtons = new VBox(10);
+    //pane containing the radio 
     BorderPane prompt = new BorderPane();
+    //pane containing 
     BorderPane choice = new BorderPane();
+    //pane containing the buttons
     BorderPane buttons = new BorderPane();
+    //set the VBox
     mainBox.setPadding(new Insets(50, 20, 50, 20));
     mainBox.setSpacing(20);
     mainBox.setPrefSize(400, 400);
+    //set labels above the text fields to prompt the user
     Label topicPrompt = new Label("Enter question topic");
     Label questionPrompt = new Label("Enter question");
     Label imagePrompt = new Label("Enter path of question of image (optional)");
     Label choicePrompt = new Label("Select the correct choice");
 
     prompt.setRight(choicePrompt);
+    //create text areas/fields to gather the info for the question
     TextField topic = new TextField();
     topic.setPromptText("Enter the topic here");
     TextArea content = new TextArea();
     content.setPromptText("Enter the question here");
+    //make it pretty
     content.setMinHeight(50);
     content.setWrapText(true);
-
+    //prompt the user for the image
     TextField image = new TextField();
     image.setPromptText("Enter the path for the image");
     TextField choiceA = new TextField();
+    //gather the choice options
     choiceA.setPromptText("Enter choice A here");
     TextField choiceB = new TextField();
     choiceB.setPromptText("Enter choice B here");
@@ -483,7 +500,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     choiceD.setPromptText("Enter choice D here");
     TextField choiceE = new TextField();
     choiceE.setPromptText("Enter choice E here");
-
+    //use a radio button group to let the user to select the correct choice
     RadioButton rb1 = new RadioButton("A");
     RadioButton rb2 = new RadioButton("B");
     RadioButton rb3 = new RadioButton("C");
@@ -501,26 +518,29 @@ public class QuizGUI extends Application implements QuizGUIADT {
     radioButtons.getChildren().add(rb3);
     radioButtons.getChildren().add(rb4);
     radioButtons.getChildren().add(rb5);
+    //add buttons for the users to switch between pages
     Button backButton = new Button("Back");
     backButton.setOnAction(e -> mainScreen(primaryStage));
     Button addButton = new Button("Add");
+    //add event handler for the add button
     EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent e) {
+
         String answer = null;
-        if (rb1.isSelected()) {
+        if (rb1.isSelected() == true) {
           answer = choiceA.getText();
         }
-        if (rb2.isSelected()) {
+        if (rb2.isSelected() == true) {
           answer = choiceB.getText();
         }
-        if (rb3.isSelected()) {
+        if (rb3.isSelected() == true) {
           answer = choiceC.getText();
         }
-        if (rb4.isSelected()) {
+        if (rb4.isSelected() == true) {
           answer = choiceD.getText();
         }
-        if (rb5.isSelected()) {
+        if (rb5.isSelected() == true) {
           answer = choiceE.getText();
         }
         String[] options = new String[5];
@@ -536,6 +556,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
       }
     };
     addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
+    //add everything to the choices pane
     choices.getChildren().add(choiceA);
     choices.getChildren().add(choiceB);
     choices.getChildren().add(choiceC);
@@ -545,6 +566,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     choice.setRight(radioButtons);
     buttons.setLeft(backButton);
     buttons.setRight(addButton);
+    //add everything to the main pane
     mainBox.getChildren().add(topicPrompt);
     mainBox.getChildren().add(topic);
     mainBox.getChildren().add(questionPrompt);
@@ -557,6 +579,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
     this.quiz.numQuestions();
+    //go back to the primary stage
     primaryStage.show();
   }
 
