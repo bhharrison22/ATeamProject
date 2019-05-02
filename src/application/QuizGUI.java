@@ -101,6 +101,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
           .setText("All questions (" + this.quiz.numQuestions() + ") saved to a JSON file");
     });
     next.setOnAction(e -> topicChoosingPage(primaryStage));
+    save.setOnAction(e -> exitPage(primaryStage));
 
     // add to GridPane
     grid.add(add, 0, 2);
@@ -670,21 +671,30 @@ public class QuizGUI extends Application implements QuizGUIADT {
   public void exitPage(Stage primaryStage) {
     // main container
     VBox root = new VBox();
+    root.setPadding(new Insets(30, 30, 30, 30));
+    root.setPrefSize(400, 300);
     
     // various labels for the exit page
-    Label thanks = new Label("Thanks for taking the quiz");
-    Label savePrompt = new Label("Enter file name to save all questions to json file");
+    Label thanks = new Label("THANKS FOR TAKING THE QUIZ");
+    Label savePrompt = new Label("Enter file name to save all questions to json file:");
+    savePrompt.setPadding(new Insets(10, 0, 10, 0));
     Label goodBye = new Label(""); // will change depending on button chosen
     TextField fileName = new TextField();
     fileName.setPromptText("Enter file name");
+    
+    // HBox containing thank you message
+    HBox thankYou = new HBox();
+    thankYou.setPadding(new Insets(10, 10, 10, 10));
+    thankYou.setAlignment(Pos.CENTER);
+    thankYou.getChildren().add(thanks);
     
     // buttons for either save or exit without saving
     Button save = new Button("Save");
     save.setMaxWidth(150);
     Button exitNoSave = new Button("Exit without Save");
     save.setMaxWidth(150);
-    save.setOnAction(e -> {quiz.save(); goodBye.setText("Saved all questions (" + quiz.numQuestions() + ") to " + fileName.getText() + ", goodbye!"); try {
-      Thread.sleep(5000);
+    save.setOnAction(e -> {quiz.save(fileName.getText()); goodBye.setText("Saved all questions (" + quiz.numQuestions() + ") to " + fileName.getText() + ", goodbye!"); try {
+      Thread.sleep(3000);
     } catch (InterruptedException e1) {
       e1.printStackTrace();
     } Platform.exit();});
@@ -705,7 +715,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     grid.add(exitNoSave, 1, 0);
     
     // add all the components of this page in a VBox in order
-    root.getChildren().addAll(thanks, savePrompt, fileName, grid, goodBye);
+    root.getChildren().addAll(thankYou, savePrompt, fileName, grid, goodBye);
     
     // setup scene and show
     Scene scene = new Scene(root);
