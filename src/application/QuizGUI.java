@@ -270,9 +270,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		 //Render final results page
 		 //Back to Homescreen Button
 	  }
-
   private Boolean renderQuestion(Stage primaryStage, Question q) {
-	  
+	  Stage secondary = new Stage();
 	  boolean result = false;
 
       VBox layout = new VBox();
@@ -308,30 +307,26 @@ public class QuizGUI extends Application implements QuizGUIADT {
       
       answer.setOnAction( e -> {
       boolean correct = checkAnswer(result, answer.getText(), q.getAnswer());
-      notify();
+      
       if(correct) {
     	  layout.getChildren().add(new Label("Correct!"));
       } else {
     	  layout.getChildren().add(new Label("Incorrect!"));
-      }	  
+      }	 
+      secondary.close();
       });
      
       layout.getChildren().add(answer);
       
-      primaryStage.setScene(scene);
-      primaryStage.show();
-	  
+      secondary.setScene(scene);
+      secondary.showAndWait();
+      
 	  // when NEXT -> close that screen and return result
       
-      try {
-        //Waits to be notified by an answer
-        wait();
-      } catch (InterruptedException e1) {
-        e1.printStackTrace();
-      }
       
       return result;
 }
+
   
   
 
