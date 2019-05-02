@@ -518,14 +518,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
     HBox resultBox = new HBox();
     HBox buttonBox = new HBox();
     // Fields:
-    Label instrutLabel = new Label("Load Question: Enter Relative JSON FilePath (w/o .json)");
+    Label instrutLabel = new Label("Enter Relative JSON FilePath (w/o .json)");
     Label resultLabel = new Label("");
     TextField JSONFile = new TextField();
-    JSONFile.setPromptText("JSON FilePath");
     Button back = new Button("Back");
-    back.setMaxWidth(150);
     Button load = new Button("Load Questions");
+    // Setting field behavior:
+    JSONFile.setPromptText("JSON FilePath"); 
+    back.setMaxWidth(150);
     load.setMaxWidth(150);
+    // Loads files from inputed filepath and displays message to indicate success
     load.setOnAction(e -> {
       if (loadQuestion((JSONFile.getText() + ".json"))) {
         resultLabel.setTextFill(Color.web("#0000FF"));
@@ -535,7 +537,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
         resultLabel.setText("Addition failed");
       }
     });
-    back.setOnAction(e -> mainScreen(primaryStage));
+    back.setOnAction(e -> mainScreen(primaryStage)); // Has back button return user to main screen
     JSONFile.setPrefWidth(300);
     // Adding elements:
     mainBox.setSpacing(10);
@@ -550,6 +552,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     resultBox.getChildren().add(resultLabel);
     resultBox.setPadding(new Insets(10, 0, 0, 20));
     mainBox.getChildren().addAll(instuctBox, textBox, buttonBox, resultBox);
+    // Setting Scene: 
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
     primaryStage.show();
@@ -563,9 +566,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
    */
   private boolean loadQuestion(String JSONfilePath) {
     try {
-      quiz.loadQuestions(JSONfilePath);
+      quiz.loadQuestions(JSONfilePath); // loads questions from JSON file into quiz
       return true;
-    } catch (Exception e) {
+    } catch (Exception e) { // Catches Exception if file does not exist, other IO error
       e.printStackTrace();
       return false;
     }
