@@ -43,8 +43,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
   private Label counter = new Label("0");
 
   /**
-   * The start page of the application.
-   * Questions can be created here and JSON Files can be loaded
+   * The start page of the application. Questions can be created here and JSON Files can be loaded
+   * 
    * @param primaryStage The primary stage
    */
   @Override
@@ -52,11 +52,12 @@ public class QuizGUI extends Application implements QuizGUIADT {
     // Labels for the page
     Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
     Label numQues = new Label("Number of Questions in Quiz: ");
+    Label questionsAdded = new Label("");
     // counter will update every time user adds questions to the database
-    // either via addQuestionPage or the loadQuestionPage so that 
+    // either via addQuestionPage or the loadQuestionPage so that
     // counter will always display the correct number of questions in the database
     this.counter.setText(this.quiz.numQuestions() + "");
-    
+
     // the HBox containing the welcome label
     HBox welcomeLabel = new HBox();
     welcomeLabel.setPadding(new Insets(50));
@@ -64,13 +65,19 @@ public class QuizGUI extends Application implements QuizGUIADT {
     welcomeLabel.getChildren().add(welcome);
 
     // the GridPane containing the buttons for the different landing pages
-    // plus setup and configurations 
+    // plus setup and configurations
     GridPane grid = new GridPane();
     grid.setPadding(new Insets(10, 10, 10, 10));
     grid.setMinSize(200, 200);
     grid.setVgap(20);
     grid.setHgap(20);
     grid.setAlignment(Pos.CENTER);
+
+    // HBox indicating questions have been saved
+    HBox saved = new HBox();
+    saved.setPadding(new Insets(10, 10, 10, 10));
+    saved.setAlignment(Pos.CENTER);
+    saved.getChildren().add(questionsAdded);
 
     // Buttons for the page with standard widths
     Button add = new Button("Add Question");
@@ -81,11 +88,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
     save.setMaxWidth(150);
     Button next = new Button("Make Quiz");
     next.setMaxWidth(150);
-    
+
     // button actions events upon pressing
     add.setOnAction(e -> addQuestionPage(primaryStage));
     load.setOnAction(e -> loadQuestionPage(primaryStage));
-    save.setOnAction(e -> quiz.save());
+    save.setOnAction(e -> {
+      quiz.save();
+      questionsAdded.setTextFill(Color.web("#FF0000"));
+      questionsAdded
+          .setText("All questions (" + this.quiz.numQuestions() + ") saved to a JSON file");
+    });
     next.setOnAction(e -> topicChoosingPage(primaryStage));
 
     // add to GridPane
@@ -93,13 +105,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
     grid.add(load, 1, 2);
     grid.add(save, 0, 3);
     grid.add(next, 1, 3);
-    
+
     // image pane for style
     BorderPane picture = new BorderPane();
     Image image = new Image("file:bucky.png", 150, 150, false, false);
     ImageView imageView = new ImageView(image);
     picture.setCenter(imageView);
-    
+
     // the HBox containing the questions counter in the quiz
     HBox questionCounter = new HBox();
     questionCounter.setPadding(new Insets(10, 10, 10, 10));
@@ -108,16 +120,18 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
     // the VBox containing all layouts for this page
     VBox root = new VBox();
-    root.getChildren().addAll(welcomeLabel, picture, grid, questionCounter);
-    
+    root.getChildren().addAll(welcomeLabel, picture, grid, saved, questionCounter);
+
+    // setup scene of this page
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
   /**
-   * The page after user presses next in the main screen,
-   * where topics are chosen from the list of available 
-   * topics to start generating a quiz.
+   * The page after user presses next in the main screen, where topics are chosen from the list of
+   * available topics to start generating a quiz.
+   * 
    * @param primaryStage The primary stage
    */
   @Override
@@ -248,8 +262,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
   /**
    * The page where the quiz is actually taken.
+   * 
    * @param primaryStage The primary stage
    */
   @Override
@@ -363,6 +379,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
       return false;
     }
   }
+
   /**
    * The method to setup the stage for the QuizGUI.
    * 
@@ -504,9 +521,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
   }
 
   /**
-   * The page after user presses "Load Question" in the main screen,
-   * where user can enter in a file path to load questions into the Quiz
-   * from a JSON file.
+   * The page after user presses "Load Question" in the main screen, where user can enter in a file
+   * path to load questions into the Quiz from a JSON file.
+   * 
    * @param primaryStage
    */
   @Override
@@ -517,16 +534,19 @@ public class QuizGUI extends Application implements QuizGUIADT {
     HBox textBox = new HBox();
     HBox resultBox = new HBox();
     HBox buttonBox = new HBox();
+
     // Fields:
     Label instrutLabel = new Label("Enter Relative JSON FilePath (w/o .json)");
     Label resultLabel = new Label("");
     TextField JSONFile = new TextField();
     Button back = new Button("Back");
     Button load = new Button("Load Questions");
+
     // Setting field behavior:
-    JSONFile.setPromptText("JSON FilePath"); 
+    JSONFile.setPromptText("JSON FilePath");
     back.setMaxWidth(150);
     load.setMaxWidth(150);
+
     // Loads files from inputed filepath and displays message to indicate success
     load.setOnAction(e -> {
       if (loadQuestion((JSONFile.getText() + ".json"))) {
@@ -539,6 +559,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     });
     back.setOnAction(e -> mainScreen(primaryStage)); // Has back button return user to main screen
     JSONFile.setPrefWidth(300);
+
     // Adding elements:
     mainBox.setSpacing(10);
     mainBox.setPrefSize(400, 400);
@@ -552,14 +573,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
     resultBox.getChildren().add(resultLabel);
     resultBox.setPadding(new Insets(10, 0, 0, 20));
     mainBox.getChildren().addAll(instuctBox, textBox, buttonBox, resultBox);
-    // Setting Scene: 
+
+    // Setting Scene:
     Scene scene = new Scene(mainBox);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
 
   /**
-   * Private helper method that takes questions from a JSON file and parses it into the Quiz's storage
+   * Private helper method that takes questions from a JSON file and parses it into the Quiz's
+   * storage
    * 
    * @param JSONfilePath is the file path of the JSON file
    * @return true if retrieval successful, false otherwise
