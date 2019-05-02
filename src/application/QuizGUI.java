@@ -454,19 +454,19 @@ public class QuizGUI extends Application implements QuizGUIADT {
       @Override
       public void handle(MouseEvent e) {
         String answer = null;
-        if (rb1.isSelected() == true) {
+        if (rb1.isSelected()) {
           answer = choiceA.getText();
         }
-        if (rb2.isSelected() == true) {
+        if (rb2.isSelected()) {
           answer = choiceB.getText();
         }
-        if (rb3.isSelected() == true) {
+        if (rb3.isSelected()) {
           answer = choiceC.getText();
         }
-        if (rb4.isSelected() == true) {
+        if (rb4.isSelected()) {
           answer = choiceD.getText();
         }
-        if (rb5.isSelected() == true) {
+        if (rb5.isSelected()) {
           answer = choiceE.getText();
         }
         String[] options = new String[5];
