@@ -23,6 +23,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -373,90 +374,104 @@ private boolean checkAnswer(boolean result, String input, String answer) {
 
 
   public void addQuestionPage(Stage primaryStage) {
-	  VBox mainBox = new VBox();
-	  VBox choices = new VBox();
-	  VBox radioButtons = new VBox(10);
-	  BorderPane prompt = new BorderPane();
-	  BorderPane choice = new BorderPane();
-	  BorderPane buttons = new BorderPane();
-	  mainBox.setPadding(new Insets(50, 20, 50, 20));
-      mainBox.setSpacing(50);
-      mainBox.setPrefSize(400, 400);
-      Label choicePrompt = new Label("Select the correct choice");
-      prompt.setRight(choicePrompt);
-      TextField topic = new TextField("Enter the topic here");
-      TextArea content = new TextArea("Enter the question here");
-      content.setMinHeight(50);
-      content.setWrapText(true);
-      TextField choiceA = new TextField("Enter choice A here");
-      TextField choiceB = new TextField("Enter choice B here");
-      TextField choiceC = new TextField("Enter choice C here");
-      TextField choiceD = new TextField("Enter choice D here");
-      TextField choiceE = new TextField("Enter choice E here");
-      RadioButton rb1 = new RadioButton("A");
-      RadioButton rb2 = new RadioButton("B");
-      RadioButton rb3 = new RadioButton("C");
-      RadioButton rb4 = new RadioButton("D");
-      RadioButton rb5 = new RadioButton("E");
-      final ToggleGroup group = new ToggleGroup();
-      rb1.setToggleGroup(group);
-      rb2.setToggleGroup(group);
-      rb3.setToggleGroup(group);
-      rb4.setToggleGroup(group);
-      rb5.setToggleGroup(group);
-      radioButtons.getChildren().add(rb1);
-      rb1.setSelected(true);
-      radioButtons.getChildren().add(rb2);
-      radioButtons.getChildren().add(rb3);
-      radioButtons.getChildren().add(rb4);
-      radioButtons.getChildren().add(rb5);
-      Button backButton = new Button("Back");
-      backButton.setOnAction(e -> mainScreen(primaryStage));
-      Button addButton = new Button("Add");
-      addButton.setOnAction(e -> {
-        String answer = "";
-        switch (((RadioButton)(group.getSelectedToggle())).getText()) {
-          case "A":
-            answer = choiceA.getText();
-            break;
-          case "B":
-            answer = choiceB.getText();
-            break;
-          case "C":
-            answer = choiceC.getText();
-            break;
-          case "D":
-            answer = choiceD.getText();
-            break;
-          case "E":
-            answer = choiceE.getText();
-            break;
-        }
-        String[] options = {choiceA.getText(), choiceB.getText(), choiceC.getText(), choiceD.getText(), choiceE.getText()};
-        //TODO images
-        quiz.addQuestion(content.getText(), answer, options, topic.getText(), null);
+    VBox mainBox = new VBox();
+    VBox choices = new VBox();
+    VBox radioButtons = new VBox(10);
+    BorderPane prompt = new BorderPane();
+    BorderPane choice = new BorderPane();
+    BorderPane buttons = new BorderPane();
+    mainBox.setPadding(new Insets(50, 20, 50, 20));
+    mainBox.setSpacing(50);
+    mainBox.setPrefSize(400, 400);
+    Label choicePrompt = new Label("Select the correct choice");
+    prompt.setRight(choicePrompt);
+    TextField topic = new TextField("Enter the topic here");
+    TextArea content = new TextArea("Enter the question here");
+    content.setMinHeight(50);
+    content.setWrapText(true);
+    TextField image = new TextField("Enter the route for the image");
+    TextField choiceA = new TextField("Enter choice A here");
+    TextField choiceB = new TextField("Enter choice B here");
+    TextField choiceC = new TextField("Enter choice C here");
+    TextField choiceD = new TextField("Enter choice D here");
+    TextField choiceE = new TextField("Enter choice E here");
+    RadioButton rb1 = new RadioButton("A");
+    RadioButton rb2 = new RadioButton("B");
+    RadioButton rb3 = new RadioButton("C");
+    RadioButton rb4 = new RadioButton("D");
+    RadioButton rb5 = new RadioButton("E");
+    final ToggleGroup group = new ToggleGroup();
+    rb1.setToggleGroup(group);
+    rb2.setToggleGroup(group);
+    rb3.setToggleGroup(group);
+    rb4.setToggleGroup(group);
+    rb5.setToggleGroup(group);
+    radioButtons.getChildren().add(rb1);
+    rb1.setSelected(true);
+    radioButtons.getChildren().add(rb2);
+    radioButtons.getChildren().add(rb3);
+    radioButtons.getChildren().add(rb4);
+    radioButtons.getChildren().add(rb5);
+    Button backButton = new Button("Back");
+    backButton.setOnAction(e -> mainScreen(primaryStage));
+    Button addButton = new Button("Add");
+    EventHandler<MouseEvent> addEventHandler = new EventHandler<MouseEvent>() { 
+      @Override 
+      public void handle(MouseEvent e) { 
         mainScreen(primaryStage);
-      }
-      );
-      choices.getChildren().add(choiceA);
-      choices.getChildren().add(choiceB);
-      choices.getChildren().add(choiceC);
-      choices.getChildren().add(choiceD);
-      choices.getChildren().add(choiceE);
-      choice.setLeft(choices);
-      choice.setRight(radioButtons);
-      buttons.setLeft(backButton);
-      buttons.setRight(addButton);
-      mainBox.getChildren().add(topic);
-      mainBox.getChildren().add(content);
-      
-      mainBox.getChildren().add(prompt);
-      mainBox.getChildren().add(choice);
-      mainBox.getChildren().add(buttons);
-      Scene scene = new Scene(mainBox);
-      primaryStage.setScene(scene);
-      primaryStage.show();
-	}
+        String answer = null;
+        if(rb1.isSelected() == true) 
+        {
+          answer = choiceA.getText();
+        }
+        if(rb2.isSelected() == true) 
+        {
+          answer = choiceB.getText();
+        }
+        if(rb3.isSelected() == true) 
+        {
+          answer = choiceC.getText();
+        }
+        if(rb4.isSelected() == true) 
+        {
+          answer = choiceD.getText();
+        }
+        if(rb5.isSelected() == true) 
+        {
+          answer = choiceE.getText();
+        }
+        String[] options = new String[5];
+        options[0] = choiceA.getText();
+        options[1] = choiceB.getText();
+        options[2] = choiceC.getText();
+        options[3] = choiceD.getText();
+        options[4] = choiceE.getText();
+        String topicText = topic.getText();
+        String imageText = image.getText();
+        quiz.addQuestion( content.getText(), answer, options, topicText,
+            imageText);
+      } 
+    };   
+    addButton.addEventFilter(MouseEvent.MOUSE_CLICKED, addEventHandler);
+    choices.getChildren().add(choiceA);
+    choices.getChildren().add(choiceB);
+    choices.getChildren().add(choiceC);
+    choices.getChildren().add(choiceD);
+    choices.getChildren().add(choiceE);
+    choice.setLeft(choices);
+    choice.setRight(radioButtons);
+    buttons.setLeft(backButton);
+    buttons.setRight(addButton);
+    mainBox.getChildren().add(topic);
+    mainBox.getChildren().add(content);
+    mainBox.getChildren().add(image);
+    mainBox.getChildren().add(prompt);
+    mainBox.getChildren().add(choice);
+    mainBox.getChildren().add(buttons);
+    Scene scene = new Scene(mainBox);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
 
   @Override
   public void loadQuestionPage(Stage primaryStage) {
