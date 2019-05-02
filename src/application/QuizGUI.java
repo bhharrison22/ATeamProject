@@ -433,6 +433,7 @@ private boolean checkAnswer(boolean result, String input, String answer) {
             break;
         }
         String[] options = {choiceA.getText(), choiceB.getText(), choiceC.getText(), choiceD.getText(), choiceE.getText()};
+        //TODO images
         quiz.addQuestion(content.getText(), answer, options, topic.getText(), null);
         mainScreen(primaryStage);
       }
