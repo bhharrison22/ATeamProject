@@ -591,7 +591,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
     HBox buttonBox = new HBox();
 
     // Fields:
-    Label instrutLabel = new Label("Enter Relative JSON FilePath (w/o .json)");
+    Label instrutLabel = new Label("Enter Relative JSON FilePath");
     Label resultLabel = new Label("");
     TextField JSONFile = new TextField();
     Button back = new Button("Back");
@@ -605,7 +605,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
     // Loads files from inputed filepath and displays message to indicate success
     load.setOnAction(e -> {
-      if (loadQuestion((JSONFile.getText() + ".json"))) {
+      if (loadQuestion((JSONFile.getText()))) {
         resultLabel.setTextFill(Color.web("#0000FF"));
         resultLabel.setText("Questions Added!");
       } else {
