@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,9 +23,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
@@ -218,55 +223,89 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	  String[] choices1 = {"when the problem size is small", "when the problem size is large"};
 	  
 	  Question B = new Question("When two algorithms have different big-O time complexity, the constants and low-order terms only matter ________. ",
-			  "when the problem size is small", null, choices1, "performance");
+			  "when the problem size is small", "application/bucky.png", choices1, "performance");
 	  
 	  Question[] questions1 = {A,B};
-	  
 	  
 	  int numCorrect = 0;
 	  
 	  for(Question q: questions1) {
-		  if(renderQuestion(primaryStage, q)) {
-			  numCorrect++;
+			  if(renderQuestion(primaryStage, q)) {
+				  numCorrect++;
+			  }
 		  }
+	  
+		 //Render final results page
+		 //Back to Homescreen Button
 	  }
-	  
-	 //Render final results page
-	 //Back to Homescreen Button
-	  
-	  
-			  
-	  
-    
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-  }
 
+	  
+	  
   private Boolean renderQuestion(Stage primaryStage, Question q) {
+	  
 	  boolean result = false;
-	  //VBox set up here
-	  
-	  //Fill vbox with all relevant fields
-	  
-	  //if(Text to text comparison, return T or F) inside action event for a text box	  
-	  //case: T display correct, F display incorrect
+
+      VBox layout = new VBox();
+      Scene scene = new Scene(layout, 700, 700);
+      
+      
+      Label title = new Label("Quiz");
+      title.setFont(Font.font(50));
+      layout.getChildren().add(title);
+      layout.setAlignment(Pos.BASELINE_CENTER);
+      
+      Label question = new Label(q.getText()); 
+      question.setFont(Font.font(10));
+      layout.getChildren().add(question);
+      layout.setAlignment(Pos.BASELINE_CENTER);
+      
+      if(q.getImagePath() != null) {
+    	ImageView img = new ImageView(q.getImagePath()); 
+    	img.setFitHeight(100);
+    	img.setFitWidth(100);
+      	layout.getChildren().add(img);
+      	layout.setAlignment(Pos.BASELINE_CENTER);
+      }
+      
+      for(String s: q.getChoiceArray()) {
+    	  Label choice = new Label(s); 
+          choice.setFont(Font.font(10));
+          layout.getChildren().add(choice);
+          layout.setAlignment(Pos.BASELINE_CENTER);
+      }
+      
+      TextField answer = new TextField();
+      
+      answer.setOnAction( e -> {
+      boolean correct = checkAnswer(result, answer.getText(), q.getAnswer());
+      
+      if(correct) {
+    	  layout.getChildren().add(new Label("Correct!"));
+      } else {
+    	  layout.getChildren().add(new Label("Incorrect!"));
+      }	  
+      });
+     
+      layout.getChildren().add(answer);
+      
+      primaryStage.setScene(scene);
+      primaryStage.show();
 	  
 	  // when NEXT -> close that screen and return result
-	  
-	  return result;
+      
+      return result;
+}
+  
+  
+
+private boolean checkAnswer(boolean result, String input, String answer) {
+	if(input.equals(answer)) {
+		result = true;
+		return true;
+	} else {
+		result = false;
+		return false;
+	}	
 }
 
 @Override
