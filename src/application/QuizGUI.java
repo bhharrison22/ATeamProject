@@ -69,7 +69,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
     grid.add(load, 1, 2);
     grid.add(save, 0, 3);
     grid.add(next, 1, 3);
- 
     HBox welcomeLabel = new HBox();
     welcomeLabel.setPadding(new Insets(50,0,0,0));
     welcomeLabel.setAlignment(Pos.CENTER);
