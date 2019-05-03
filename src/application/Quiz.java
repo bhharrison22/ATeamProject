@@ -213,6 +213,9 @@ public class Quiz implements QuizADT {
     return numQuestions;
   }
 
+  /**
+   * @return ArrayList containing all the topics (and therefore questions) currently being stored
+   */
   public ArrayList<Topic> getTopics() {
     return currentTopics;
   }
