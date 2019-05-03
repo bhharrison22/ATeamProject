@@ -389,7 +389,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
-		//The text of the question
+		//The text of the question, split by line every ten words
 		int numSpaces = 0;
 		String questionText = "";
 		for (int i = 0; i < q.getText().length(); i++) {
@@ -402,6 +402,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		  }
 		}
 		
+		//Makes it so whole question will display by making a bigger container
 		Label question = new Label(questionText);
 		HBox container = new HBox();
 		question.setFont(Font.font(20));
