@@ -367,6 +367,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
     stage.showAndWait();
   }
 
+  //Used in render question to make sure that num questions answered only increments when it's first
+  //time that the question was answered
   boolean firstTimeChecked;
 
   /**
