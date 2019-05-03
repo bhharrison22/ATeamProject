@@ -130,7 +130,7 @@ public class Quiz implements QuizADT {
       JSONObject masterObj = new JSONObject();
       masterObj.put("questionArray", questions);
       FileWriter file = new FileWriter(JSONfilePath, false);
-      file.write(masterObj.toJSONString()); // writes sent questions in in JSON form o 
+      file.write(masterObj.toJSONString()); // writes sent questions in in JSON form o
       file.flush();
       file.close();
     } catch (IOException e) {
