@@ -98,10 +98,11 @@ public class Quiz implements QuizADT {
       String answer = null; // Question Answer
       String[] options = new String[choiceArray.size()]; // Question choices
       for (int j = 0; j < choiceArray.size(); j++) {
-        JSONObject choiceObj = (JSONObject) choiceArray.get(i);
-        options[i] = (String) choiceObj.get("choice");
-        if (choiceObj.get("isCorrect") == "T") {
-          answer = (String) choiceObj.get("choice");
+        JSONObject choiceObj = (JSONObject) choiceArray.get(j);
+        String choice = (String) choiceObj.get("choice");
+        options[j] = choice;
+        if (choiceObj.get("isCorrect").equals("T")) {
+          answer = choice;
         }
       }
       // Adds question to current Quiz with info obtained from JSON object:
