@@ -45,6 +45,9 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	 */
 	@Override
 	public void mainScreen(Stage primaryStage) {
+    
+    // if user decides to close the application window it will take them to exitpage
+    primaryStage.setOnCloseRequest(e -> exitPage());
 		// Labels for the page
 		Label welcome = new Label("WELCOME TO QUIZ GENERATOR");
 		Label numQues = new Label("Number of Questions in Quiz: ");
@@ -321,47 +324,49 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	}
 
 	private void renderSummary(int correct, int numQuestions) {
-		Stage stage = new Stage();
+    Stage stage = new Stage();
 
-		//Main VBox layout
-		VBox layout = new VBox();
-		Scene scene = new Scene(layout, 700, 700);
-		layout.setPadding(new Insets(10, 50, 50, 50));
-		layout.setSpacing(20);
+    // Main VBox layout
+    VBox layout = new VBox();
+    Scene scene = new Scene(layout, 700, 700);
+    layout.setPadding(new Insets(10, 50, 50, 50));
+    layout.setSpacing(20);
 
-		//The title, big font, centered at top
-		Label title = new Label("Summary");
-		title.setFont(Font.font(50));
-		title.setLineSpacing(15);
-		layout.getChildren().add(title);
-		layout.setAlignment(Pos.BASELINE_CENTER);
+    // The title, big font, centered at top
+    Label title = new Label("Summary");
+    title.setFont(Font.font(50));
+    title.setLineSpacing(15);
+    layout.getChildren().add(title);
+    layout.setAlignment(Pos.BASELINE_CENTER);
 
-		Label label = new Label("You answered " + questionsAnswered + " questions and got " + correct + " correct.");
-		Label label1 = new Label("There were " + numQuestions + " questions total.");
+    Label label = new Label(
+        "You answered " + questionsAnswered + " questions and got " + correct + " correct.");
+    Label label1 = new Label("There were " + numQuestions + " questions total.");
 
-		label.setFont(Font.font(20));
-		label1.setFont(Font.font(20));
-		layout.getChildren().add(label);
-		layout.getChildren().add(label1);
-		layout.setAlignment(Pos.BASELINE_CENTER);
+    label.setFont(Font.font(20));
+    label1.setFont(Font.font(20));
+    layout.getChildren().add(label);
+    layout.getChildren().add(label1);
+    layout.setAlignment(Pos.BASELINE_CENTER);
 
-		//Exit button, returns to quiz page
-		Button next = new Button("Return");
-		next.setOnAction(e -> {
-			stage.close();
-		});
-		
-		Button exit = new Button("Exit");
-		exit.setOnAction(e -> {
-			exitPage(stage);
-		});
+    // Exit button, returns to quiz page
+    Button next = new Button("Take another quiz");
+    next.setOnAction(e -> {
+      stage.close();
+    });
 
-		//Renders screen
-		layout.getChildren().add(next);
-		layout.getChildren().add(exit);
-		stage.setScene(scene);
-		stage.showAndWait();
-	}
+    Button exit = new Button("I'm done");
+    exit.setOnAction(e -> {
+      stage.close();
+      exitPage();
+    });
+
+    // Renders screen
+    layout.getChildren().add(next);
+    layout.getChildren().add(exit);
+    stage.setScene(scene);
+    stage.showAndWait();
+  }
 	
 	boolean firstTimeChecked;
 
@@ -493,6 +498,105 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			return false;
 		}
 	}
+  
+  /**
+   * Exit page prompting user to exit saving questions in quiz or exit without saving, will provide
+   * a goodbye message.
+   */
+  @Override
+  public void exitPage() {
+    Stage primaryStage = new Stage();
+    // main container
+    VBox root = new VBox();
+    root.setPadding(new Insets(30, 30, 30, 30));
+    root.setPrefSize(400, 300);
+
+    // various labels for the exit page
+    Label thanks = new Label("THANKS FOR TAKING THE QUIZ");
+    Label savePrompt = new Label("Enter file name to save all questions to json file:");
+    savePrompt.setPadding(new Insets(10, 0, 10, 0));
+    Label goodBye = new Label(""); // will change depending on button chosen
+    TextField fileName = new TextField();
+    fileName.setPromptText("Enter file name");
+
+    // HBox containing thank you message
+    HBox thankYou = new HBox();
+    thankYou.setPadding(new Insets(10, 10, 10, 10));
+    thankYou.setAlignment(Pos.CENTER);
+    thankYou.getChildren().add(thanks);
+
+    // buttons for either save or exit without saving
+    Button save = new Button("Save");
+    save.setMaxWidth(150);
+    Button exitNoSave = new Button("Exit without Save");
+    save.setMaxWidth(150);
+    save.setOnAction(e -> {
+      quiz.save(fileName.getText());
+      goodByePage(primaryStage, fileName.getText(), true);
+    });
+    exitNoSave.setOnAction(e -> {
+      goodByePage(primaryStage, fileName.getText(), false);
+    });
+
+    Button exit = new Button("Close Application");
+
+    // the grid containing the buttons
+    GridPane grid = new GridPane();
+    grid.setPadding(new Insets(10, 10, 10, 10));
+    grid.setMinSize(200, 200);
+    grid.setVgap(20);
+    grid.setHgap(20);
+    grid.setAlignment(Pos.CENTER);
+    grid.add(save, 0, 0);
+    grid.add(exitNoSave, 1, 0);
+
+    // add all the components of this page in a VBox in order
+    root.getChildren().addAll(thankYou, savePrompt, fileName, grid, goodBye, exit);
+
+    // setup scene and show
+    Scene scene = new Scene(root);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
+
+  /**
+   * Page displaying goodbye message depending if user selects to save to a json file or exit
+   * without saving.
+   * 
+   * @param primaryStage
+   * @param fileName - the json file path
+   * @param save - whether or not the user selects to save or not
+   */
+  public void goodByePage(Stage primaryStage, String fileName, boolean save) {
+    // the root of the stage
+    BorderPane root = new BorderPane();
+    root.setPrefSize(300, 300);
+    Label goodbye = new Label("");
+    
+    // whether or not the user selects to save or if the user types in something 
+    if (!save || fileName.equals("")) {
+      goodbye.setText("Exiting quiz without saving, goodbye!");
+    } else {
+      goodbye.setText("Saved all questions to " + fileName + ", goodbye!");
+    }
+    
+    // set up page
+    root.setCenter(goodbye);
+    Button close = new Button("close application");
+    close.setOnAction(e -> Platform.exit());
+    
+    // configurations for page
+    HBox closeSection = new HBox();
+    closeSection.setPadding(new Insets(10, 10, 10, 10));
+    closeSection.getChildren().add(close);
+    closeSection.setAlignment(Pos.BOTTOM_RIGHT);
+    root.setBottom(closeSection);
+
+    Scene scene = new Scene(root);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+
+  }
 
 	/**
 	 * The method to setup the stage for the QuizGUI.
