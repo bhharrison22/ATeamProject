@@ -325,52 +325,68 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	private void renderSummary(int correct) {
 		Stage stage = new Stage();
 
+		//Main VBox layout
 		VBox layout = new VBox();
 		Scene scene = new Scene(layout, 700, 700);
 		layout.setPadding(new Insets(10, 50, 50, 50));
 		layout.setSpacing(20);
 
+		//The title, big font, centered at top
 		Label title = new Label("Summary");
 		title.setFont(Font.font(50));
 		title.setLineSpacing(15);
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//Says total amount of questions added
 		Label label = new Label("You got " + correct + " questions correct!");
 		label.setFont(Font.font(20));
 		layout.getChildren().add(label);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//Exit button, returns to quiz page
 		Button next = new Button("Close");
 		next.setOnAction(e -> {
 			stage.close();
 		});
 
+		//Renders screen
 		layout.getChildren().add(next);
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
 
+	/**
+	 * Renders a question and lets the user answer
+	 * @param q The Question object
+	 * @param questionNum The question that the user is on
+	 * @param totalNumQuestions The total number of questions in the quiz
+	 * @return Whether the question was answered correctly
+	 */
 	private Boolean renderQuestion(Question q, int questionNum, int totalNumQuestions) {
 		Stage secondary = new Stage();
 		boolean result = false;
 
+		//The main VBox
 		VBox layout = new VBox();
 		Scene scene = new Scene(layout, 700, 700);
 		layout.setPadding(new Insets(10, 50, 50, 50));
 		layout.setSpacing(20);
 
+		//The title, bold, centered at the top. Shows what question the user is on
 		Label title = new Label("Quiz (" + questionNum + "/" + totalNumQuestions + ")");
 		title.setFont(Font.font(50));
 		title.setLineSpacing(15);
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//The text of the question, on a single line
 		Label question = new Label(q.getText());
 		question.setFont(Font.font(20));
 		layout.getChildren().add(question);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//Trys to display the image, doesn't have to
 		try {
 			if (q.getImagePath() != null) {
 				ImageView img = new ImageView("file:" + q.getImagePath());
@@ -383,6 +399,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			System.out.println("Bad image path");
 		}
 
+		//Displays the options
 		for (String s : q.getChoiceArray()) {
 			Label choice = new Label(s);
 			choice.setFont(Font.font(10));
@@ -390,9 +407,11 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			layout.setAlignment(Pos.BASELINE_CENTER);
 		}
 
+		//The place where the user will answer
 		TextField answer = new TextField();
 		Label label = new Label("");
 
+		//Pressing enter to save the answer
 		answer.setOnAction(e -> {
 			boolean correct = checkAnswer(answer.getText(), q.getAnswer());
 			layout.getChildren().remove(label);
@@ -408,22 +427,28 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
 		layout.getChildren().add(answer);
 
+		//Moving on to the next question regardless of whether it was saved
 		Button next = new Button("Next");
 		next.setOnAction(e -> {
 			secondary.close();
 		});
 
+		//Rendering everything
 		layout.getChildren().add(next);
-
 		secondary.setScene(scene);
-
 		secondary.showAndWait();
-
 		result = checkAnswer(answer.getText(), q.getAnswer());
 
+		//Whether the answer was right
 		return result;
 	}
 
+	/**
+	 * Checks whether an answer was correct
+	 * @param input The user answer
+	 * @param answer The correct answer
+	 * @return True if question correct
+	 */
 	private boolean checkAnswer(String input, String answer) {
 		if (input.equals(answer)) {
 			return true;
