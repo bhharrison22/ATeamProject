@@ -7,7 +7,6 @@ import org.json.simple.parser.ParseException;
 
 /**
  * A basic quiz ADT that uses all of the methods from the design doc
- * @author amoon
  */
 public interface QuizADT {
 
@@ -29,7 +28,7 @@ public interface QuizADT {
 	/**
 	 * Saves all added questions into a JSON file
 	 */
-	public void save();
+	public void save(String JSONfilePath);
 	
 	/**
 	 * Autogenerates a list of questions from a set of topics

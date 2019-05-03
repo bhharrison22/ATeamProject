@@ -36,18 +36,24 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
+/**
+ * Contains logic and functions for a Quiz. Can add and store questions from user input or a JSON
+ * file and can save all questions to a JSON file.
+ *
+ */
 public class Quiz implements QuizADT {
-	
-	private ArrayList<Topic> currentTopics; // The list of current available topics
-	int numQuestions;
-	final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
-	
-	
-	public Quiz() {
-      currentTopics = new ArrayList<>();
-      numQuestions = 0;
-    }
-	
+
+  private ArrayList<Topic> currentTopics; // The list of current available topics
+  int numQuestions;
+
+  /*
+   * Main constructor for Quiz. Takes no parameters.
+   */
+  public Quiz() {
+    currentTopics = new ArrayList<>();
+    numQuestions = 0;
+  }
+
 
 
   /**
@@ -61,6 +67,7 @@ public class Quiz implements QuizADT {
     for (Topic t : currentTopics) {
       if (t.toString().equals(newQuestion.getTopic())) { // Topic exists
         t.addQuestion(newQuestion);
+        numQuestions++;
         return; // exits method
       }
     }
@@ -107,7 +114,7 @@ public class Quiz implements QuizADT {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void save() {
+  public void save(String JSONfilePath) {
     JSONArray questionList = new JSONArray(); // List of Questions stored as a JSONObject
     // Loops through all Questions being storage:
     for (Topic t : currentTopics) {
@@ -118,7 +125,7 @@ public class Quiz implements QuizADT {
         newQuestion.put("image", q.getImagePath());
         JSONArray choices = new JSONArray();
         for (String choice : q.getChoiceArray()) { // adds all choices to a JSONArray
-          if (q.getAnswer().equals(choice)) {
+          if (q != null || q.getAnswer().equals(choice)) {
             JSONObject correct = new JSONObject();
             correct.put("isCorrect", "T");
             correct.put("choice", choice);
@@ -134,7 +141,7 @@ public class Quiz implements QuizADT {
         questionList.add(newQuestion); // adds this Question to overall Array of Questions
       }
     }
-    writeToFile(questionList);
+    writeToFile(questionList, JSONfilePath);
   }
 
   /**
@@ -142,16 +149,16 @@ public class Quiz implements QuizADT {
    * 
    * @param questions is a JSONArray which will be written to the file
    */
-  private void writeToFile(JSONArray questions) {
+  private void writeToFile(JSONArray questions, String JSONfilePath) {
     try {
       JSONObject masterObj = new JSONObject();
       masterObj.put("questionArray", questions);
-      FileWriter file = new FileWriter(SAVED_QUESTION_FILE_PATH, false);
-      file.write(masterObj.toJSONString());
+      FileWriter file = new FileWriter(JSONfilePath, false);
+      file.write(masterObj.toJSONString()); // writes sent questions in in JSON form o 
       file.flush();
       file.close();
     } catch (IOException e) {
-      e.printStackTrace(); // TODO: make some kind of dialog box that tells the user of error?
+      e.printStackTrace();
     }
   }
 
@@ -165,14 +172,14 @@ public class Quiz implements QuizADT {
   public Question[] generateQuizQuestions(List<Topic> topics, int numQuestions) {
     Question[] quizQuestions = new Question[numQuestions];
     ArrayList<Question> allQuestions = new ArrayList<>();
-    for (Topic t : topics) {
+    for (Topic t : topics) { // loops through all stored questions
       for (Question q : t.getQuestions()) {
         allQuestions.add(q);
       }
     }
     for (int i = 0; i < numQuestions; i++) {
       if (!allQuestions.isEmpty()) {
-        int randIndex = (int) (Math.random() * allQuestions.size());
+        int randIndex = (int) (Math.random() * allQuestions.size()); // gets random index
         quizQuestions[i] = allQuestions.get(randIndex);
         allQuestions.remove(randIndex);
       } else {
@@ -197,52 +204,16 @@ public class Quiz implements QuizADT {
         + " Questions, giving you a percentage of " + Math.round(correct / quizQuestions.length));
   }
 
+  /**
+   * 
+   * @return number of questions currently stored
+   */
   public int numQuestions() {
     return numQuestions;
   }
-  
-  public ArrayList<Topic> getTopics(){
+
+  public ArrayList<Topic> getTopics() {
     return currentTopics;
   }
 
-  /**
-   * Simply launches the program, see {@link Quiz#start(Stage)} for more interesting main-method
-   * type shenanigans.
-   * 
-   * @param args The command line args
-   */
-  public static void main(String[] args) {
-    // TODO: remove testing before submitting.
-    // Testing:
-    Quiz q1 = new Quiz();
-    String[] options = {"answer", "Wrong1", "Wrong2", "Wrong3"};
-    q1.addQuestion("Q1", "answer", options, "Test Questions", "");
-    q1.addQuestion("Q2", "Wrong1", options, "Test Questions", "");
-    q1.save();
-    Quiz q2 = new Quiz();
-    try {
-      q2.loadQuestions("Saved_Questions.json");
-      q2.loadQuestions("testfile.json");
-      q2.addQuestion("After Load Q", "Wrong3", options, "loading", "");
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    System.out.println("Just Saved Questions:");
-    Question[] qs = q2.generateQuizQuestions(q1.currentTopics, 6);
-    for (Question q : qs) {
-      if (q != null)
-        System.out.println(q.getText());
-      else
-        System.out.println(q);
-    }
-    
-    System.out.println("\nAll Questions: ");
-    qs = q2.generateQuizQuestions(q2.currentTopics, 6);
-    for (Question q : qs) {
-      if (q != null)
-        System.out.println(q.getText());
-      else
-        System.out.println(q);
-    }
-  }
 }
