@@ -94,7 +94,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			questionsAdded.setText("All questions (" + this.quiz.numQuestions() + ") saved to a JSON file");
 		});
 		next.setOnAction(e -> topicChoosingPage(primaryStage));
-		save.setOnAction(e -> exitPage(primaryStage));
 
 		// add to GridPane
 		grid.add(add, 0, 2);
