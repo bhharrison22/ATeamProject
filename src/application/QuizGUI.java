@@ -94,7 +94,6 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			questionsAdded.setText("All questions (" + this.quiz.numQuestions() + ") saved to a JSON file");
 		});
 		next.setOnAction(e -> topicChoosingPage(primaryStage));
-		save.setOnAction(e -> exitPage(primaryStage));
 
 		// add to GridPane
 		grid.add(add, 0, 2);
@@ -136,7 +135,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		VBox mainBox = new VBox();
 		mainBox.setPadding(new Insets(50, 20, 50, 20));
 		mainBox.setSpacing(50);
-		mainBox.setPrefSize(370, 600);
+		mainBox.setPrefSize(400, 600);
 
 		// The stuff at the top, a drop down menu w a list of topics and a label
 		HBox topBox = new HBox();
@@ -160,6 +159,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		ComboBox<Topic> dropDown = new ComboBox<Topic>(topic);
 		// Allows user to select current topic. see below midBox for listener
 		Button selectCurrentTopic = new Button("Select");
+		selectCurrentTopic.setMaxWidth(150);
 
 		// Adds to main box
 		topBox.getChildren().addAll(lbl1, dropDown, selectCurrentTopic);
@@ -168,7 +168,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		// The stuff in the middle, a list of selected topics
 		HBox midBox = new HBox();
 		midBox.setSpacing(10);
-		midBox.setPadding(new Insets(10, 10, 10, 20));
+		midBox.setPadding(new Insets(10, 20, 10, 20));
 
 		// The list of topics that the user has selected
 		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
@@ -222,7 +222,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		// The section that lets you choose how many quiz questions you want
 		HBox thirdBox = new HBox();
 		thirdBox.setSpacing(10);
-		thirdBox.setPadding(new Insets(10, 40, 10, 20));
+		thirdBox.setPadding(new Insets(10, 20, 10, 20));
 
 		// Instructor label
 		Label numQQ = new Label("Number of quiz questions:");
@@ -245,16 +245,19 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
 		// Back button that takes user back to main screen
 		Button back = new Button("Back");
+		back.setMaxWidth(150);
 		back.setOnAction(e -> mainScreen(primaryStage));
 
 		// Forward button that creates a list of questions and opens up the taking quiz
 		// page
 		Button forward = new Button("Take Quiz");
+		forward.setMaxWidth(150);
 		forward.setOnAction(e -> takingQuizPage(primaryStage,
 				this.quiz.generateQuizQuestions(selectedTopics, Integer.parseInt(numQuizQuestions.getText()))));
 
 		// Allows the user to remove the last topic that they added
 		Button removeLatest = new Button("Remove last topic");
+		removeLatest.setMaxWidth(150);
 		removeLatest.setOnAction(e -> {
 			// If the user has selected a topic prior to this method call
 			if (!selTops.toString().contains("No topics selected")) {
@@ -661,11 +664,11 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		// Setting style for layouts:
 		mainBox.setSpacing(10);
 		mainBox.setPrefSize(400, 400);
-		instuctBox.setPadding(new Insets(10, 0, 0, 20));
+		instuctBox.setPadding(new Insets(10, 20, 0, 20));
 		textBox.setPadding(new Insets(0, 20, 20, 20));
 		buttonBox.setPadding(new Insets(20, 20, 20, 20));
 		buttonBox.setSpacing(20);
-		resultBox.setPadding(new Insets(10, 0, 0, 20));
+		resultBox.setPadding(new Insets(10, 20, 0, 20));
 
 		// Adding elements to layouts
 		textBox.getChildren().addAll(JSONFile);

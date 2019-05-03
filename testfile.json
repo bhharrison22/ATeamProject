@@ -18,7 +18,7 @@
    "meta-data":"unused",
    "questionText": "Which command will change the current working directory to a sub-directory named $p3$?",
    "topic": "linux",
-   "image":"none",
+   "image":"bucky.png",
    "choiceArray":   
     [
      {"isCorrect":"F","choice":"pwd"},
