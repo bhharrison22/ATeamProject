@@ -35,6 +35,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	private Quiz quiz;
 	private Label counter = new Label("0");
 	private final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
+	private int questionsAnswered = 0;
 
 	/**
 	 * The start page of the application. Questions can be created here and JSON
@@ -295,6 +296,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	 */
 	@Override
 	public void takingQuizPage(Stage primaryStage, Question[] questions) {
+		int numAnswered = 0;
 		int numCorrect = 0;
 
 		//Used to show what question you're on
@@ -310,10 +312,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 		}
 
-		renderSummary(numCorrect);
+		renderSummary(numCorrect, questions.length);
 	}
 
-	private void renderSummary(int correct) {
+	private void renderSummary(int correct, int numQuestions) {
 		Stage stage = new Stage();
 
 		//Main VBox layout
@@ -329,10 +331,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
-		//Says total amount of questions added
-		Label label = new Label("You got " + correct + " questions correct!");
+		Label label = new Label("You answered " + questionsAnswered + " questions and got " + correct + " correct.");
+		Label label1 = new Label("There were " + numQuestions + " questions total.");
+
 		label.setFont(Font.font(20));
+		label1.setFont(Font.font(20));
 		layout.getChildren().add(label);
+		layout.getChildren().add(label1);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
 		//Exit button, returns to quiz page
@@ -393,17 +398,19 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		//Displays the options
 		for (String s : q.getChoiceArray()) {
 			Label choice = new Label(s);
-			choice.setFont(Font.font(10));
+			choice.setFont(Font.font(15));
 			layout.getChildren().add(choice);
 			layout.setAlignment(Pos.BASELINE_CENTER);
-		}
+		}	
 
 		//The place where the user will answer
 		TextField answer = new TextField();
 		Label label = new Label("");
+		Button checkAnswer = new Button("Check Answer");
+		
+		int count = 0;
 
-		//Pressing enter to save the answer
-		answer.setOnAction(e -> {
+		checkAnswer.setOnAction(e -> {
 			boolean correct = checkAnswer(answer.getText(), q.getAnswer());
 			layout.getChildren().remove(label);
 
@@ -414,9 +421,11 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 
 			layout.getChildren().add(label);
+			questionsAnswered++;
 		});
 
 		layout.getChildren().add(answer);
+		layout.getChildren().add(checkAnswer);
 
 		//Moving on to the next question regardless of whether it was saved
 		Button next = new Button("Next");
