@@ -372,7 +372,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
 		//The main VBox
 		VBox layout = new VBox();
-		Scene scene = new Scene(layout, 700, 700);
+		Scene scene = new Scene(layout, 700, 800);
 		layout.setPadding(new Insets(10, 50, 50, 50));
 		layout.setSpacing(20);
 
@@ -383,11 +383,29 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
-		//The text of the question, on a single line
-		Label question = new Label(q.getText());
+		//The text of the question
+		int numSpaces = 0;
+		String questionText = "";
+		for (int i = 0; i < q.getText().length(); i++) {
+		  questionText += q.getText().charAt(i);
+		  if (q.getText().charAt(i) == ' ') {
+		    numSpaces++;
+		    if (numSpaces % 10 == 0) {
+		      questionText += "\n";
+		    }
+		  }
+		}
+		
+		Label question = new Label(questionText);
+		HBox container = new HBox();
 		question.setFont(Font.font(20));
-		layout.getChildren().add(question);
+		question.setMinHeight(numSpaces * 4 + 20);
+	    question.setPrefHeight(numSpaces * 4 + 20);
+		container.getChildren().add(question);
+		container.setAlignment(Pos.TOP_CENTER);
+		layout.getChildren().add(container);
 		layout.setAlignment(Pos.BASELINE_CENTER);
+	
 
 		//Trys to display the image, doesn't have to
 		try {
