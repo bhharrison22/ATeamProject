@@ -1,6 +1,5 @@
 package application;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,30 +10,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
-import javafx.util.converter.NumberStringConverter;
 
 /**
  * Contains logic and functions for a Quiz. Can add and store questions from user input or a JSON
@@ -98,10 +73,11 @@ public class Quiz implements QuizADT {
       String answer = null; // Question Answer
       String[] options = new String[choiceArray.size()]; // Question choices
       for (int j = 0; j < choiceArray.size(); j++) {
-        JSONObject choiceObj = (JSONObject) choiceArray.get(i);
-        options[i] = (String) choiceObj.get("choice");
-        if (choiceObj.get("isCorrect") == "T") {
-          answer = (String) choiceObj.get("choice");
+        JSONObject choiceObj = (JSONObject) choiceArray.get(j);
+        String choice = (String) choiceObj.get("choice");
+        options[j] = choice;
+        if (choiceObj.get("isCorrect").equals("T")) {
+          answer = choice;
         }
       }
       // Adds question to current Quiz with info obtained from JSON object:

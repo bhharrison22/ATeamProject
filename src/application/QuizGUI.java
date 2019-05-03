@@ -1,19 +1,14 @@
 package application;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import org.json.simple.parser.ParseException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -29,13 +24,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
@@ -308,13 +299,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		int numAnswered = 0;
 		int numCorrect = 0;
 
+		//Used to show what question you're on
+		int i = 1;
 		for (Question q : questions) {
 			if (q == null) {
 				break;
 			} else {
-				if (renderQuestion(q)) {
+				if (renderQuestion(q, i, questions.length)) {
 					numCorrect++;
 				}
+				i++;
 			}
 		}
 
@@ -324,11 +318,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	private void renderSummary(int correct, int numQuestions) {
 		Stage stage = new Stage();
 
+		//Main VBox layout
 		VBox layout = new VBox();
 		Scene scene = new Scene(layout, 700, 700);
 		layout.setPadding(new Insets(10, 50, 50, 50));
 		layout.setSpacing(20);
 
+		//The title, big font, centered at top
 		Label title = new Label("Summary");
 		title.setFont(Font.font(50));
 		title.setLineSpacing(15);
@@ -337,42 +333,56 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
 		Label label = new Label("You answered " + questionsAnswered + " questions and got " + correct + " correct.");
 		Label label1 = new Label("There were " + numQuestions + " questions total.");
+
 		label.setFont(Font.font(20));
 		label1.setFont(Font.font(20));
 		layout.getChildren().add(label);
 		layout.getChildren().add(label1);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//Exit button, returns to quiz page
 		Button next = new Button("Close");
 		next.setOnAction(e -> {
 			stage.close();
 		});
 
+		//Renders screen
 		layout.getChildren().add(next);
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
 
-	private Boolean renderQuestion(Question q) {
+	/**
+	 * Renders a question and lets the user answer
+	 * @param q The Question object
+	 * @param questionNum The question that the user is on
+	 * @param totalNumQuestions The total number of questions in the quiz
+	 * @return Whether the question was answered correctly
+	 */
+	private Boolean renderQuestion(Question q, int questionNum, int totalNumQuestions) {
 		Stage secondary = new Stage();
 		boolean result = false;
 
+		//The main VBox
 		VBox layout = new VBox();
 		Scene scene = new Scene(layout, 700, 700);
 		layout.setPadding(new Insets(10, 50, 50, 50));
 		layout.setSpacing(20);
 
-		Label title = new Label("Quiz");
+		//The title, bold, centered at the top. Shows what question the user is on
+		Label title = new Label("Quiz (" + questionNum + "/" + totalNumQuestions + ")");
 		title.setFont(Font.font(50));
 		title.setLineSpacing(15);
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//The text of the question, on a single line
 		Label question = new Label(q.getText());
 		question.setFont(Font.font(20));
 		layout.getChildren().add(question);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
+		//Trys to display the image, doesn't have to
 		try {
 			if (q.getImagePath() != null) {
 				ImageView img = new ImageView("file:" + q.getImagePath());
@@ -385,6 +395,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			System.out.println("Bad image path");
 		}
 
+		//Displays the options
 		for (String s : q.getChoiceArray()) {
 			Label choice = new Label(s);
 			choice.setFont(Font.font(15));
@@ -392,6 +403,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			layout.setAlignment(Pos.BASELINE_CENTER);
 		}	
 
+		//The place where the user will answer
 		TextField answer = new TextField();
 		Label label = new Label("");
 		Button checkAnswer = new Button("Check Answer");
@@ -415,22 +427,28 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.getChildren().add(answer);
 		layout.getChildren().add(checkAnswer);
 
+		//Moving on to the next question regardless of whether it was saved
 		Button next = new Button("Next");
 		next.setOnAction(e -> {
 			secondary.close();
 		});
 
+		//Rendering everything
 		layout.getChildren().add(next);
-
 		secondary.setScene(scene);
-
 		secondary.showAndWait();
-
 		result = checkAnswer(answer.getText(), q.getAnswer());
 
+		//Whether the answer was right
 		return result;
 	}
 
+	/**
+	 * Checks whether an answer was correct
+	 * @param input The user answer
+	 * @param answer The correct answer
+	 * @return True if question correct
+	 */
 	private boolean checkAnswer(String input, String answer) {
 		if (input.equals(answer)) {
 			return true;
