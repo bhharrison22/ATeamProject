@@ -166,21 +166,6 @@ public class Quiz implements QuizADT {
   }
 
   /**
-   * Takes in a list of a quiz's questions and the user's answers and generates a result
-   */
-  @Override
-  public String grade(Question[] quizQuestions, String[] answers) {
-    int correct = 0;
-    for (int i = 0; i < quizQuestions.length; i++) {
-      if (quizQuestions[i].getAnswer().equals(answers[i])) {
-        correct++;
-      }
-    }
-    return ("You Answered " + correct + " out of " + quizQuestions.length
-        + " Questions, giving you a percentage of " + Math.round(correct / quizQuestions.length));
-  }
-
-  /**
    * 
    * @return number of questions currently stored
    */

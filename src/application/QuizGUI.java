@@ -346,13 +346,19 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
 		//Exit button, returns to quiz page
-		Button next = new Button("Close");
+		Button next = new Button("Return");
 		next.setOnAction(e -> {
 			stage.close();
+		});
+		
+		Button exit = new Button("Exit");
+		exit.setOnAction(e -> {
+			exitPage(stage);
 		});
 
 		//Renders screen
 		layout.getChildren().add(next);
+		layout.getChildren().add(exit);
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
@@ -446,11 +452,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 
 			layout.getChildren().add(label);
+
 			if (firstTimeChecked) {
 			  questionsAnswered++;
 			}
 			firstTimeChecked = false;
 		});
+		
 
 		layout.getChildren().add(answer);
 		layout.getChildren().add(checkAnswer);
