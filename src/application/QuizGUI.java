@@ -305,6 +305,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			if (q == null) {
 				break;
 			} else {
+			  firstTimeChecked = true;
 				if (renderQuestion(q, i, questions.length)) {
 					numCorrect++;
 				}
@@ -352,6 +353,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
+	
+	boolean firstTimeChecked;
 
 	/**
 	 * Renders a question and lets the user answer
@@ -422,7 +425,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 
 			layout.getChildren().add(label);
-			questionsAnswered++;
+			if (firstTimeChecked) {
+			  questionsAnswered++;
+			}
+			firstTimeChecked = false;
 		});
 
 		layout.getChildren().add(answer);
