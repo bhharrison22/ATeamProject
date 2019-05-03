@@ -421,8 +421,8 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 
 			layout.getChildren().add(label);
-			questionsAnswered++;
 		});
+		
 
 		layout.getChildren().add(answer);
 		layout.getChildren().add(checkAnswer);
