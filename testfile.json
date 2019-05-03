@@ -4,7 +4,7 @@
    "meta-data":"unused",
    "questionText": "If a good hash function is found and a reasonable table size is used for a hash table, then the operations of put, remove, and get should achieve an average time complexity of _____ where $N$ is the number of items and $TS$ is the size of the table.",
    "topic": "hash table",
-   "image":"goodhash2_AK.jpg",
+   "image":"bucky.png",
    "choiceArray": 
     [
      {"isCorrect":"T","choice":"$O(1)$"},  
@@ -18,7 +18,7 @@
    "meta-data":"unused",
    "questionText": "Which command will change the current working directory to a sub-directory named $p3$?",
    "topic": "linux",
-   "image":"none",
+   "image":"bucky.png",
    "choiceArray":   
     [
      {"isCorrect":"F","choice":"pwd"},
