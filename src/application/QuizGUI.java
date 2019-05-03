@@ -136,13 +136,13 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		VBox mainBox = new VBox();
 		mainBox.setPadding(new Insets(50, 20, 50, 20));
 		mainBox.setSpacing(50);
-		mainBox.setPrefSize(400, 600);
+		mainBox.setPrefSize(370, 600);
 
 		// The stuff at the top, a drop down menu w a list of topics and a label
 		HBox topBox = new HBox();
 		Label lbl1 = new Label("Choose topic: ");
 		topBox.setSpacing(10);
-		topBox.setPadding(new Insets(10, 40, 10, 20));
+		topBox.setPadding(new Insets(10, 10, 10, 20));
 
 		// The list of selected topics
 		ObservableList<Topic> topic = FXCollections.observableArrayList();
@@ -168,7 +168,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		// The stuff in the middle, a list of selected topics
 		HBox midBox = new HBox();
 		midBox.setSpacing(10);
-		midBox.setPadding(new Insets(10, 40, 10, 20));
+		midBox.setPadding(new Insets(10, 10, 10, 20));
 
 		// The list of topics that the user has selected
 		ObservableList<Topic> selectedTopics = FXCollections.observableArrayList();
@@ -313,6 +313,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		}
 
 		renderSummary(numCorrect, questions.length);
+		questionsAnswered = 0;
 	}
 
 	private void renderSummary(int correct, int numQuestions) {
