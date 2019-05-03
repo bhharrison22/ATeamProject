@@ -44,6 +44,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	private Quiz quiz;
 	private Label counter = new Label("0");
 	private final String SAVED_QUESTION_FILE_PATH = "Saved_Questions.json";
+	private int questionsAnswered = 0;
 
 	/**
 	 * The start page of the application. Questions can be created here and JSON
@@ -304,6 +305,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	 */
 	@Override
 	public void takingQuizPage(Stage primaryStage, Question[] questions) {
+		int numAnswered = 0;
 		int numCorrect = 0;
 
 		for (Question q : questions) {
@@ -316,10 +318,10 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 		}
 
-		renderSummary(numCorrect);
+		renderSummary(numCorrect, questions.length);
 	}
 
-	private void renderSummary(int correct) {
+	private void renderSummary(int correct, int numQuestions) {
 		Stage stage = new Stage();
 
 		VBox layout = new VBox();
@@ -333,9 +335,12 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.getChildren().add(title);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
-		Label label = new Label("You got " + correct + " questions correct!");
+		Label label = new Label("You answered " + questionsAnswered + " questions and got " + correct + " correct.");
+		Label label1 = new Label("There were " + numQuestions + " questions total.");
 		label.setFont(Font.font(20));
+		label1.setFont(Font.font(20));
 		layout.getChildren().add(label);
+		layout.getChildren().add(label1);
 		layout.setAlignment(Pos.BASELINE_CENTER);
 
 		Button next = new Button("Close");
@@ -382,15 +387,18 @@ public class QuizGUI extends Application implements QuizGUIADT {
 
 		for (String s : q.getChoiceArray()) {
 			Label choice = new Label(s);
-			choice.setFont(Font.font(10));
+			choice.setFont(Font.font(15));
 			layout.getChildren().add(choice);
 			layout.setAlignment(Pos.BASELINE_CENTER);
-		}
+		}	
 
 		TextField answer = new TextField();
 		Label label = new Label("");
+		Button checkAnswer = new Button("Check Answer");
+		
+		int count = 0;
 
-		answer.setOnAction(e -> {
+		checkAnswer.setOnAction(e -> {
 			boolean correct = checkAnswer(answer.getText(), q.getAnswer());
 			layout.getChildren().remove(label);
 
@@ -401,9 +409,11 @@ public class QuizGUI extends Application implements QuizGUIADT {
 			}
 
 			layout.getChildren().add(label);
+			questionsAnswered++;
 		});
 
 		layout.getChildren().add(answer);
+		layout.getChildren().add(checkAnswer);
 
 		Button next = new Button("Next");
 		next.setOnAction(e -> {
