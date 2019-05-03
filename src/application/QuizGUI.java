@@ -306,13 +306,16 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	public void takingQuizPage(Stage primaryStage, Question[] questions) {
 		int numCorrect = 0;
 
+		//Used to show what question you're on
+		int i = 1;
 		for (Question q : questions) {
 			if (q == null) {
 				break;
 			} else {
-				if (renderQuestion(q)) {
+				if (renderQuestion(q, i, questions.length)) {
 					numCorrect++;
 				}
+				i++;
 			}
 		}
 
@@ -348,7 +351,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		stage.showAndWait();
 	}
 
-	private Boolean renderQuestion(Question q) {
+	private Boolean renderQuestion(Question q, int questionNum, int totalNumQuestions) {
 		Stage secondary = new Stage();
 		boolean result = false;
 
@@ -357,7 +360,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		layout.setPadding(new Insets(10, 50, 50, 50));
 		layout.setSpacing(20);
 
-		Label title = new Label("Quiz");
+		Label title = new Label("Quiz (" + questionNum + "/" + totalNumQuestions + ")");
 		title.setFont(Font.font(50));
 		title.setLineSpacing(15);
 		layout.getChildren().add(title);
