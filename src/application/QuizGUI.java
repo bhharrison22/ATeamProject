@@ -238,16 +238,48 @@ public class QuizGUI extends Application implements QuizGUIADT {
 	    if (q == null) {
 	      break;
 	    } else {
-	      if (renderQuestion( q)) {
+	      if (renderQuestion(q)) {
 	        numCorrect++;
 	      }
 	    }
 	  }
 
 	  System.out.println(numCorrect);
+	  
+	  renderSummary(numCorrect);
+	  
 }
   
-  private Boolean renderQuestion(Question q) {
+  private void renderSummary(int correct) {
+	  Stage stage = new Stage();
+	  
+	  VBox layout = new VBox();
+      Scene scene = new Scene(layout, 700, 700);
+      layout.setPadding(new Insets(10, 50, 50, 50));
+      layout.setSpacing(20);
+      
+      Label title = new Label("Summary");
+      title.setFont(Font.font(50));
+      title.setLineSpacing(15);
+      layout.getChildren().add(title);
+      layout.setAlignment(Pos.BASELINE_CENTER);
+      
+      Label label = new Label("You got " + correct + " questions correct!");
+      label.setFont(Font.font(20));
+      layout.getChildren().add(label);
+      layout.setAlignment(Pos.BASELINE_CENTER);
+      
+      Button next = new Button("Close");
+      next.setOnAction(e -> {
+    	  stage.close();
+      });
+      
+      layout.getChildren().add(next);
+      stage.setScene(scene);
+      stage.showAndWait();
+}
+
+private Boolean renderQuestion(Question q) {
 	  Stage secondary = new Stage();
 	  boolean result = false;
 
@@ -288,18 +320,22 @@ public class QuizGUI extends Application implements QuizGUIADT {
       }
       
       TextField answer = new TextField();
+      Label label = new Label("");
       
       answer.setOnAction( e -> {
       boolean correct = checkAnswer(answer.getText(), q.getAnswer());
+      layout.getChildren().remove(label);
       
       if(correct) {
-    	  layout.getChildren().add(new Label("Correct!"));
+    	  label.setText("Correct!");
       } else {
-    	  layout.getChildren().add(new Label("Incorrect!"));
+    	  label.setText("Incorrect!");
       }	 
       
-      answer.setOnAction(null);
+      layout.getChildren().add(label);
       });
+      
+      
       
       layout.getChildren().add(answer);
       
