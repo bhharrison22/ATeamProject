@@ -317,6 +317,7 @@ public class QuizGUI extends Application implements QuizGUIADT {
 		}
 
 		renderSummary(numCorrect, questions.length);
+		questionsAnswered = 0;
 	}
 
 	private void renderSummary(int correct, int numQuestions) {
