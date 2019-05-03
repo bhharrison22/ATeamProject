@@ -26,11 +26,6 @@ public interface QuizADT {
 	public void loadQuestions(String JSONfilePath) throws FileNotFoundException, IOException, ParseException;
 	
 	/**
-	 * Saves all added questions into a JSON file
-	 */
-	public void save(String JSONfilePath);
-	
-	/**
 	 * Autogenerates a list of questions from a set of topics
 	 * @param topics The set of topics
 	 * @param numQuestions The number of questions to be generated
